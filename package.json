@@ -2,8 +2,9 @@
   "name": "g4-next",
   "version": "4.8.0",
   "description": "The next version of G4.",
-  "main": "index.js",
+  "private": true,
   "scripts": {
+    "build": "webpack",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -20,6 +21,12 @@
   },
   "homepage": "https://github.com/Team-G4/g4-next#readme",
   "devDependencies": {
+    "css-loader": "^3.3.2",
+    "node-sass": "^4.13.0",
+    "sass-loader": "^8.0.0",
+    "style-loader": "^1.0.1",
+    "ts-loader": "^6.2.1",
+    "typescript": "^3.7.3",
     "webpack": "^4.41.3",
     "webpack-cli": "^3.3.10"
   }
