@@ -1,0 +1,26 @@
+{
+  "name": "g4-next",
+  "version": "4.8.0",
+  "description": "The next version of G4.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Team-G4/g4-next.git"
+  },
+  "keywords": [
+    "g4"
+  ],
+  "author": "Team G4",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Team-G4/g4-next/issues"
+  },
+  "homepage": "https://github.com/Team-G4/g4-next#readme",
+  "devDependencies": {
+    "webpack": "^4.41.3",
+    "webpack-cli": "^3.3.10"
+  }
+}
