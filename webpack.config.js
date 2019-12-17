@@ -24,7 +24,8 @@ module.exports = {
             ".tsx", ".ts",
             ".js",
             ".scss"
-        ]
+        ],
+        modules: ["node_modules"]
     },
     output: {
         filename: "main.js",
