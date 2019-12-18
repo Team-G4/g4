@@ -1,65 +1,75 @@
-import * as three from "three"
+import { WGLRenderer } from "./renderer/webgl"
+import { Level } from "./game/level/level"
 import { Ring } from "./game/level/ring"
 import { BallPrimitive, BarPrimitive } from "./game/level/primitives"
+import { Canvas2DRenderer } from "./renderer/canvas2D"
+import { IRenderer } from "./renderer/renderer"
 
-let camera = new three.PerspectiveCamera(70, innerWidth / innerHeight, 0.01, 10)
-camera.position.z = 3
+let level = new Level()
 
-let scene = new three.Scene()
-
-let mat = new three.MeshNormalMaterial()
-let group = new three.Group()
-
-let ring = new Ring()
-
-let ball1 = new BallPrimitive(ring, 0, 1, 0.35)
-let ball1o = new three.Mesh(
-    ball1.threeGeometry, mat
+let ring = new Ring(
+    1, 0, 0, 0, null
 )
-group.add(ball1o)
-ball1.threeObject = ball1o
-ring.add(ball1)
 
-let ball2 = new BallPrimitive(ring, 0.5, 1, 0.35)
-let ball2o = new three.Mesh(
-    ball2.threeGeometry, mat
+ring.add(
+    new BallPrimitive(
+        ring, 0, 200, 50
+    ),
+    new BallPrimitive(
+        ring, 0.3333, 200, 50
+    ),
+    new BallPrimitive(
+        ring, 0.6666, 200, 50
+    ),
+    new BarPrimitive(
+        ring, 0, 0.3333, 200, 10
+    ),
+    new BarPrimitive(
+        ring, 0.5, 0.16666, 200, 10
+    )
 )
-group.add(ball2o)
-ball2.threeObject = ball2o
-ring.add(ball2)
 
-let bar1 = new BarPrimitive(ring, 0, 0.33, 1, 0.08)
-let bar1o = new three.Mesh(
-    bar1.threeGeometry, mat
+level.add(ring)
+
+let wglRenderer = new WGLRenderer()
+wglRenderer.initLevel(level)
+
+wglRenderer.updateSize(innerWidth, innerHeight)
+
+let c2dRenderer = new Canvas2DRenderer()
+c2dRenderer.initLevel(level)
+
+c2dRenderer.updateSize(innerWidth, innerHeight)
+
+
+let renderer: IRenderer = c2dRenderer
+document.body.appendChild(
+    renderer.domElement
 )
-group.add(bar1o)
-bar1.threeObject = bar1o
-ring.add(bar1)
 
-let bar2 = new BarPrimitive(ring, 0.5, 0.25, 1, 0.08)
-let bar2o = new three.Mesh(
-    bar2.threeGeometry, mat
-)
-group.add(bar2o)
-bar2.threeObject = bar2o
-ring.add(bar2)
+let switchBtn = document.createElement("button")
+switchBtn.textContent = "Switch!"
 
-scene.add(group)
+switchBtn.addEventListener("click", () => {
+    document.body.removeChild(renderer.domElement)
 
-let renderer = new three.WebGLRenderer({
-    antialias: true
+    if (renderer == c2dRenderer) {
+        renderer = wglRenderer
+    } else {
+        renderer = c2dRenderer
+    }
+
+    document.body.insertBefore(
+        renderer.domElement, switchBtn
+    )
 })
-renderer.setSize(innerWidth, innerHeight)
-document.body.appendChild(renderer.domElement)
 
-function animate() {
+document.body.appendChild(switchBtn)
+
+function animate(timestamp: DOMHighResTimeStamp) {
     requestAnimationFrame(animate)
 
-    ring.refreshThreeObject()
-
-    ring.advance(1/300)
-
-    renderer.render(scene, camera)
+    renderer.render(timestamp)
 }
 
-animate()
+requestAnimationFrame(animate)

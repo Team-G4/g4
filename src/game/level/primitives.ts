@@ -1,5 +1,6 @@
-import { Object3D, SphereGeometry, Geometry, TorusGeometry, Mesh } from "three"
+import { Object3D, SphereGeometry, Geometry, TorusGeometry, Mesh, Material } from "three"
 import { Ring } from "./ring"
+import { IDrawable } from "../../renderer/drawable"
 
 type SerializedPrimitiveValue = number | boolean | string | SerializedPrimitiveObject
 
@@ -12,14 +13,10 @@ type SerializedPrimitive = {
     [prop: string]: SerializedPrimitiveValue
 }
 
-export interface IPrimitive {
+export interface IPrimitive extends IDrawable {
     serialize: () => SerializedPrimitive
 
     advance: (dTime: number) => void
-
-    threeGeometry: Geometry
-    threeObject: Object3D
-    refreshThreeObject: () => void
 }
 
 export class BallPrimitive implements IPrimitive {
@@ -46,18 +43,45 @@ export class BallPrimitive implements IPrimitive {
         this.angle += dTime
     }
 
+    get ballPosition() {
+        return {
+            x: this.ring.centerX + Math.cos(this.angle * Math.PI * 2) * this.distance,
+            y: this.ring.centerY + Math.sin(this.angle * Math.PI * 2) * this.distance
+        }
+    }
+
     get threeGeometry() {
         return new SphereGeometry(
             this.ballRadius, 24, 24
         )
     }
 
+    createThreeObject(mat: Material) {
+        this.threeObject = new Mesh(
+            this.threeGeometry, mat
+        )
+        return this.threeObject
+    }
+
     refreshThreeObject() {
-        let x = this.ring.centerX + Math.cos(this.angle * Math.PI * 2) * this.distance
-        let y = this.ring.centerY + Math.sin(this.angle * Math.PI * 2) * this.distance
+        let {x, y} = this.ballPosition
 
         this.threeObject.position.x = x
         this.threeObject.position.y = y
+    }
+
+    get path2d() {
+        let path = new Path2D()
+
+        let {x, y} = this.ballPosition
+
+        path.arc(
+            x, y,
+            this.ballRadius,
+            0, 2 * Math.PI
+        )
+
+        return path
     }
 }
 
@@ -90,8 +114,15 @@ export class BarPrimitive implements IPrimitive {
 
     get threeGeometry() {
         return new TorusGeometry(
-            this.distance, this.barRadius, 256, 12, Math.PI * 2 * this.length
+            this.distance, this.barRadius, 16, 256, Math.PI * 2 * this.length
         )
+    }
+
+    createThreeObject(mat: Material) {
+        this.threeObject = new Mesh(
+            this.threeGeometry, mat
+        )
+        return this.threeObject
     }
 
     refreshThreeObject() {
@@ -99,5 +130,25 @@ export class BarPrimitive implements IPrimitive {
         this.threeObject.position.y = this.ring.centerY
 
         this.threeObject.rotation.z = 2 * Math.PI * this.angle
+    }
+
+    get path2d() {
+        let path = new Path2D()
+
+        path.arc(
+            this.ring.centerX, this.ring.centerY,
+            this.distance + this.barRadius,
+            2 * Math.PI * this.angle - 0.01,
+            2 * Math.PI * (this.angle + this.length) + 0.01
+        )
+        path.arc(
+            this.ring.centerX, this.ring.centerY,
+            this.distance - this.barRadius,
+            2 * Math.PI * (this.angle + this.length) + 0.01,
+            2 * Math.PI * this.angle - 0.01,
+            true
+        )
+
+        return path
     }
 }
