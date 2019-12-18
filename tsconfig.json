@@ -6,6 +6,7 @@
 
         "module": "ES6",
         "target": "ES5",
+        "lib": ["ESNext", "DOM"],
 
         "jsx": "react",
         "allowJs": true,
