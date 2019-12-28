@@ -60,7 +60,7 @@ ring.add(
 
 level.add(ring)
 
-let c2dRenderer = new Canvas2DRenderer()
+let c2dRenderer = new WGLRenderer()
 c2dRenderer.initLevel(level)
 
 c2dRenderer.updateSize(600, 600)

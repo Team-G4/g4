@@ -13,15 +13,4 @@ export class Level {
     advance(dTime: number) {
         this.rings.forEach(r => r.advance(dTime))
     }
-
-    // createThreeObject(mat: Material) {
-    //     this.rings.forEach(ring => this.threeObject.add(
-    //         ring.createThreeObject(mat)
-    //     ))
-    //     return this.threeObject
-    // }
-
-    // refreshThreeObject() {
-    //     this.rings.forEach(r => r.refreshThreeObject())
-    // }
 }

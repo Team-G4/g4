@@ -38,15 +38,4 @@ export class Ring {
             dTime * this.timeMultiplier
         ))
     }
-
-    // createThreeObject(mat: Material) {
-    //     this.items.forEach(item => this.threeObject.add(
-    //         item.createThreeObject(mat)
-    //     ))
-    //     return this.threeObject
-    // }
-
-    // refreshThreeObject() {
-    //     this.items.forEach(item => item.refreshThreeObject())
-    // }
 }

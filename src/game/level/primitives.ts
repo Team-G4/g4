@@ -19,8 +19,6 @@ export interface IPrimitive {
 }
 
 export class BallPrimitive implements IPrimitive {
-    public threeObject: Mesh = null
-
     constructor(
         public ring: Ring,
         public angle = 0,
@@ -48,31 +46,9 @@ export class BallPrimitive implements IPrimitive {
             y: this.ring.centerY + Math.sin(this.angle * Math.PI * 2) * this.distance
         }
     }
-
-    get threeGeometry() {
-        return new SphereGeometry(
-            this.ballRadius, 24, 24
-        )
-    }
-
-    createThreeObject(mat: Material) {
-        this.threeObject = new Mesh(
-            this.threeGeometry, mat
-        )
-        return this.threeObject
-    }
-
-    refreshThreeObject() {
-        let {x, y} = this.ballPosition
-
-        this.threeObject.position.x = x
-        this.threeObject.position.y = y
-    }
 }
 
 export class BarPrimitive implements IPrimitive {
-    public threeObject: Mesh = null
-
     constructor(
         public ring: Ring,
         public angle = 0,
@@ -95,25 +71,5 @@ export class BarPrimitive implements IPrimitive {
 
     advance(dTime: number) {
         this.angle += dTime
-    }
-
-    get threeGeometry() {
-        return new TorusGeometry(
-            this.distance, this.barRadius, 16, 256, Math.PI * 2 * this.length
-        )
-    }
-
-    createThreeObject(mat: Material) {
-        this.threeObject = new Mesh(
-            this.threeGeometry, mat
-        )
-        return this.threeObject
-    }
-
-    refreshThreeObject() {
-        this.threeObject.position.x = this.ring.centerX
-        this.threeObject.position.y = this.ring.centerY
-
-        this.threeObject.rotation.z = 2 * Math.PI * this.angle
     }
 }

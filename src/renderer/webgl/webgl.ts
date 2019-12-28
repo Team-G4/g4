@@ -2,6 +2,7 @@ import { WebGLRenderer } from "three/src/renderers/WebGLRenderer";
 import { PerspectiveCamera, Scene, MeshNormalMaterial, OrthographicCamera, Color, MeshBasicMaterial, MeshLambertMaterial, PointLight, DirectionalLight, Light } from "three";
 import { Level } from "../../game/level/level";
 import { IRenderer } from "../renderer";
+import { WGLRasterizer, IWGLRasterizedPrimitive } from "./rasterizer";
 
 export class WGLRenderer implements IRenderer {
     public scene: Scene
@@ -11,11 +12,14 @@ export class WGLRenderer implements IRenderer {
         color: 0xA0A0A0
     })
 
+    public rasterizer = new WGLRasterizer(this.mat)
+
     public wglRenderer = new WebGLRenderer({
         antialias: true
     })
 
     public level: Level
+    public rasterizedLevel: IWGLRasterizedPrimitive
 
     public light: Light
 
@@ -37,17 +41,16 @@ export class WGLRenderer implements IRenderer {
 
     initLevel(level: Level) {
         this.level = level
+        this.rasterizedLevel = this.rasterizer.rasterize(level)
 
         this.scene = new Scene()
         this.scene.scale.y = -1
 
         this.scene.background = new Color(0xFFFFFF)
 
-        // this.scene.add(
-        //     this.level.createThreeObject(
-        //         this.mat
-        //     )
-        // )
+        this.scene.add(
+            this.rasterizedLevel.threeObject
+        )
 
         this.light = new DirectionalLight(0xFFFFFF, 1)
         this.light.position.z = 100
@@ -57,6 +60,7 @@ export class WGLRenderer implements IRenderer {
     render(timestamp: DOMHighResTimeStamp) {
         // this.level.refreshThreeObject()
         this.level.advance(1/300)
+        this.rasterizedLevel.update()
 
         this.wglRenderer.render(
             this.scene, this.camera

@@ -1,6 +1,6 @@
 import { Level } from "../../game/level/level";
 import { IRenderer } from "../renderer";
-import { Canvas2DRasterizer, ICanvas2DRasterizedPrimitive } from "./rasterizer";
+import { Canvas2DRasterizer, ICanvas2DRasterizedPrimitive, Canvas2DRasterizedLevel } from "./rasterizer";
 
 export class Canvas2DRenderer implements IRenderer {
     public canvas = document.createElement("canvas")
@@ -9,7 +9,7 @@ export class Canvas2DRenderer implements IRenderer {
     public rasterizer = new Canvas2DRasterizer()
 
     public level: Level
-    public rasterizedLevel: ICanvas2DRasterizedPrimitive
+    public rasterizedLevel: Canvas2DRasterizedLevel
 
     constructor() {
     }
@@ -28,7 +28,7 @@ export class Canvas2DRenderer implements IRenderer {
 
     initLevel(level: Level) {
         this.level = level
-        this.rasterizedLevel = this.rasterizer.rasterize(level)
+        this.rasterizedLevel = this.rasterizer.rasterize(level) as Canvas2DRasterizedLevel
     }
 
     render(timestamp: DOMHighResTimeStamp) {
