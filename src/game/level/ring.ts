@@ -1,15 +1,14 @@
 import { IPrimitive } from "./primitives"
-import { IDrawable } from "../../renderer/drawable"
 import { Group, Material } from "three"
 
-export class Ring implements IDrawable {
+export class Ring {
     public items: (IPrimitive | Ring)[] = []
 
     public centerX = 0
     public centerY = 0
     public rotation = 0
 
-    public threeObject = new Group()
+    // public threeObject = new Group()
 
     constructor(
         public timeMultiplier = 1,
@@ -40,24 +39,14 @@ export class Ring implements IDrawable {
         ))
     }
 
-    createThreeObject(mat: Material) {
-        this.items.forEach(item => this.threeObject.add(
-            item.createThreeObject(mat)
-        ))
-        return this.threeObject
-    }
+    // createThreeObject(mat: Material) {
+    //     this.items.forEach(item => this.threeObject.add(
+    //         item.createThreeObject(mat)
+    //     ))
+    //     return this.threeObject
+    // }
 
-    refreshThreeObject() {
-        this.items.forEach(item => item.refreshThreeObject())
-    }
-
-    get path2d() {
-        let path = new Path2D()
-
-        this.items.forEach(item => path.addPath(
-            item.path2d
-        ))
-
-        return path
-    }
+    // refreshThreeObject() {
+    //     this.items.forEach(item => item.refreshThreeObject())
+    // }
 }

@@ -1,8 +1,8 @@
-import { WGLRenderer } from "./renderer/webgl"
+import { WGLRenderer } from "./renderer/webgl/webgl"
 import { Level } from "./game/level/level"
 import { Ring } from "./game/level/ring"
 import { BallPrimitive, BarPrimitive } from "./game/level/primitives"
-import { Canvas2DRenderer } from "./renderer/canvas2D"
+import { Canvas2DRenderer } from "./renderer/canvas2D/canvas2D"
 import { IRenderer } from "./renderer/renderer"
 
 let level = new Level()
@@ -10,6 +10,35 @@ let level = new Level()
 let ring = new Ring(
     1, 0, 0, 0, null
 )
+
+let ring2 = new Ring(
+    1, 200, 1, 0, ring
+)
+ring2.add(
+    new BarPrimitive(
+        ring2, 0, 1, 80, 5
+    )
+)
+ring.add(ring2)
+
+let ring3 = new Ring(
+    -1.5, 80, 3, 0, ring2
+)
+ring3.add(
+    new BallPrimitive(
+        ring3, 0, 40, 10
+    ),
+    new BallPrimitive(
+        ring3, 0.25, 40, 10
+    ),
+    new BallPrimitive(
+        ring3, 0.5, 40, 10
+    ),
+    new BallPrimitive(
+        ring3, 0.75, 40, 10
+    )
+)
+ring2.add(ring3)
 
 ring.add(
     new BallPrimitive(
@@ -31,45 +60,19 @@ ring.add(
 
 level.add(ring)
 
-let wglRenderer = new WGLRenderer()
-wglRenderer.initLevel(level)
-
-wglRenderer.updateSize(innerWidth, innerHeight)
-
 let c2dRenderer = new Canvas2DRenderer()
 c2dRenderer.initLevel(level)
 
-c2dRenderer.updateSize(innerWidth, innerHeight)
+c2dRenderer.updateSize(600, 600)
 
-
-let renderer: IRenderer = c2dRenderer
 document.body.appendChild(
-    renderer.domElement
+    c2dRenderer.domElement
 )
-
-let switchBtn = document.createElement("button")
-switchBtn.textContent = "Switch!"
-
-switchBtn.addEventListener("click", () => {
-    document.body.removeChild(renderer.domElement)
-
-    if (renderer == c2dRenderer) {
-        renderer = wglRenderer
-    } else {
-        renderer = c2dRenderer
-    }
-
-    document.body.insertBefore(
-        renderer.domElement, switchBtn
-    )
-})
-
-document.body.appendChild(switchBtn)
 
 function animate(timestamp: DOMHighResTimeStamp) {
     requestAnimationFrame(animate)
-
-    renderer.render(timestamp)
+    
+    c2dRenderer.render(timestamp)
 }
 
 requestAnimationFrame(animate)

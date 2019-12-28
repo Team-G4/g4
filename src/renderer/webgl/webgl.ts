@@ -1,19 +1,23 @@
 import { WebGLRenderer } from "three/src/renderers/WebGLRenderer";
-import { PerspectiveCamera, Scene, MeshNormalMaterial, OrthographicCamera } from "three";
-import { Level } from "../game/level/level";
-import { IRenderer } from "./renderer";
+import { PerspectiveCamera, Scene, MeshNormalMaterial, OrthographicCamera, Color, MeshBasicMaterial, MeshLambertMaterial, PointLight, DirectionalLight, Light } from "three";
+import { Level } from "../../game/level/level";
+import { IRenderer } from "../renderer";
 
 export class WGLRenderer implements IRenderer {
     public scene: Scene
     public camera: OrthographicCamera
 
-    public mat = new MeshNormalMaterial()
+    public mat = new MeshLambertMaterial({
+        color: 0xA0A0A0
+    })
 
     public wglRenderer = new WebGLRenderer({
         antialias: true
     })
 
     public level: Level
+
+    public light: Light
 
     constructor() {
     }
@@ -37,15 +41,21 @@ export class WGLRenderer implements IRenderer {
         this.scene = new Scene()
         this.scene.scale.y = -1
 
-        this.scene.add(
-            this.level.createThreeObject(
-                this.mat
-            )
-        )
+        this.scene.background = new Color(0xFFFFFF)
+
+        // this.scene.add(
+        //     this.level.createThreeObject(
+        //         this.mat
+        //     )
+        // )
+
+        this.light = new DirectionalLight(0xFFFFFF, 1)
+        this.light.position.z = 100
+        this.scene.add(this.light)
     }
 
     render(timestamp: DOMHighResTimeStamp) {
-        this.level.refreshThreeObject()
+        // this.level.refreshThreeObject()
         this.level.advance(1/300)
 
         this.wglRenderer.render(
