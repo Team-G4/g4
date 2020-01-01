@@ -19,6 +19,11 @@ ring.add(
         ring, angle, 200, (i % 2) ? 50 : 30
     ))
 )
+ring.add(
+    new BarPrimitive(
+        ring, 0.25, 0.1, 200, 10
+    )
+)
 
 level.add(ring)
 

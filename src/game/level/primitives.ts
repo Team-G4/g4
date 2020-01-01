@@ -86,6 +86,33 @@ export class BarPrimitive implements IPrimitive {
     }
 
     hitTest(x: number, y: number, bulletRadius = 0): IPrimitive {
+        x -= this.ring.centerX
+        y -= this.ring.centerY
+
+        let angle = Math.atan2(y, x) / (2 * Math.PI)
+        if (angle < 0) angle += 1
+
+        let startAngle = this.angle % 1
+        if (startAngle < 0) startAngle++
+        let endAngle = (startAngle + this.length) % 1
+        if (endAngle < 0) endAngle++
+
+        let mightCollide = false
+
+        if (endAngle >= startAngle) {
+            mightCollide = angle >= startAngle && angle <= endAngle
+        } else {
+            mightCollide = angle >= startAngle || angle <= endAngle
+        }
+
+        if (!mightCollide) return null
+
+        if (
+            Math.abs(Math.hypot(x, y) - this.distance) < this.barRadius
+        ) {
+            return this
+        }
+
         return null
     }
 }
