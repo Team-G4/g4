@@ -4,6 +4,10 @@ module.exports = {
     entry: "./src/index.ts",
     devtool: "inline-source-map",
     mode: "development",
+    devServer: {
+        contentBase: "./dist"
+    },
+
     module: {
         rules: [
             // TypeScript
