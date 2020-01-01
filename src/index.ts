@@ -45,7 +45,7 @@ addEventListener("mousemove", (e) => {
     let hit = level.hitTest(
         e.clientX - 300,
         e.clientY - 300,
-        0
+        10
     )
     console.log(hit)
 

@@ -108,7 +108,7 @@ export class BarPrimitive implements IPrimitive {
         if (!mightCollide) return null
 
         if (
-            Math.abs(Math.hypot(x, y) - this.distance) < this.barRadius
+            Math.abs(Math.hypot(x, y) - this.distance) < (this.barRadius + bulletRadius)
         ) {
             return this
         }
