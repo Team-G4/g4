@@ -15,8 +15,8 @@ let ring = new Ring(
 ring.add(
     ...new Polygon(7).symmetry(
         PolygonSymmetryType.centerPointSymmetry
-    ).angles.map(angle => new BallPrimitive(
-        ring, angle, 200, 30
+    ).angles.map((angle, i) => new BallPrimitive(
+        ring, angle, 200, (i % 2) ? 50 : 30
     ))
 )
 
@@ -27,14 +27,22 @@ c2dRenderer.initLevel(level)
 
 c2dRenderer.updateSize(600, 600)
 
+c2dRenderer.domElement.style.position = "fixed"
+c2dRenderer.domElement.style.top = "0"
+c2dRenderer.domElement.style.left = "0"
 document.body.appendChild(
     c2dRenderer.domElement
 )
 
-function animate(timestamp: DOMHighResTimeStamp) {
-    requestAnimationFrame(animate)
-    
-    c2dRenderer.render(timestamp)
-}
+c2dRenderer.render(0)
 
-requestAnimationFrame(animate)
+addEventListener("mousemove", (e) => {
+    let hit = level.hitTest(
+        e.clientX - 300,
+        e.clientY - 300,
+        0
+    )
+    console.log(hit)
+
+    document.body.style.background = hit ? "#acf" : "white"
+})

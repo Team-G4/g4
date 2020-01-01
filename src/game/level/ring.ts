@@ -1,4 +1,4 @@
-import { IPrimitive } from "./primitives"
+import { IPrimitive, SerializedPrimitive } from "./primitives"
 import { Group, Material } from "three"
 
 export class Ring {
@@ -7,8 +7,6 @@ export class Ring {
     public centerX = 0
     public centerY = 0
     public rotation = 0
-
-    // public threeObject = new Group()
 
     constructor(
         public timeMultiplier = 1,
@@ -20,6 +18,14 @@ export class Ring {
 
     add(...prim: (IPrimitive | Ring)[]) {
         this.items.push(...prim)
+    }
+
+    serialize(): SerializedPrimitive {
+        return {
+            type: "Ring",
+
+            items: this.items.map(item => item.serialize())
+        }
     }
 
     advanceRingPosition(dTime: number) {
@@ -37,5 +43,17 @@ export class Ring {
         this.items.forEach(i => i.advance(
             dTime * this.timeMultiplier
         ))
+    }
+
+    hitTest(x: number, y: number, bulletRadius = 0): IPrimitive {
+        for (let item of this.items) {
+            let hit = item.hitTest(x, y, bulletRadius)
+            if (hit) {
+                if (hit instanceof Ring) return hit
+                else return item
+            }
+        }
+
+        return null
     }
 }

@@ -1,13 +1,13 @@
 import { Object3D, SphereGeometry, Geometry, TorusGeometry, Mesh, Material } from "three"
 import { Ring } from "./ring"
 
-type SerializedPrimitiveValue = number | boolean | string | SerializedPrimitiveObject
+type SerializedPrimitiveValue = number | boolean | string | SerializedPrimitiveObject | SerializedPrimitiveValue[]
 
 type SerializedPrimitiveObject = {
     [prop: string]: SerializedPrimitiveValue
 }
 
-type SerializedPrimitive = {
+export type SerializedPrimitive = {
     type: string,
     [prop: string]: SerializedPrimitiveValue
 }
@@ -16,6 +16,7 @@ export interface IPrimitive {
     serialize: () => SerializedPrimitive
 
     advance: (dTime: number) => void
+    hitTest: (x: number, y: number, bulletRadius: number) => IPrimitive
 }
 
 export class BallPrimitive implements IPrimitive {
@@ -46,6 +47,17 @@ export class BallPrimitive implements IPrimitive {
             y: this.ring.centerY + Math.sin(this.angle * Math.PI * 2) * this.distance
         }
     }
+
+    hitTest(x: number, y: number, bulletRadius = 0): IPrimitive {
+        let ballPos = this.ballPosition
+
+        if (
+            Math.hypot(ballPos.x - x, ballPos.y - y) < (bulletRadius + this.ballRadius)
+        ) {
+            return this
+        }
+        return null
+    }
 }
 
 export class BarPrimitive implements IPrimitive {
@@ -71,5 +83,9 @@ export class BarPrimitive implements IPrimitive {
 
     advance(dTime: number) {
         this.angle += dTime
+    }
+
+    hitTest(x: number, y: number, bulletRadius = 0): IPrimitive {
+        return null
     }
 }
