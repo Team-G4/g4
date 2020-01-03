@@ -1,10 +1,10 @@
 import { Level } from "../../game/level/level";
-import { IRenderer } from "../renderer";
+import { IVisualRenderer } from "../renderer";
 import { Canvas2DRasterizer, ICanvas2DRasterizedPrimitive, Canvas2DRasterizedLevel } from "./rasterizer";
 import { IMode } from "../../game/mode/mode";
 import { BeatingHeart } from "../../util/heart";
 
-export class Canvas2DRenderer implements IRenderer {
+export class Canvas2DRenderer implements IVisualRenderer {
     public canvas = document.createElement("canvas")
     public ctx = this.canvas.getContext("2d")
 
@@ -34,7 +34,7 @@ export class Canvas2DRenderer implements IRenderer {
 
     initLevel(level: Level) {
         this.level = level
-        this.rasterizedLevel = this.rasterizer.rasterizePrimitive(level.mode, level) as Canvas2DRasterizedLevel
+        this.rasterizedLevel = this.rasterizer.rasterize(level.mode, level) as Canvas2DRasterizedLevel
     }
 
     render(timestamp: DOMHighResTimeStamp) {

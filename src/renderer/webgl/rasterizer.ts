@@ -102,7 +102,7 @@ export class WGLRasterizedRing implements IWGLRasterizedPrimitive {
         public ring: Ring,
         mode: IMode
     ) {
-        this.items = this.ring.items.map(item => rasterizer.rasterizePrimitive(mode, item))
+        this.items = this.ring.items.map(item => rasterizer.rasterize(mode, item))
 
         this.threeObject.add(
             ...this.items.map(item => item.threeObject)
@@ -143,7 +143,7 @@ export class WGLRasterizer implements IRasterizer {
         })
     }
 
-    rasterizePrimitive(mode: IMode, prim: Rasterizable): IWGLRasterizedPrimitive {
+    rasterize(mode: IMode, prim: Rasterizable): IWGLRasterizedPrimitive {
         if (prim instanceof BallPrimitive) {
             return new WGLRasterizedBallPrimitive(this, prim, mode)
         } else if (prim instanceof BarPrimitive) {

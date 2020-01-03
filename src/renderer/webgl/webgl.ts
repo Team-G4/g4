@@ -1,11 +1,11 @@
 import { WebGLRenderer } from "three/src/renderers/WebGLRenderer";
-import { PerspectiveCamera, Scene, MeshNormalMaterial, OrthographicCamera, Color, MeshBasicMaterial, MeshLambertMaterial, PointLight, DirectionalLight, Light } from "three";
+import { Scene, OrthographicCamera, Color, MeshLambertMaterial } from "three";
 import { Level } from "../../game/level/level";
-import { IRenderer } from "../renderer";
+import { IVisualRenderer } from "../renderer";
 import { WGLRasterizer, IWGLRasterizedPrimitive } from "./rasterizer";
-import { IMode } from "../../game/mode/mode";
+import { BeatingHeart } from "../../util/heart";
 
-export class WGLRenderer implements IRenderer {
+export class WGLRenderer implements IVisualRenderer {
     public scene: Scene
     public camera: OrthographicCamera
 
@@ -21,8 +21,6 @@ export class WGLRenderer implements IRenderer {
 
     public level: Level
     public rasterizedLevel: IWGLRasterizedPrimitive
-
-    public light: Light
 
     public heart = new BeatingHeart()
 
@@ -41,7 +39,7 @@ export class WGLRenderer implements IRenderer {
 
     initLevel(level: Level) {
         this.level = level
-        this.rasterizedLevel = this.rasterizer.rasterizePrimitive(level.mode, level)
+        this.rasterizedLevel = this.rasterizer.rasterize(level.mode, level)
 
         this.scene = new Scene()
         this.scene.scale.y = -1
@@ -51,10 +49,6 @@ export class WGLRenderer implements IRenderer {
         this.scene.add(
             this.rasterizedLevel.threeObject
         )
-
-        this.light = new DirectionalLight(0xFFFFFF, 1)
-        this.light.position.z = 100
-        this.scene.add(this.light)
     }
 
     render(timestamp: DOMHighResTimeStamp) {

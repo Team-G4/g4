@@ -7,18 +7,32 @@ import { StyledPathGroup, StyledPath } from "./path";
 import { Cannon } from "../../game/level/cannon";
 
 export interface ICanvas2DRasterizedPrimitive extends IRasterizedPrimitive {
+    /**
+     * The styled path created after rasterization
+     */
     path: StyledPathGroup | StyledPath
 }
 
 export class Canvas2DRasterizedBallPrimitive implements ICanvas2DRasterizedPrimitive {
     path: StyledPathGroup | StyledPath
 
+    /**
+     * Creates a rasterized ball
+     * @param rasterizer - the Canvas2D rasterizer
+     * @param ball - the ball primitive to rasterize
+     * @param mode - the game mode
+     */
     constructor(
         public rasterizer: Canvas2DRasterizer,
         public ball: BallPrimitive,
         public mode: IMode
     ) {}
 
+    /**
+     * Updates the rasterized ball every frame.
+     * 
+     * @param deepUpdate - doesn't affect the Canvas renderer
+     */
     update(deepUpdate: boolean) {
         let path = new Path2D()
 
@@ -41,12 +55,23 @@ export class Canvas2DRasterizedBallPrimitive implements ICanvas2DRasterizedPrimi
 export class Canvas2DRasterizedBarPrimitive implements ICanvas2DRasterizedPrimitive {
     path: StyledPathGroup | StyledPath
 
+    /**
+     * Creates a rasterized bar
+     * @param rasterizer - the Canvas2D rasterizer
+     * @param bar - the bar primitive to rasterize
+     * @param mode - the game mode
+     */
     constructor(
         public rasterizer: Canvas2DRasterizer,
         public bar: BarPrimitive,
         public mode: IMode
     ) {}
 
+    /**
+     * Updates the rasterized bar every frame.
+     * 
+     * @param deepUpdate - doesn't affect the Canvas renderer
+     */
     update(deepUpdate: boolean) {
         let path = new Path2D()
 
@@ -75,16 +100,30 @@ export class Canvas2DRasterizedBarPrimitive implements ICanvas2DRasterizedPrimit
 export class Canvas2DRasterizedRing implements ICanvas2DRasterizedPrimitive {
     public path: StyledPathGroup
 
+    /**
+     * An array of rasterized prims and other objects
+     */
     public items: ICanvas2DRasterizedPrimitive[]
 
+    /**
+     * Creates a rasterized ring
+     * @param rasterizer - the Canvas2D rasterizer
+     * @param ring - the ring to rasterize
+     * @param mode - the game mode
+     */
     constructor(
         rasterizer: Canvas2DRasterizer,
         public ring: Ring,
         mode: IMode
     ) {
-        this.items = this.ring.items.map(item => rasterizer.rasterizePrimitive(mode, item))
+        this.items = this.ring.items.map(item => rasterizer.rasterize(mode, item))
     }
 
+    /**
+     * Updates the rasterized ring every frame.
+     * 
+     * @param deepUpdate - doesn't affect the Canvas renderer
+     */
     update(deepUpdate: boolean) {
         let path = new StyledPathGroup()
         
@@ -100,8 +139,17 @@ export class Canvas2DRasterizedRing implements ICanvas2DRasterizedPrimitive {
 export class Canvas2DRasterizedLevel implements ICanvas2DRasterizedPrimitive {
     public path: StyledPathGroup
 
+    /**
+     * An array of rasterized rings
+     */
     public rings: Canvas2DRasterizedRing[]
 
+    /**
+     * Creates a rasterized level
+     * @param rasterizer - the Canvas2D rasterizer
+     * @param level - the level to rasterize
+     * @param mode - the game mode
+     */
     constructor(
         rasterizer: Canvas2DRasterizer,
         public level: Level,
@@ -110,6 +158,11 @@ export class Canvas2DRasterizedLevel implements ICanvas2DRasterizedPrimitive {
         this.rings = this.level.rings.map(ring => new Canvas2DRasterizedRing(rasterizer, ring, mode))
     }
 
+    /**
+     * Updates the rasterized level every frame.
+     * 
+     * @param deepUpdate - doesn't affect the Canvas renderer
+     */
     update(deepUpdate: boolean) {
         let path = new StyledPathGroup()
         
@@ -125,12 +178,23 @@ export class Canvas2DRasterizedLevel implements ICanvas2DRasterizedPrimitive {
 export class Canvas2DRasterizedCannon implements ICanvas2DRasterizedPrimitive {
     path: StyledPathGroup | StyledPath
 
+    /**
+     * Creates a rasterized cannon
+     * @param rasterizer - the Canvas2D rasterizer
+     * @param cannon - the cannon to rasterize
+     * @param mode - the game mode
+     */
     constructor(
         public rasterizer: Canvas2DRasterizer,
         public cannon: Cannon,
         public mode: IMode
     ) {}
 
+    /**
+     * Updates the rasterized cannon every frame.
+     * 
+     * @param deepUpdate - doesn't affect the Canvas renderer
+     */
     update(deepUpdate: boolean) {
         let path = new Path2D()
 
@@ -163,11 +227,22 @@ export class Canvas2DRasterizedCannon implements ICanvas2DRasterizedPrimitive {
 }
 
 export class Canvas2DRasterizer implements IRasterizer {
+    /**
+     * Converts the provided PrimitiveMaterial to a single color
+     * @param pm - the PrimitiveMaterial object
+     * @returns a CSS color
+     */
     getStyleFromPrimMat(pm: PrimitiveMaterial) {
         return pm.color
     }
 
-    rasterizePrimitive(mode: IMode, prim: Rasterizable): ICanvas2DRasterizedPrimitive {
+    /**
+     * Rasterizes an object
+     * @param mode - the current game mode
+     * @param prim - the Rasterizable object to rasterize
+     * @returns a rasterized primitive
+     */
+    rasterize(mode: IMode, prim: Rasterizable): ICanvas2DRasterizedPrimitive {
         if (prim instanceof BallPrimitive) {
             return new Canvas2DRasterizedBallPrimitive(this, prim, mode)
         } else if (prim instanceof BarPrimitive) {

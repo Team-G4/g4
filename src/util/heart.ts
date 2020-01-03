@@ -17,7 +17,7 @@ export class BeatingHeart {
     /**
      * Makes the heart beat.
      * @param timestamp - a timestamp in milliseconds
-     * @returns The interval between timestamps represented as a fraction of the beat time
+     * @returns the interval between timestamps represented as a fraction of the beat time
      */
     beat(timestamp: DOMHighResTimeStamp): number {
         let correctedLastTimestamp = this.lastTimestamp ?? (timestamp - this.defaultInterval)

@@ -5,10 +5,22 @@ import { IMode } from "../game/mode/mode";
 
 export type Rasterizable = IPrimitive | Ring | Level
 
+/**
+ * Represents a rasterized primitive (ball, bar, cannon, hopes and dreams, ...)
+ */
 export interface IRasterizedPrimitive {
+    /**
+     * Updates the rasterized primitive every frame.
+     */
     update: (deepUpdate: boolean) => void
 }
 
+/**
+ * Represents a rasterizer
+ */
 export interface IRasterizer {
-    rasterizePrimitive: (mode: IMode, prim: Rasterizable) => IRasterizedPrimitive
+    /**
+     * Rasterizes an object
+     */
+    rasterize: (mode: IMode, prim: Rasterizable) => IRasterizedPrimitive
 }
