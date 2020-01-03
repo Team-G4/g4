@@ -1,10 +1,12 @@
 import { IRasterizer, IRasterizedPrimitive, Rasterizable } from "../rasterizer";
 import { IPrimitive, BallPrimitive, BarPrimitive } from "../../game/level/primitives";
 
-import { Material, Object3D, Mesh, SphereGeometry, Group, TorusGeometry, MeshBasicMaterial } from "three";
+import { Material, Object3D, Mesh, SphereGeometry, Group, TorusGeometry, MeshBasicMaterial, Path } from "three";
 import { Ring } from "../../game/level/ring";
 import { Level } from "../../game/level/level";
 import { IMode, PrimitiveMaterial } from "../../game/mode/mode";
+import { Cannon } from "../../game/level/cannon";
+import { WGLRasterizedCannon } from "./cannon";
 
 export interface IWGLRasterizedPrimitive extends IRasterizedPrimitive {
     threeObject: Object3D
@@ -152,6 +154,8 @@ export class WGLRasterizer implements IRasterizer {
             return new WGLRasterizedRing(this, prim, mode)
         } else if (prim instanceof Level) {
             return new WGLRasterizedLevel(this, prim, mode)
+        } else if (prim instanceof Cannon) {
+            return new WGLRasterizedCannon(this, prim, mode)
         }
 
         return null

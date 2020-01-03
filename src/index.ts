@@ -6,7 +6,7 @@ let mode = new TestMode()
 
 let level = mode.generateLevel(0)
 
-let c2dRenderer = new Canvas2DRenderer()
+let c2dRenderer = new WGLRenderer()
 c2dRenderer.initLevel(level)
 
 c2dRenderer.updateSize(600, 600)
