@@ -137,10 +137,6 @@ export class WGLRasterizedLevel implements IWGLRasterizedPrimitive {
 }
 
 export class WGLRasterizer implements IRasterizer {
-    constructor(
-        public mat: Material
-    ) {}
-
     getMaterialFromPrimMat(pm: PrimitiveMaterial) {
         return new MeshBasicMaterial({
             color: pm.color

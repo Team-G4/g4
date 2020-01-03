@@ -1,10 +1,5 @@
 import { WGLRenderer } from "./renderer/webgl/webgl"
-import { Level } from "./game/level/level"
-import { Ring } from "./game/level/ring"
-import { BallPrimitive, BarPrimitive } from "./game/level/primitives"
 import { Canvas2DRenderer } from "./renderer/canvas2D/canvas2D"
-import { IRenderer } from "./renderer/renderer"
-import { Polygon, PolygonSymmetryType } from "./game/generator/polygon"
 import { TestMode } from "./game/mode/mode"
 
 let mode = new TestMode()

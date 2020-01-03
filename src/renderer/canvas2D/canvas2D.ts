@@ -2,6 +2,7 @@ import { Level } from "../../game/level/level";
 import { IRenderer } from "../renderer";
 import { Canvas2DRasterizer, ICanvas2DRasterizedPrimitive, Canvas2DRasterizedLevel } from "./rasterizer";
 import { IMode } from "../../game/mode/mode";
+import { BeatingHeart } from "../../util/heart";
 
 export class Canvas2DRenderer implements IRenderer {
     public canvas = document.createElement("canvas")
@@ -11,6 +12,8 @@ export class Canvas2DRenderer implements IRenderer {
 
     public level: Level
     public rasterizedLevel: Canvas2DRasterizedLevel
+
+    public heart = new BeatingHeart()
 
     // Spare the poor constructor
     // has it done anything to you
@@ -35,7 +38,9 @@ export class Canvas2DRenderer implements IRenderer {
     }
 
     render(timestamp: DOMHighResTimeStamp) {
-        this.level.mode.advance(this.level, 1/300)
+        let dTime = this.heart.beat(timestamp)
+
+        this.level.mode.advance(this.level, dTime)
         this.rasterizedLevel.update(this.level.mode.isMaterialDynamic)
 
         this.ctx.clearRect(

@@ -13,7 +13,7 @@ export class WGLRenderer implements IRenderer {
         color: 0xA0A0A0
     })
 
-    public rasterizer = new WGLRasterizer(this.mat)
+    public rasterizer = new WGLRasterizer()
 
     public wglRenderer = new WebGLRenderer({
         antialias: true
@@ -23,6 +23,8 @@ export class WGLRenderer implements IRenderer {
     public rasterizedLevel: IWGLRasterizedPrimitive
 
     public light: Light
+
+    public heart = new BeatingHeart()
 
     get domElement(): HTMLCanvasElement {
         return this.wglRenderer.domElement
@@ -56,7 +58,9 @@ export class WGLRenderer implements IRenderer {
     }
 
     render(timestamp: DOMHighResTimeStamp) {
-        this.level.mode.advance(this.level, 1/300)
+        let dTime = this.heart.beat(timestamp)
+
+        this.level.mode.advance(this.level, dTime)
         this.rasterizedLevel.update(this.level.mode.isMaterialDynamic)
 
         this.wglRenderer.render(
