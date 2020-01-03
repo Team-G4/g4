@@ -27,14 +27,14 @@ export class Canvas2DRenderer implements IRenderer {
         this.ctx.translate(w / 2, h / 2)
     }
 
-    initLevel(mode: IMode, level: Level) {
+    initLevel(level: Level) {
         this.level = level
-        this.rasterizedLevel = this.rasterizer.rasterizePrimitive(mode, level) as Canvas2DRasterizedLevel
+        this.rasterizedLevel = this.rasterizer.rasterizePrimitive(level.mode, level) as Canvas2DRasterizedLevel
     }
 
     render(timestamp: DOMHighResTimeStamp) {
-        this.level.advance(1/300)
-        this.rasterizedLevel.update()
+        this.level.mode.advance(this.level, 1/300)
+        this.rasterizedLevel.update(this.level.mode.isMaterialDynamic)
 
         this.ctx.clearRect(
             -this.canvas.width / 2,

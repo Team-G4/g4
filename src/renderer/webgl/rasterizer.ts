@@ -14,9 +14,9 @@ export class WGLRasterizedBallPrimitive implements IWGLRasterizedPrimitive {
     public threeObject: Mesh = null
     
     constructor(
-        rasterizer: WGLRasterizer,
+        public rasterizer: WGLRasterizer,
         public ball: BallPrimitive,
-        mode: IMode
+        public mode: IMode
     ) {
         this.createThreeObject(
             rasterizer.getMaterialFromPrimMat(
@@ -37,11 +37,17 @@ export class WGLRasterizedBallPrimitive implements IWGLRasterizedPrimitive {
         )
     }
 
-    update() {
+    update(deepUpdate: boolean) {
         let {x, y} = this.ball.ballPosition
 
         this.threeObject.position.x = x
         this.threeObject.position.y = y
+
+        if (deepUpdate) {
+            this.threeObject.material = this.rasterizer.getMaterialFromPrimMat(
+                this.mode.getMaterial(this.ball)
+            )
+        }
     }
 }
 
@@ -49,9 +55,9 @@ export class WGLRasterizedBarPrimitive implements IWGLRasterizedPrimitive {
     public threeObject: Mesh = null
     
     constructor(
-        rasterizer: WGLRasterizer,
+        public rasterizer: WGLRasterizer,
         public bar: BarPrimitive,
-        mode: IMode
+        public mode: IMode
     ) {
         this.createThreeObject(
             rasterizer.getMaterialFromPrimMat(
@@ -72,11 +78,17 @@ export class WGLRasterizedBarPrimitive implements IWGLRasterizedPrimitive {
         )
     }
 
-    update() {
+    update(deepUpdate: boolean) {
         this.threeObject.position.x = this.bar.ring.centerX
         this.threeObject.position.y = this.bar.ring.centerY
 
         this.threeObject.rotation.z = 2 * Math.PI * this.bar.angle
+
+        if (deepUpdate) {
+            this.threeObject.material = this.rasterizer.getMaterialFromPrimMat(
+                this.mode.getMaterial(this.bar)
+            )
+        }
     }
 }
 
@@ -97,8 +109,8 @@ export class WGLRasterizedRing implements IWGLRasterizedPrimitive {
         )
     }
 
-    update() {
-        this.items.forEach(item => item.update())
+    update(deepUpdate: boolean) {
+        this.items.forEach(item => item.update(deepUpdate))
     }
 }
 
@@ -119,8 +131,8 @@ export class WGLRasterizedLevel implements IWGLRasterizedPrimitive {
         )
     }
 
-    update() {
-        this.rings.forEach(ring => ring.update())
+    update(deepUpdate: boolean) {
+        this.rings.forEach(ring => ring.update(deepUpdate))
     }
 }
 

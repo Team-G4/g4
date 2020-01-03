@@ -3,10 +3,10 @@ import { Ring } from "../game/level/ring";
 import { Level } from "../game/level/level";
 import { IMode } from "../game/mode/mode";
 
-export type Rasterizable = IPrimitiveLike | Ring | Level
+export type Rasterizable = IPrimitive | Ring | Level
 
 export interface IRasterizedPrimitive {
-    update: () => void
+    update: (deepUpdate: boolean) => void
 }
 
 export interface IRasterizer {

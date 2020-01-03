@@ -1,9 +1,14 @@
 import { Ring } from "./ring";
 import { Group } from "three";
 import { SerializedPrimitive, IPrimitive } from "./primitives";
+import { IMode } from "../mode/mode";
 
 export class Level {
     public rings: Ring[] = []
+    
+    constructor(
+        public mode: IMode
+    ) {}
 
     add(...ring: Ring[]) {
         this.rings.push(...ring)

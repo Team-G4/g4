@@ -18,7 +18,7 @@ export class Canvas2DRasterizedBallPrimitive implements ICanvas2DRasterizedPrimi
         public mode: IMode
     ) {}
 
-    update() {
+    update(deepUpdate: boolean) {
         let path = new Path2D()
 
         let {x, y} = this.ball.ballPosition
@@ -46,7 +46,7 @@ export class Canvas2DRasterizedBarPrimitive implements ICanvas2DRasterizedPrimit
         public mode: IMode
     ) {}
 
-    update() {
+    update(deepUpdate: boolean) {
         let path = new Path2D()
 
         path.arc(
@@ -84,11 +84,11 @@ export class Canvas2DRasterizedRing implements ICanvas2DRasterizedPrimitive {
         this.items = this.ring.items.map(item => rasterizer.rasterizePrimitive(mode, item))
     }
 
-    update() {
+    update(deepUpdate: boolean) {
         let path = new StyledPathGroup()
         
         this.items.forEach(item => {
-            item.update()
+            item.update(deepUpdate)
             path.addPath(item.path)
         })
 
@@ -109,11 +109,11 @@ export class Canvas2DRasterizedLevel implements ICanvas2DRasterizedPrimitive {
         this.rings = this.level.rings.map(ring => new Canvas2DRasterizedRing(rasterizer, ring, mode))
     }
 
-    update() {
+    update(deepUpdate: boolean) {
         let path = new StyledPathGroup()
         
         this.rings.forEach(ring => {
-            ring.update()
+            ring.update(deepUpdate)
             path.addPath(ring.path)
         })
 

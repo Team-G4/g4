@@ -40,9 +40,9 @@ export class WGLRenderer implements IRenderer {
         this.wglRenderer.setSize(w, h)
     }
 
-    initLevel(mode: IMode, level: Level) {
+    initLevel(level: Level) {
         this.level = level
-        this.rasterizedLevel = this.rasterizer.rasterizePrimitive(mode, level)
+        this.rasterizedLevel = this.rasterizer.rasterizePrimitive(level.mode, level)
 
         this.scene = new Scene()
         this.scene.scale.y = -1
@@ -59,8 +59,8 @@ export class WGLRenderer implements IRenderer {
     }
 
     render(timestamp: DOMHighResTimeStamp) {
-        this.level.advance(1/300)
-        this.rasterizedLevel.update()
+        this.level.mode.advance(this.level, 1/300)
+        this.rasterizedLevel.update(this.level.mode.isMaterialDynamic)
 
         this.wglRenderer.render(
             this.scene, this.camera

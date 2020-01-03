@@ -7,29 +7,12 @@ import { IRenderer } from "./renderer/renderer"
 import { Polygon, PolygonSymmetryType } from "./game/generator/polygon"
 import { TestMode } from "./game/mode/mode"
 
-let level = new Level()
+let mode = new TestMode()
 
-let ring = new Ring(
-    level, 1, 0, 0, 0, null
-)
-
-ring.add(
-    ...new Polygon(7).symmetry(
-        PolygonSymmetryType.centerPointSymmetry
-    ).angles.map((angle, i) => new BallPrimitive(
-        ring, angle, 200, (i % 2) ? 50 : 30
-    ))
-)
-ring.add(
-    new BarPrimitive(
-        ring, 0.25, 0.1, 200, 10
-    )
-)
-
-level.add(ring)
+let level = mode.generateLevel(0)
 
 let c2dRenderer = new Canvas2DRenderer()
-c2dRenderer.initLevel(new TestMode(), level)
+c2dRenderer.initLevel(level)
 
 c2dRenderer.updateSize(600, 600)
 
@@ -40,7 +23,13 @@ document.body.appendChild(
     c2dRenderer.domElement
 )
 
-c2dRenderer.render(0)
+let render = (timestamp: DOMHighResTimeStamp) => {
+    c2dRenderer.render(timestamp)
+
+    requestAnimationFrame(render)
+}
+
+requestAnimationFrame(render)
 
 addEventListener("mousemove", (e) => {
     let hit = level.hitTest(
