@@ -1,5 +1,6 @@
-import { IPrimitive, SerializedPrimitive } from "./primitives"
+import { IPrimitive, SerializedPrimitive, isIPrimitive } from "./primitives"
 import { Group, Material } from "three"
+import { Level } from "./level"
 
 export class Ring {
     public items: (IPrimitive | Ring)[] = []
@@ -9,6 +10,7 @@ export class Ring {
     public rotation = 0
 
     constructor(
+        public level: Level,
         public timeMultiplier = 1,
         public distanceFromCenter = 0,
         public revolutionFrequency = 0,
@@ -49,8 +51,8 @@ export class Ring {
         for (let item of this.items) {
             let hit = item.hitTest(x, y, bulletRadius)
             if (hit) {
-                if (hit instanceof Ring) return hit
-                else return item
+                if (hit instanceof Ring) return hit.hitTest(x, y, bulletRadius)
+                else if (isIPrimitive(item)) return item
             }
         }
 

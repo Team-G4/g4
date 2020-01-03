@@ -5,8 +5,6 @@ import { SerializedPrimitive, IPrimitive } from "./primitives";
 export class Level {
     public rings: Ring[] = []
 
-    public threeObject = new Group()
-
     add(...ring: Ring[]) {
         this.rings.push(...ring)
     }

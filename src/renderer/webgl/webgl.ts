@@ -3,6 +3,7 @@ import { PerspectiveCamera, Scene, MeshNormalMaterial, OrthographicCamera, Color
 import { Level } from "../../game/level/level";
 import { IRenderer } from "../renderer";
 import { WGLRasterizer, IWGLRasterizedPrimitive } from "./rasterizer";
+import { IMode } from "../../game/mode/mode";
 
 export class WGLRenderer implements IRenderer {
     public scene: Scene
@@ -39,9 +40,9 @@ export class WGLRenderer implements IRenderer {
         this.wglRenderer.setSize(w, h)
     }
 
-    initLevel(level: Level) {
+    initLevel(mode: IMode, level: Level) {
         this.level = level
-        this.rasterizedLevel = this.rasterizer.rasterize(level)
+        this.rasterizedLevel = this.rasterizer.rasterizePrimitive(mode, level)
 
         this.scene = new Scene()
         this.scene.scale.y = -1
@@ -58,7 +59,6 @@ export class WGLRenderer implements IRenderer {
     }
 
     render(timestamp: DOMHighResTimeStamp) {
-        // this.level.refreshThreeObject()
         this.level.advance(1/300)
         this.rasterizedLevel.update()
 

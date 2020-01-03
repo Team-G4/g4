@@ -13,10 +13,16 @@ export type SerializedPrimitive = {
 }
 
 export interface IPrimitive {
+    ring: Ring
+
     serialize: () => SerializedPrimitive
 
     advance: (dTime: number) => void
     hitTest: (x: number, y: number, bulletRadius: number) => IPrimitive
+}
+
+export function isIPrimitive(o: any): o is IPrimitive {
+    return "ring" in o
 }
 
 export class BallPrimitive implements IPrimitive {

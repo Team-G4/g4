@@ -5,11 +5,12 @@ import { BallPrimitive, BarPrimitive } from "./game/level/primitives"
 import { Canvas2DRenderer } from "./renderer/canvas2D/canvas2D"
 import { IRenderer } from "./renderer/renderer"
 import { Polygon, PolygonSymmetryType } from "./game/generator/polygon"
+import { TestMode } from "./game/mode/mode"
 
 let level = new Level()
 
 let ring = new Ring(
-    1, 0, 0, 0, null
+    level, 1, 0, 0, 0, null
 )
 
 ring.add(
@@ -28,7 +29,7 @@ ring.add(
 level.add(ring)
 
 let c2dRenderer = new Canvas2DRenderer()
-c2dRenderer.initLevel(level)
+c2dRenderer.initLevel(new TestMode(), level)
 
 c2dRenderer.updateSize(600, 600)
 

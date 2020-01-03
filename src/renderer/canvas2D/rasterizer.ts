@@ -2,17 +2,20 @@ import { IRasterizer, IRasterizedPrimitive, Rasterizable } from "../rasterizer";
 import { BallPrimitive, BarPrimitive } from "../../game/level/primitives";
 import { Level } from "../../game/level/level";
 import { Ring } from "../../game/level/ring";
+import { IMode, PrimitiveMaterial } from "../../game/mode/mode";
+import { StyledPathGroup, StyledPath } from "./path";
 
 export interface ICanvas2DRasterizedPrimitive extends IRasterizedPrimitive {
-    path2d: Path2D
+    path: StyledPathGroup | StyledPath
 }
 
 export class Canvas2DRasterizedBallPrimitive implements ICanvas2DRasterizedPrimitive {
-    public path2d: Path2D
+    path: StyledPathGroup | StyledPath
 
     constructor(
-        rasterizer: Canvas2DRasterizer,
-        public ball: BallPrimitive
+        public rasterizer: Canvas2DRasterizer,
+        public ball: BallPrimitive,
+        public mode: IMode
     ) {}
 
     update() {
@@ -26,16 +29,21 @@ export class Canvas2DRasterizedBallPrimitive implements ICanvas2DRasterizedPrimi
             0, 2 * Math.PI
         )
 
-        this.path2d = path
+        this.path = new StyledPath(
+            path, this.rasterizer.getStyleFromPrimMat(
+                this.mode.getMaterial(this.ball)
+            )
+        )
     }
 }
 
 export class Canvas2DRasterizedBarPrimitive implements ICanvas2DRasterizedPrimitive {
-    public path2d: Path2D
+    path: StyledPathGroup | StyledPath
 
     constructor(
-        rasterizer: Canvas2DRasterizer,
-        public bar: BarPrimitive
+        public rasterizer: Canvas2DRasterizer,
+        public bar: BarPrimitive,
+        public mode: IMode
     ) {}
 
     update() {
@@ -55,68 +63,78 @@ export class Canvas2DRasterizedBarPrimitive implements ICanvas2DRasterizedPrimit
             true
         )
 
-        this.path2d = path
+        this.path = new StyledPath(
+            path, this.rasterizer.getStyleFromPrimMat(
+                this.mode.getMaterial(this.bar)
+            )
+        )
     }
 }
 
 export class Canvas2DRasterizedRing implements ICanvas2DRasterizedPrimitive {
-    public path2d: Path2D
+    public path: StyledPathGroup
 
     public items: ICanvas2DRasterizedPrimitive[]
 
     constructor(
         rasterizer: Canvas2DRasterizer,
-        public ring: Ring
+        public ring: Ring,
+        mode: IMode
     ) {
-        this.items = this.ring.items.map(item => rasterizer.rasterize(item))
+        this.items = this.ring.items.map(item => rasterizer.rasterizePrimitive(mode, item))
     }
 
     update() {
-        let path = new Path2D()
+        let path = new StyledPathGroup()
         
         this.items.forEach(item => {
             item.update()
-            path.addPath(item.path2d)
+            path.addPath(item.path)
         })
 
-        this.path2d = path
+        this.path = path
     }
 }
 
 export class Canvas2DRasterizedLevel implements ICanvas2DRasterizedPrimitive {
-    public path2d: Path2D
+    public path: StyledPathGroup
 
     public rings: Canvas2DRasterizedRing[]
 
     constructor(
         rasterizer: Canvas2DRasterizer,
-        public level: Level
+        public level: Level,
+        mode: IMode
     ) {
-        this.rings = this.level.rings.map(ring => new Canvas2DRasterizedRing(rasterizer, ring))
+        this.rings = this.level.rings.map(ring => new Canvas2DRasterizedRing(rasterizer, ring, mode))
     }
 
     update() {
-        let path = new Path2D()
+        let path = new StyledPathGroup()
         
         this.rings.forEach(ring => {
             ring.update()
-            path.addPath(ring.path2d)
+            path.addPath(ring.path)
         })
 
-        this.path2d = path
+        this.path = path
     }
 }
 
 export class Canvas2DRasterizer implements IRasterizer {
-    rasterize(prim: Rasterizable): ICanvas2DRasterizedPrimitive {
+    getStyleFromPrimMat(pm: PrimitiveMaterial) {
+        return pm.color
+    }
+
+    rasterizePrimitive(mode: IMode, prim: Rasterizable): ICanvas2DRasterizedPrimitive {
         if (prim instanceof BallPrimitive) {
-            return new Canvas2DRasterizedBallPrimitive(this, prim)
+            return new Canvas2DRasterizedBallPrimitive(this, prim, mode)
         } else if (prim instanceof BarPrimitive) {
-            return new Canvas2DRasterizedBarPrimitive(this, prim)
+            return new Canvas2DRasterizedBarPrimitive(this, prim, mode)
         } else if (prim instanceof Ring) {
-            return new Canvas2DRasterizedRing(this, prim)
+            return new Canvas2DRasterizedRing(this, prim, mode)
         } else if (prim instanceof Level) {
-            return new Canvas2DRasterizedLevel(this, prim)
+            return new Canvas2DRasterizedLevel(this, prim, mode)
         }
 
         return null

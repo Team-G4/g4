@@ -1,9 +1,10 @@
 import { IRasterizer, IRasterizedPrimitive, Rasterizable } from "../rasterizer";
 import { IPrimitive, BallPrimitive, BarPrimitive } from "../../game/level/primitives";
 
-import { Material, Object3D, Mesh, SphereGeometry, Group, TorusGeometry } from "three";
+import { Material, Object3D, Mesh, SphereGeometry, Group, TorusGeometry, MeshBasicMaterial } from "three";
 import { Ring } from "../../game/level/ring";
 import { Level } from "../../game/level/level";
+import { IMode, PrimitiveMaterial } from "../../game/mode/mode";
 
 export interface IWGLRasterizedPrimitive extends IRasterizedPrimitive {
     threeObject: Object3D
@@ -14,10 +15,13 @@ export class WGLRasterizedBallPrimitive implements IWGLRasterizedPrimitive {
     
     constructor(
         rasterizer: WGLRasterizer,
-        public ball: BallPrimitive
+        public ball: BallPrimitive,
+        mode: IMode
     ) {
         this.createThreeObject(
-            rasterizer.mat
+            rasterizer.getMaterialFromPrimMat(
+                mode.getMaterial(ball)
+            )
         )
     }
 
@@ -46,10 +50,13 @@ export class WGLRasterizedBarPrimitive implements IWGLRasterizedPrimitive {
     
     constructor(
         rasterizer: WGLRasterizer,
-        public bar: BarPrimitive
+        public bar: BarPrimitive,
+        mode: IMode
     ) {
         this.createThreeObject(
-            rasterizer.mat
+            rasterizer.getMaterialFromPrimMat(
+                mode.getMaterial(bar)
+            )
         )
     }
 
@@ -80,9 +87,10 @@ export class WGLRasterizedRing implements IWGLRasterizedPrimitive {
 
     constructor(
         rasterizer: WGLRasterizer,
-        public ring: Ring
+        public ring: Ring,
+        mode: IMode
     ) {
-        this.items = this.ring.items.map(item => rasterizer.rasterize(item))
+        this.items = this.ring.items.map(item => rasterizer.rasterizePrimitive(mode, item))
 
         this.threeObject.add(
             ...this.items.map(item => item.threeObject)
@@ -101,9 +109,10 @@ export class WGLRasterizedLevel implements IWGLRasterizedPrimitive {
 
     constructor(
         rasterizer: WGLRasterizer,
-        public level: Level
+        public level: Level,
+        mode: IMode
     ) {
-        this.rings = this.level.rings.map(ring => new WGLRasterizedRing(rasterizer, ring))
+        this.rings = this.level.rings.map(ring => new WGLRasterizedRing(rasterizer, ring, mode))
 
         this.threeObject.add(
             ...this.rings.map(ring => ring.threeObject)
@@ -120,15 +129,21 @@ export class WGLRasterizer implements IRasterizer {
         public mat: Material
     ) {}
 
-    rasterize(prim: Rasterizable): IWGLRasterizedPrimitive {
+    getMaterialFromPrimMat(pm: PrimitiveMaterial) {
+        return new MeshBasicMaterial({
+            color: pm.color
+        })
+    }
+
+    rasterizePrimitive(mode: IMode, prim: Rasterizable): IWGLRasterizedPrimitive {
         if (prim instanceof BallPrimitive) {
-            return new WGLRasterizedBallPrimitive(this, prim)
+            return new WGLRasterizedBallPrimitive(this, prim, mode)
         } else if (prim instanceof BarPrimitive) {
-            return new WGLRasterizedBarPrimitive(this, prim)
+            return new WGLRasterizedBarPrimitive(this, prim, mode)
         } else if (prim instanceof Ring) {
-            return new WGLRasterizedRing(this, prim)
+            return new WGLRasterizedRing(this, prim, mode)
         } else if (prim instanceof Level) {
-            return new WGLRasterizedLevel(this, prim)
+            return new WGLRasterizedLevel(this, prim, mode)
         }
 
         return null
