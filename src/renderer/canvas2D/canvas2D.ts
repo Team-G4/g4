@@ -12,6 +12,8 @@ export class Canvas2DRenderer implements IRenderer {
     public level: Level
     public rasterizedLevel: Canvas2DRasterizedLevel
 
+    // Spare the poor constructor
+    // has it done anything to you
     constructor() {
     }
 

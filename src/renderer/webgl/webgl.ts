@@ -24,9 +24,6 @@ export class WGLRenderer implements IRenderer {
 
     public light: Light
 
-    constructor() {
-    }
-
     get domElement(): HTMLCanvasElement {
         return this.wglRenderer.domElement
     }
