@@ -2,12 +2,15 @@ import { Ring } from "./ring";
 import { Group } from "three";
 import { SerializedPrimitive, IPrimitive } from "./primitives";
 import { IMode } from "../mode/mode";
+import { Bullet } from "./cannon";
 
 export class Level {
     public rings: Ring[] = []
+    public bullets: Bullet[] = []
     
     constructor(
-        public mode: IMode
+        public mode: IMode,
+        public index: number
     ) {}
 
     add(...ring: Ring[]) {

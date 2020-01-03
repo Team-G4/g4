@@ -4,6 +4,7 @@ import { Level } from "../../game/level/level";
 import { Ring } from "../../game/level/ring";
 import { IMode, PrimitiveMaterial } from "../../game/mode/mode";
 import { StyledPathGroup, StyledPath } from "./path";
+import { Cannon } from "../../game/level/cannon";
 
 export interface ICanvas2DRasterizedPrimitive extends IRasterizedPrimitive {
     path: StyledPathGroup | StyledPath
@@ -121,6 +122,46 @@ export class Canvas2DRasterizedLevel implements ICanvas2DRasterizedPrimitive {
     }
 }
 
+export class Canvas2DRasterizedCannon implements ICanvas2DRasterizedPrimitive {
+    path: StyledPathGroup | StyledPath
+
+    constructor(
+        public rasterizer: Canvas2DRasterizer,
+        public cannon: Cannon,
+        public mode: IMode
+    ) {}
+
+    update(deepUpdate: boolean) {
+        let path = new Path2D()
+
+        let {x, y} = this.cannon.position
+        let angle = this.cannon.rotation * Math.PI * 2
+
+        path.moveTo(
+            x + Math.cos(angle) * 20,
+            y + Math.sin(angle) * 20
+        )
+        path.lineTo(
+            x + Math.cos(Math.PI - 0.8 + angle) * 20,
+            y + Math.sin(Math.PI - 0.8 + angle) * 20
+        )
+        path.lineTo(
+            x + Math.cos(Math.PI + angle) * 8,
+            y + Math.sin(Math.PI + angle) * 8
+        )
+        path.lineTo(
+            x + Math.cos(Math.PI + 0.8 + angle) * 20,
+            y + Math.sin(Math.PI + 0.8 + angle) * 20
+        )
+
+        this.path = new StyledPath(
+            path, this.rasterizer.getStyleFromPrimMat(
+                this.mode.getMaterial(this.cannon)
+            )
+        )
+    }
+}
+
 export class Canvas2DRasterizer implements IRasterizer {
     getStyleFromPrimMat(pm: PrimitiveMaterial) {
         return pm.color
@@ -135,6 +176,8 @@ export class Canvas2DRasterizer implements IRasterizer {
             return new Canvas2DRasterizedRing(this, prim, mode)
         } else if (prim instanceof Level) {
             return new Canvas2DRasterizedLevel(this, prim, mode)
+        } else if (prim instanceof Cannon) {
+            return new Canvas2DRasterizedCannon(this, prim, mode)
         }
 
         return null
