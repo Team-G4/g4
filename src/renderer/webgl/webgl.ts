@@ -38,6 +38,8 @@ export class WGLRenderer implements IVisualRenderer {
     }
 
     initLevel(level: Level) {
+        if (this.rasterizedLevel) this.rasterizedLevel.dispose()
+        
         this.level = level
         this.rasterizedLevel = this.rasterizer.rasterize(level.mode, level)
 

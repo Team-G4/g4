@@ -59,4 +59,8 @@ export class WGLRasterizedCannon implements IWGLRasterizedPrimitive {
             )
         }
     }
+
+    dispose() {
+        (this.threeObject.material as Material).dispose()
+    }
 }

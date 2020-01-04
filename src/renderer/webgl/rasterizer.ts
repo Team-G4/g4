@@ -10,6 +10,8 @@ import { WGLRasterizedCannon } from "./cannon";
 
 export interface IWGLRasterizedPrimitive extends IRasterizedPrimitive {
     threeObject: Object3D
+
+    dispose: () => void
 }
 
 export class WGLRasterizedBallPrimitive implements IWGLRasterizedPrimitive {
@@ -46,10 +48,16 @@ export class WGLRasterizedBallPrimitive implements IWGLRasterizedPrimitive {
         this.threeObject.position.y = y
 
         if (deepUpdate) {
+            (this.threeObject.material as Material).dispose()
             this.threeObject.material = this.rasterizer.getMaterialFromPrimMat(
                 this.mode.getMaterial(this.ball)
             )
         }
+    }
+
+    dispose() {
+        (this.threeObject.material as Material).dispose()
+        this.threeObject.geometry.dispose()
     }
 }
 
@@ -87,10 +95,16 @@ export class WGLRasterizedBarPrimitive implements IWGLRasterizedPrimitive {
         this.threeObject.rotation.z = 2 * Math.PI * this.bar.angle
 
         if (deepUpdate) {
+            (this.threeObject.material as Material).dispose()
             this.threeObject.material = this.rasterizer.getMaterialFromPrimMat(
                 this.mode.getMaterial(this.bar)
             )
         }
+    }
+
+    dispose() {
+        (this.threeObject.material as Material).dispose()
+        this.threeObject.geometry.dispose()
     }
 }
 
@@ -114,6 +128,10 @@ export class WGLRasterizedRing implements IWGLRasterizedPrimitive {
     update(deepUpdate: boolean) {
         this.items.forEach(item => item.update(deepUpdate))
     }
+
+    dispose() {
+        this.items.forEach(item => item.dispose())
+    }
 }
 
 export class WGLRasterizedLevel implements IWGLRasterizedPrimitive {
@@ -135,6 +153,10 @@ export class WGLRasterizedLevel implements IWGLRasterizedPrimitive {
 
     update(deepUpdate: boolean) {
         this.rings.forEach(ring => ring.update(deepUpdate))
+    }
+
+    dispose() {
+        this.rings.forEach(ring => ring.dispose())
     }
 }
 
