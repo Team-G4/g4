@@ -1,11 +1,30 @@
+/**
+ * The type of symmetry present in the generated polygon
+ */
 export enum PolygonSymmetryType {
+    /**
+     * Symmetry around the center point
+     */
     centerPointSymmetry = "point",
+    /**
+     * Symmetry along an axis (mirror)
+     */
     mirrorSymmetry = "mirror"
 }
 
+/**
+ * Represents a polygon inscribed in an unit circle
+ */
 export class Polygon {
+    /**
+     * The polygon's vertices represented by the angles (0-1) between the X axis and the radius line intersecting the vertex
+     */
     public angles: number[]
     
+    /**
+     * Generates a regular polygon
+     * @param vertexCount - the number of verices
+     */
     constructor(
         vertexCount: number
     ) {
@@ -14,6 +33,10 @@ export class Polygon {
         )
     }
 
+    /**
+     * Generates a polygon from angles
+     * @param angles - an array of angles
+     */
     static fromAngles(angles: number[]) {
         let p = new Polygon(angles.length)
         p.angles = angles.sort((a1, a2) => a1 - a2)
@@ -21,6 +44,11 @@ export class Polygon {
         return p
     }
 
+    /**
+     * Shifts vertices of the polygon by a given angle
+     * @param angle - the shift angle
+     * @returns the shifted polygon
+     */
     shift(angle: number): Polygon {
         return Polygon.fromAngles(
             this.angles.map(ang => {
@@ -32,6 +60,12 @@ export class Polygon {
         )
     }
 
+    /**
+     * Makes the polygon symmetric
+     * @param type - the type of symmetry
+     * @param start - the origin angle
+     * @returns a new polygon with the applied symmetry
+     */
     symmetry(type: PolygonSymmetryType, start = 0) {
         let startAngles = this.shift(-start).angles
         let angles: number[] = []
