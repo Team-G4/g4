@@ -1,7 +1,17 @@
 import { IPrimitive, SerializedPrimitive } from "./primitives";
 import { Ring } from "./ring";
 
+/**
+ * A buller
+ */
 export class Bullet {
+    /**
+     * Creates a bullet
+     * @param x - the X coordinate of the bullet
+     * @param y - the Y coordinate of the bullet
+     * @param vX - the X component of bullet velocity
+     * @param vY - the Y component of bullet velocity
+     */
     constructor(
         public x: number,
         public y: number,
@@ -10,7 +20,18 @@ export class Bullet {
     ) {}
 }
 
+/**
+ * A cannon
+ */
 export class Cannon implements IPrimitive {
+    /**
+     * Creates a cannon
+     * @param ring - the parent ring
+     * @param angle - the initial position on the ring <0-1>
+     * @param distance - the distance to the center of the ring
+     * @param rotation - the rotation of the cannon
+     * @param rotationFrequency - the frequency of the cannon rotation
+     */
     constructor(
         public ring: Ring,
         public angle: number,

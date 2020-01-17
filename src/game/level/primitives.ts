@@ -66,6 +66,7 @@ export class BallPrimitive implements IPrimitive {
     }
 }
 
+
 export class BarPrimitive implements IPrimitive {
     constructor(
         public ring: Ring,
