@@ -37,4 +37,15 @@ export class Level {
 
         return null
     }
+
+    testBulletCollision(): IPrimitive {
+        for (let bullet of this.bullets) {
+            let collision = this.hitTest(
+                bullet.x, bullet.y, bullet.radius
+            )
+            if (collision) return collision
+        }
+
+        return null
+    }
 }

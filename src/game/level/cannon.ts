@@ -2,9 +2,11 @@ import { IPrimitive, SerializedPrimitive } from "./primitives";
 import { Ring } from "./ring";
 
 /**
- * A buller
+ * A bullet
  */
 export class Bullet {
+    public radius = 8
+
     /**
      * Creates a bullet
      * @param x - the X coordinate of the bullet

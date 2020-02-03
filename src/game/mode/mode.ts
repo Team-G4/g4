@@ -28,9 +28,9 @@ export class TestMode implements IMode {
         let count = prim.ring.items.length
         let index = prim.ring.items.indexOf(prim)
 
-        let color = (Math.abs(index - Math.floor(this.time % count)) < 4) ? "yellow" : "black"
+        let color = "blue"
 
-        if (prim instanceof Cannon) color = "red"
+        if (prim instanceof Cannon) color = "black"
 
         return {
             color
