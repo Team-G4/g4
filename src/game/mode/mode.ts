@@ -1,7 +1,7 @@
 import { IPrimitive, BallPrimitive } from "../level/primitives";
 import { Level } from "../level/level";
 import { Ring } from "../level/ring";
-import { Cannon } from "../level/cannon";
+import { Cannon, Bullet } from "../level/cannon";
 import { generateLegacyRing, LegacyRingType, LegacyRingDifficulty } from "../generator/legacy"
 
 export type PrimitiveMaterial = {
@@ -9,9 +9,11 @@ export type PrimitiveMaterial = {
 }
 
 export interface IMode {
+    modeID: string
     isMaterialDynamic: boolean
 
     getMaterial: (prim: IPrimitive) => PrimitiveMaterial
+    getBulletMaterial: (bullet: Bullet) => PrimitiveMaterial
 
     generateLevel: (index: number) => Level
 
@@ -19,6 +21,7 @@ export interface IMode {
 }
 
 export class TestMode implements IMode {
+    public modeID = "g48_test"
     public isMaterialDynamic = true
     public goldenAngle = (3 - Math.sqrt(5)) / 2
 
@@ -31,6 +34,14 @@ export class TestMode implements IMode {
         let color = "blue"
 
         if (prim instanceof Cannon) color = "black"
+
+        return {
+            color
+        }
+    }
+
+    getBulletMaterial(bullet: Bullet): PrimitiveMaterial {
+        let color = "red"
 
         return {
             color
@@ -58,7 +69,10 @@ export class TestMode implements IMode {
 
         ring.add(
             new Cannon(
-                ring, 0, 0, 0, -1.5
+                ring, 0, 50, 0, -1.5
+            ),
+            new Cannon(
+                ring, 0.5, 50, 0, -1.5
             )
         )
 

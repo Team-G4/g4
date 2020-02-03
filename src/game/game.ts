@@ -1,10 +1,15 @@
 import { InputMethod, InputAction } from "../input/input";
+import { IMode } from "./mode/mode";
+import { Level } from "./level/level";
 
 /**
  * Represents a game
  */
 export class Game {
     public inputMethods: InputMethod[] = []
+
+    public mode: IMode
+    public level: Level
 
     addInput(input: InputMethod) {
         this.inputMethods.push(input)
@@ -14,5 +19,12 @@ export class Game {
         })
     }
 
-    processInput(action: InputAction) {}
+    processInput(action: InputAction) {
+        switch (action) {
+            case InputAction.cannonShoot:
+                this.level.shoot()
+                console.log(this.level.bullets)
+                break
+        }
+    }
 }

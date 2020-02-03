@@ -4,7 +4,8 @@ import { Level } from "../../game/level/level";
 import { Ring } from "../../game/level/ring";
 import { IMode, PrimitiveMaterial } from "../../game/mode/mode";
 import { StyledPathGroup, StyledPath } from "./path";
-import { Cannon } from "../../game/level/cannon";
+import { Cannon, Bullet } from "../../game/level/cannon";
+import { Canvas2DRenderer } from "./canvas2D";
 
 export interface ICanvas2DRasterizedPrimitive extends IRasterizedPrimitive {
     /**
@@ -136,6 +137,32 @@ export class Canvas2DRasterizedRing implements ICanvas2DRasterizedPrimitive {
     }
 }
 
+export class Canvas2DRasterizedBullet implements ICanvas2DRasterizedPrimitive {
+    public path: StyledPath
+
+    constructor(
+        public rasterizer: Canvas2DRasterizer,
+        public bullet: Bullet,
+        public mode: IMode
+    ) {}
+
+    update(deepUpdate: boolean) {
+        let path = new Path2D()
+        
+        path.arc(
+            this.bullet.x, this.bullet.y,
+            this.bullet.radius,
+            0, 2 * Math.PI
+        )
+
+        this.path = new StyledPath(
+            path, this.rasterizer.getStyleFromPrimMat(
+                this.mode.getBulletMaterial(this.bullet)
+            )
+        )
+    }
+}
+
 export class Canvas2DRasterizedLevel implements ICanvas2DRasterizedPrimitive {
     public path: StyledPathGroup
 
@@ -143,6 +170,7 @@ export class Canvas2DRasterizedLevel implements ICanvas2DRasterizedPrimitive {
      * An array of rasterized rings
      */
     public rings: Canvas2DRasterizedRing[]
+    public bullets: Canvas2DRasterizedBullet[]
 
     /**
      * Creates a rasterized level
@@ -151,11 +179,16 @@ export class Canvas2DRasterizedLevel implements ICanvas2DRasterizedPrimitive {
      * @param mode - the game mode
      */
     constructor(
-        rasterizer: Canvas2DRasterizer,
+        public rasterizer: Canvas2DRasterizer,
         public level: Level,
-        mode: IMode
+        public mode: IMode
     ) {
         this.rings = this.level.rings.map(ring => new Canvas2DRasterizedRing(rasterizer, ring, mode))
+        this.rebuildBulletList()
+    }
+
+    rebuildBulletList() {
+        this.bullets = this.level.bullets.map(bullet => new Canvas2DRasterizedBullet(this.rasterizer, bullet, this.mode))
     }
 
     /**
@@ -165,10 +198,17 @@ export class Canvas2DRasterizedLevel implements ICanvas2DRasterizedPrimitive {
      */
     update(deepUpdate: boolean) {
         let path = new StyledPathGroup()
+
+        this.rebuildBulletList()
         
         this.rings.forEach(ring => {
             ring.update(deepUpdate)
             path.addPath(ring.path)
+        })
+        
+        this.bullets.forEach(bullet => {
+            bullet.update(deepUpdate)
+            path.addPath(bullet.path)
         })
 
         this.path = path

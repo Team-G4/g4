@@ -2,7 +2,7 @@ import { Ring } from "./ring";
 import { Group } from "three";
 import { SerializedPrimitive, IPrimitive } from "./primitives";
 import { IMode } from "../mode/mode";
-import { Bullet } from "./cannon";
+import { Bullet, Cannon } from "./cannon";
 
 export class Level {
     public rings: Ring[] = []
@@ -27,6 +27,7 @@ export class Level {
 
     advance(dTime: number) {
         this.rings.forEach(r => r.advance(dTime))
+        this.bullets.forEach(b => b.advance(dTime))
     }
 
     hitTest(x: number, y: number, bulletRadius = 0): IPrimitive {
@@ -47,5 +48,24 @@ export class Level {
         }
 
         return null
+    }
+
+    findPrimitivesInRing(type: Function, ring: Ring): IPrimitive[] {
+        return [
+            ...ring.items.filter(i => i instanceof Ring).map(r => this.findPrimitivesInRing(type, r as Ring)),
+            ...ring.items.filter(i => i instanceof type)
+        ].flat()
+    }
+
+    findPrimitives(type: Function): IPrimitive[] {
+        return this.rings.map(r => this.findPrimitivesInRing(type, r)).flat()
+    }
+
+    shoot() {
+        let cannons = this.findPrimitives(Cannon) as Cannon[]
+
+        this.bullets.push(
+            ...cannons.map(c => c.shoot())
+        )
     }
 }

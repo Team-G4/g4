@@ -1,5 +1,6 @@
 import { IPrimitive, SerializedPrimitive } from "./primitives";
 import { Ring } from "./ring";
+import { Level } from "./level";
 
 /**
  * A bullet
@@ -18,8 +19,14 @@ export class Bullet {
         public x: number,
         public y: number,
         public vX = 0,
-        public vY = 0
+        public vY = 0,
+        public source: Cannon
     ) {}
+
+    advance(dTime: number) {
+        this.x += this.vX * dTime
+        this.y += this.vY * dTime
+    }
 }
 
 /**
@@ -68,5 +75,18 @@ export class Cannon implements IPrimitive {
 
     hitTest(x: number, y: number, bulletRadius: number): IPrimitive {
         return null
+    }
+
+    shoot(): Bullet {
+        let {x, y} = this.position
+        let angle = this.rotation * 2 * Math.PI
+        
+        return new Bullet(
+            x + 20 * Math.cos(angle),
+            y + 20 * Math.sin(angle),
+            750 * Math.cos(angle),
+            750 * Math.sin(angle),
+            this
+        )
     }
 }
