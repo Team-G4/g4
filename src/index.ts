@@ -1,12 +1,15 @@
 import { WGLRenderer } from "./renderer/webgl/webgl"
 import { Canvas2DRenderer } from "./renderer/canvas2D/canvas2D"
 import { TestMode } from "./game/mode/mode"
+import { Cannon } from "./game/level/cannon"
+import { MouseInputMethod } from "./input/mouse"
+import { Game } from "./game/game"
 
 let mode = new TestMode()
 
 let level = mode.generateLevel(0)
 
-let c2dRenderer = new WGLRenderer()
+let c2dRenderer = new Canvas2DRenderer()
 c2dRenderer.initLevel(level)
 
 c2dRenderer.updateSize(600, 600)
@@ -25,3 +28,11 @@ let render = (timestamp: DOMHighResTimeStamp) => {
 }
 
 requestAnimationFrame(render)
+
+let input = new MouseInputMethod(c2dRenderer.domElement)
+
+let game = new Game()
+
+game.mode = mode
+game.level = level
+game.addInput(input)
