@@ -3,16 +3,40 @@
  */
 export class BeatingHeart {
     public lastTimestamp: DOMHighResTimeStamp
+    public currentTime = 0
 
     /**
      * Creates an instance of the BeatingHeart class.
      * @param bpm - the number of beats per minute
      * @param defaultInterval - the default interval returned by BeatingHeart.beat() in milliseconds
+     * @param signature - number of beats in a bar
      */
     constructor(
         public bpm = 16.25,
-        public defaultInterval = 100 / 6
+        public defaultInterval = 100 / 6,
+        public signature = 4
     ) {}
+
+    /**
+     * Resets the current time to 0.
+     */
+    start() {
+        this.currentTime = 0
+    }
+
+    /**
+     * Returns the current bar index in reference to the last call to start()
+     */
+    get bar() {
+        return Math.floor(this.currentTime / this.signature)
+    }
+
+    /**
+     * Returns the current time in bar time
+     */
+    get barTime() {
+        return this.currentTime / this.signature - this.bar
+    }
 
     /**
      * Makes the heart beat.
@@ -25,6 +49,9 @@ export class BeatingHeart {
 
         this.lastTimestamp = timestamp
 
-        return (interval / 1000) / (60 / this.bpm)
+        let dTime = (interval / 1000) / (60 / this.bpm)
+        this.currentTime += dTime
+
+        return dTime
     }
 }
