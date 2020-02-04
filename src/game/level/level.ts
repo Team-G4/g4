@@ -52,8 +52,15 @@ export class Level {
 
     findPrimitivesInRing(type: Function, ring: Ring): IPrimitive[] {
         return [
-            ...ring.items.filter(i => i instanceof Ring).map(r => this.findPrimitivesInRing(type, r as Ring)),
-            ...ring.items.filter(i => i instanceof type)
+            ...ring.items.filter(
+                i => i instanceof Ring
+            ).map(
+                r => this.findPrimitivesInRing(type, r as Ring)
+            ),
+
+            ...ring.items.filter(
+                i => i instanceof type
+            )
         ].flat()
     }
 

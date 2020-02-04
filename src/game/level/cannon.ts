@@ -12,20 +12,20 @@ export class Bullet {
      * Creates a bullet
      * @param x - the X coordinate of the bullet
      * @param y - the Y coordinate of the bullet
-     * @param vX - the X component of bullet velocity
-     * @param vY - the Y component of bullet velocity
+     * @param velocityX - the X component of bullet velocity
+     * @param velocityY - the Y component of bullet velocity
      */
     constructor(
         public x: number,
         public y: number,
-        public vX = 0,
-        public vY = 0,
+        public velocityX = 0,
+        public velocityY = 0,
         public source: Cannon
     ) {}
 
     advance(dTime: number) {
-        this.x += this.vX * dTime
-        this.y += this.vY * dTime
+        this.x += this.velocityX * dTime
+        this.y += this.velocityY * dTime
     }
 }
 
