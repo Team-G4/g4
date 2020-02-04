@@ -112,6 +112,8 @@ export class Level {
      * Shoot bullets out of every cannon
      */
     shoot() {
+        if (this.bullets.length) return
+        
         let cannons = this.findPrimitives(Cannon) as Cannon[]
 
         this.bullets.push(
