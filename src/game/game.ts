@@ -109,9 +109,9 @@ export class Game extends EventEmitter {
 
         this.renderer.render(dTime)
 
-        if (this.level.testBulletCollision()) {
+        if (this.level.isBulletColliding()) {
             await this.death()
-        } else if (this.level.testBulletClearance()) {
+        } else if (this.level.areBulletsOutside()) {
             await this.nextLevel()
         }
     }

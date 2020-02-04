@@ -65,7 +65,7 @@ export class Level {
     /**
      * Test for collision with all bullets present on the board
      */
-    testBulletCollision(): IPrimitive {
+    isBulletColliding(): IPrimitive {
         for (let bullet of this.bullets) {
             let collision = this.hitTest(
                 bullet.x, bullet.y, bullet.radius
@@ -79,14 +79,14 @@ export class Level {
     /**
      * Test whether all bullets have escaped the construct (win condition)
      */
-    testBulletClearance(): boolean {
+    areBulletsOutside(): boolean {
         if (!this.bullets.length) return false
 
         let levelSpan = this.getSpan()
         return this.bullets.every(bullet => {
             let distance = Math.hypot(bullet.x, bullet.y)
 
-            return distance > (levelSpan + 30)
+            return distance > (levelSpan + 10)
         })
     }
 
@@ -113,7 +113,7 @@ export class Level {
      */
     shoot() {
         if (this.bullets.length) return
-        
+
         let cannons = this.findPrimitives(Cannon) as Cannon[]
 
         this.bullets.push(
