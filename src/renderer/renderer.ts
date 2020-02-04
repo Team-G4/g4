@@ -8,14 +8,14 @@ export interface IRenderer {
 
     initLevel: (level: Level) => void
 
-    render: (timestamp: DOMHighResTimeStamp) => void
+    render: (dTime: number) => void
 }
 
 /**
  * Represents a textual renderer
  */
 export interface ITextualRenderer extends IRenderer {
-    render: (timestamp: DOMHighResTimeStamp) => string
+    render: (dTime: number) => string
 }
 
 /**

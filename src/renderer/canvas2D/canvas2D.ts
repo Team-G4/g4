@@ -31,11 +31,6 @@ export class Canvas2DRenderer implements IVisualRenderer {
      */
     public rasterizedLevel: Canvas2DRasterizedLevel
 
-    /**
-     * The beating heart (timing helper)
-     */
-    public heart = new BeatingHeart()
-
     // Spare the poor constructor
     // has it done anything to you
     constructor() {
@@ -58,8 +53,7 @@ export class Canvas2DRenderer implements IVisualRenderer {
         this.rasterizedLevel = this.rasterizer.rasterize(level.mode, level) as Canvas2DRasterizedLevel
     }
 
-    render(timestamp: DOMHighResTimeStamp) {
-        let dTime = this.heart.beat(timestamp)
+    render(dTime: number) {
 
         this.level.mode.advance(this.level, dTime)
         this.rasterizedLevel.update(this.level.mode.isMaterialDynamic)

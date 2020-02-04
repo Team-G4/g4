@@ -22,8 +22,6 @@ export class WGLRenderer implements IVisualRenderer {
     public level: Level
     public rasterizedLevel: IWGLRasterizedPrimitive
 
-    public heart = new BeatingHeart()
-
     get domElement(): HTMLCanvasElement {
         return this.wglRenderer.domElement
     }
@@ -53,9 +51,7 @@ export class WGLRenderer implements IVisualRenderer {
         )
     }
 
-    render(timestamp: DOMHighResTimeStamp) {
-        let dTime = this.heart.beat(timestamp)
-
+    render(dTime: number) {
         this.level.mode.advance(this.level, dTime)
         this.rasterizedLevel.update(this.level.mode.isMaterialDynamic)
 

@@ -4,6 +4,7 @@ import { Level } from "./level/level";
 import { IRenderer } from "../renderer/renderer";
 import { ILeaderboardProvider } from "./leaderboard/leaderboard";
 import { EventEmitter } from "../util/events";
+import { BeatingHeart } from "../util/heart";
 
 /**
  * Represents a game
@@ -32,6 +33,15 @@ export class Game extends EventEmitter {
      * The leaderboard service
      */
     public leaderboard: ILeaderboardProvider
+
+    /**
+     * A little timer used for smooth level transitions
+     */
+    public gameTime = 0
+    /**
+     * A heart beating at nice 999999 BPM
+     */
+    public heart = new BeatingHeart()
 
     /**
      * Set the current game renderer
@@ -94,7 +104,10 @@ export class Game extends EventEmitter {
     async advanceAndRender(timestamp: DOMHighResTimeStamp) {
         if (!this.renderer || !this.level) return
 
-        this.renderer.render(timestamp)
+        let dTime = this.heart.beat(timestamp)
+        this.gameTime += dTime
+
+        this.renderer.render(dTime)
 
         if (this.level.testBulletCollision()) {
             await this.death()
