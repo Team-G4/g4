@@ -104,7 +104,7 @@ export class Game extends EventEmitter {
     async advanceAndRender(timestamp: DOMHighResTimeStamp) {
         if (!this.renderer || !this.level) return
 
-        let dTime = this.heart.beat(timestamp)
+        let dTime = this.heart.beat(timestamp / 1000)
         this.gameTime += dTime
 
         this.renderer.render(dTime)

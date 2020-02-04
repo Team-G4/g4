@@ -40,7 +40,7 @@ export class BeatingHeart {
 
     /**
      * Makes the heart beat.
-     * @param timestamp - a timestamp in milliseconds
+     * @param timestamp - a timestamp in seconds
      * @returns the interval between timestamps represented as a fraction of the beat time
      */
     beat(timestamp: DOMHighResTimeStamp): number {
@@ -49,7 +49,7 @@ export class BeatingHeart {
 
         this.lastTimestamp = timestamp
 
-        let dTime = (interval / 1000) / (60 / this.bpm)
+        let dTime = interval / (60 / this.bpm)
         this.currentTime += dTime
 
         return dTime
