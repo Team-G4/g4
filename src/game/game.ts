@@ -60,6 +60,7 @@ export class Game extends EventEmitter {
      */
     async generateLevel(levelIndex: number) {
         this.level = this.mode.generateLevel(levelIndex)
+        this.level.advance(this.gameTime) // s m o o t h
 
         this.emit("level", levelIndex)
 
@@ -89,7 +90,6 @@ export class Game extends EventEmitter {
      */
     async nextLevel() {
         await this.generateLevel(this.level.index + 1)
-
 
         if (this.leaderboard)
             await this.leaderboard.recordNewLevel(
