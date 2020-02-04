@@ -2,7 +2,7 @@ import { InputMethod } from "./input";
 import { ISettingsManager } from "../settings/manager";
 
 /**
- * Represents keyboard input
+ * Keyboard input method <def not complete>
  */
 export class KeyboardInputMethod extends InputMethod {
     constructor(

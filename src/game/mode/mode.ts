@@ -4,10 +4,17 @@ import { Ring } from "../level/ring";
 import { Cannon, Bullet } from "../level/cannon";
 import { generateLegacyRing, LegacyRingType, LegacyRingDifficulty } from "../generator/legacy"
 
+/**
+ * The material structure used by the rendering system.
+ */
 export type PrimitiveMaterial = {
     color: string
+    // More properties added when required
 }
 
+/**
+ * Represents a game mode
+ */
 export interface IMode {
     modeID: string
     isMaterialDynamic: boolean

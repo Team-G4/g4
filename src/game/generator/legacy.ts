@@ -114,6 +114,7 @@ function generateInnerRing(
     difficulty: LegacyRingDifficulty,
     distance: number
 ): IPrimitive[] {
+    // don't even ask
     let primitives: IPrimitive[] = []
 
     let n = 2

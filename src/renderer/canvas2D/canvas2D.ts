@@ -4,15 +4,36 @@ import { Canvas2DRasterizer, ICanvas2DRasterizedPrimitive, Canvas2DRasterizedLev
 import { IMode } from "../../game/mode/mode";
 import { BeatingHeart } from "../../util/heart";
 
+/**
+ * Represents a Canvas 2D renderer
+ */
 export class Canvas2DRenderer implements IVisualRenderer {
+    /**
+     * The <canvas> used by the renderer
+     */
     public canvas = document.createElement("canvas")
+    /**
+     * The 2D context of the canvas
+     */
     public ctx = this.canvas.getContext("2d")
 
+    /**
+     * The rasterizer
+     */
     public rasterizer = new Canvas2DRasterizer()
 
+    /**
+     * The current level
+     */
     public level: Level
+    /**
+     * The rasterized level
+     */
     public rasterizedLevel: Canvas2DRasterizedLevel
 
+    /**
+     * The beating heart (timing helper)
+     */
     public heart = new BeatingHeart()
 
     // Spare the poor constructor

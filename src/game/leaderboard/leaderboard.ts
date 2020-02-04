@@ -7,6 +7,9 @@ export type LeaderboardRecord = {
     recordDate: Date
 }
 
+/**
+ * Represents an abstract system that provides leaderboard services for the game
+ */
 export interface ILeaderboardProvider {
     getRecord: (mode: IMode) => Promise<LeaderboardRecord>
 
