@@ -84,8 +84,8 @@ export class Cannon implements IPrimitive {
         return new Bullet(
             x + 20 * Math.cos(angle),
             y + 20 * Math.sin(angle),
-            750 * Math.cos(angle),
-            750 * Math.sin(angle),
+            1500 * Math.cos(angle),
+            1500 * Math.sin(angle),
             this
         )
     }
