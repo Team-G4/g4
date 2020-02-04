@@ -1,6 +1,7 @@
-import { IPrimitive, SerializedPrimitive, isIPrimitive } from "./primitives"
+import { IPrimitive, SerializedPrimitive, isIPrimitive, BallPrimitive, BarPrimitive } from "./primitives"
 import { Group, Material } from "three"
 import { Level } from "./level"
+import { Cannon } from "./cannon"
 
 export class Ring {
     public items: (IPrimitive | Ring)[] = []
@@ -57,5 +58,23 @@ export class Ring {
         }
 
         return null
+    }
+
+    getSpan(): number {
+        let ringCenterSpan = Math.hypot(this.centerX, this.centerY)
+        let distances = this.items.map(item => {
+            if (item instanceof Ring)
+                return item.getSpan()
+            else if (item instanceof BallPrimitive)
+                return ringCenterSpan + item.distance + item.ballRadius
+            else if (item instanceof BarPrimitive)
+                return ringCenterSpan + item.distance + item.barRadius
+            else if (item instanceof Cannon)
+                return ringCenterSpan + item.distance + 20
+
+            return ringCenterSpan // This will probably not happen
+        })
+
+        return Math.max(...distances)
     }
 }

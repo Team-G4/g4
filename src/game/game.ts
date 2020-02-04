@@ -3,11 +3,12 @@ import { IMode } from "./mode/mode";
 import { Level } from "./level/level";
 import { IRenderer } from "../renderer/renderer";
 import { ILeaderboardProvider } from "./leaderboard/leaderboard";
+import { EventEmitter } from "../util/events";
 
 /**
  * Represents a game
  */
-export class Game {
+export class Game extends EventEmitter {
     /**
      * The list of all input methods in use by the game
      */
@@ -50,6 +51,8 @@ export class Game {
     async generateLevel(levelIndex: number) {
         this.level = this.mode.generateLevel(levelIndex)
 
+        this.emit("level", levelIndex)
+
         if (this.renderer)
             this.renderer.initLevel(this.level)
         
@@ -72,6 +75,19 @@ export class Game {
     }
 
     /**
+     * Proceeds to the next level
+     */
+    async nextLevel() {
+        await this.generateLevel(this.level.index + 1)
+
+
+        if (this.leaderboard)
+            await this.leaderboard.recordNewLevel(
+                this.mode, this.level.index
+            )
+    }
+
+    /**
      * Render the level and advance the physics
      * @param timestamp - the timestamp from requestAnimationFrame
      */
@@ -82,6 +98,8 @@ export class Game {
 
         if (this.level.testBulletCollision()) {
             await this.death()
+        } else if (this.level.testBulletClearance()) {
+            await this.nextLevel()
         }
     }
 

@@ -4,8 +4,17 @@ import { SerializedPrimitive, IPrimitive } from "./primitives";
 import { IMode } from "../mode/mode";
 import { Bullet, Cannon } from "./cannon";
 
+/**
+ * The level structure
+ */
 export class Level {
+    /**
+     * The level construct ("rings")
+     */
     public rings: Ring[] = []
+    /**
+     * An array of bullets present on the board
+     */
     public bullets: Bullet[] = []
     
     constructor(
@@ -13,8 +22,12 @@ export class Level {
         public index: number
     ) {}
 
-    add(...ring: Ring[]) {
-        this.rings.push(...ring)
+    /**
+     * Add ring(s) to the construct
+     * @param ring - rings to be added
+     */
+    add(...rings: Ring[]) {
+        this.rings.push(...rings)
     }
 
     serialize(): SerializedPrimitive {
@@ -25,11 +38,21 @@ export class Level {
         }
     }
 
+    /**
+     * Advance the level structure in time
+     * @param dTime - the time step
+     */
     advance(dTime: number) {
         this.rings.forEach(r => r.advance(dTime))
         this.bullets.forEach(b => b.advance(dTime))
     }
 
+    /**
+     * Check for collision between the level construct and a ball/bullet
+     * @param x - the X coordinate of the ball
+     * @param y - the Y coordinate of the ball
+     * @param bulletRadius - the radius of the ball
+     */
     hitTest(x: number, y: number, bulletRadius = 0): IPrimitive {
         for (let ring of this.rings) {
             let hit = ring.hitTest(x, y, bulletRadius)
@@ -39,6 +62,9 @@ export class Level {
         return null
     }
 
+    /**
+     * Test for collision with all bullets present on the board
+     */
     testBulletCollision(): IPrimitive {
         for (let bullet of this.bullets) {
             let collision = this.hitTest(
@@ -48,6 +74,20 @@ export class Level {
         }
 
         return null
+    }
+
+    /**
+     * Test whether all bullets have escaped the construct (win condition)
+     */
+    testBulletClearance(): boolean {
+        if (!this.bullets.length) return false
+
+        let levelSpan = this.getSpan()
+        return this.bullets.every(bullet => {
+            let distance = Math.hypot(bullet.x, bullet.y)
+
+            return distance > (levelSpan + 30)
+        })
     }
 
     findPrimitivesInRing(type: Function, ring: Ring): IPrimitive[] {
@@ -68,11 +108,20 @@ export class Level {
         return this.rings.map(r => this.findPrimitivesInRing(type, r)).flat()
     }
 
+    /**
+     * Shoot bullets out of every cannon
+     */
     shoot() {
         let cannons = this.findPrimitives(Cannon) as Cannon[]
 
         this.bullets.push(
             ...cannons.map(c => c.shoot())
+        )
+    }
+
+    getSpan(): number {
+        return Math.max(
+            ...this.rings.map(r => r.getSpan())
         )
     }
 }

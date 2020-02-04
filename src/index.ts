@@ -1,7 +1,6 @@
 import { WGLRenderer } from "./renderer/webgl/webgl"
 import { Canvas2DRenderer } from "./renderer/canvas2D/canvas2D"
 import { TestMode } from "./game/mode/mode"
-import { Cannon } from "./game/level/cannon"
 import { MouseInputMethod } from "./input/mouse"
 import { Game } from "./game/game"
 
@@ -27,13 +26,18 @@ document.body.appendChild(
     c2dRenderer.domElement
 )
 
+let levelIndicator = document.createElement("div")
+document.body.appendChild(levelIndicator)
+
+game.on("level", (index: number) => {
+    levelIndicator.textContent = `Level: ${index}`
+})
+
 let render = async (timestamp: DOMHighResTimeStamp) => {
     await game.advanceAndRender(timestamp)
 
     requestAnimationFrame(render)
 }
-
-
 
 game.generateLevel(0).then(() => {
     requestAnimationFrame(render)
