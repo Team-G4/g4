@@ -1,6 +1,8 @@
 import { InputMethod, InputAction } from "../input/input";
 import { IMode } from "./mode/mode";
 import { Level } from "./level/level";
+import { IRenderer } from "../renderer/renderer";
+import { ILeaderboardProvider } from "./leaderboard/leaderboard";
 
 /**
  * Represents a game
@@ -19,6 +21,69 @@ export class Game {
      * The current level
      */
     public level: Level
+
+    /**
+     * The current level renderer
+     */
+    public renderer: IRenderer
+
+    /**
+     * The leaderboard service
+     */
+    public leaderboard: ILeaderboardProvider
+
+    /**
+     * Set the current game renderer
+     * @param renderer - the renderer
+     */
+    setRasterizer(renderer: IRenderer) {
+        this.renderer = renderer
+
+        if (this.level)
+            renderer.initLevel(this.level)
+    }
+    
+    /**
+     * Generate a level
+     * @param levelIndex - the level number
+     */
+    async generateLevel(levelIndex: number) {
+        this.level = this.mode.generateLevel(levelIndex)
+
+        if (this.renderer)
+            this.renderer.initLevel(this.level)
+        
+        if (this.leaderboard)
+            await this.leaderboard.recordNewLevel(
+                this.mode, levelIndex
+            )
+    }
+
+    /**
+     * Registers a "death" and resets game progress
+     */
+    async death() {
+        await this.generateLevel(0)
+
+        if (this.leaderboard)
+            await this.leaderboard.recordDeath(
+                this.mode, this.level.index
+            )
+    }
+
+    /**
+     * Render the level and advance the physics
+     * @param timestamp - the timestamp from requestAnimationFrame
+     */
+    async advanceAndRender(timestamp: DOMHighResTimeStamp) {
+        if (!this.renderer || !this.level) return
+
+        this.renderer.render(timestamp)
+
+        if (this.level.testBulletCollision()) {
+            await this.death()
+        }
+    }
 
     /**
      * Adds an input method to the game

@@ -76,10 +76,7 @@ export class TestMode implements IMode {
 
         ring.add(
             new Cannon(
-                ring, 0, 50, 0, -1.5
-            ),
-            new Cannon(
-                ring, 0.5, 50, 0, -1.5
+                ring, 0, 0, 0, -1.5
             )
         )
 

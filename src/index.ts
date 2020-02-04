@@ -7,10 +7,16 @@ import { Game } from "./game/game"
 
 let mode = new TestMode()
 
-let level = mode.generateLevel(0)
+let game = new Game()
+
+game.mode = mode
 
 let c2dRenderer = new Canvas2DRenderer()
-c2dRenderer.initLevel(level)
+
+game.setRasterizer(c2dRenderer)
+
+let input = new MouseInputMethod(c2dRenderer.domElement)
+game.addInput(input)
 
 c2dRenderer.updateSize(600, 600)
 
@@ -21,18 +27,14 @@ document.body.appendChild(
     c2dRenderer.domElement
 )
 
-let render = (timestamp: DOMHighResTimeStamp) => {
-    c2dRenderer.render(timestamp)
+let render = async (timestamp: DOMHighResTimeStamp) => {
+    await game.advanceAndRender(timestamp)
 
     requestAnimationFrame(render)
 }
 
-requestAnimationFrame(render)
 
-let input = new MouseInputMethod(c2dRenderer.domElement)
 
-let game = new Game()
-
-game.mode = mode
-game.level = level
-game.addInput(input)
+game.generateLevel(0).then(() => {
+    requestAnimationFrame(render)
+})
