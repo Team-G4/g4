@@ -19,6 +19,8 @@ export interface IPrimitive {
 
     advance: (dTime: number) => void
     hitTest: (x: number, y: number, bulletRadius: number) => IPrimitive
+
+    getSpan: () => number
 }
 
 export function isIPrimitive(o: any): o is IPrimitive {
@@ -63,6 +65,13 @@ export class BallPrimitive implements IPrimitive {
             return this
         }
         return null
+    }
+
+    getSpan() {
+        let {x, y} = this.ballPosition
+        return Math.hypot(
+            x + this.ballRadius, y + this.ballRadius
+        )
     }
 }
 
@@ -121,5 +130,12 @@ export class BarPrimitive implements IPrimitive {
         }
 
         return null
+    }
+
+    getSpan() {
+        return Math.hypot(
+            this.ring.centerX + this.distance + this.barRadius,
+            this.ring.centerX + this.distance + this.barRadius
+        )
     }
 }

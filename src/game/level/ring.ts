@@ -61,20 +61,8 @@ export class Ring {
     }
 
     getSpan(): number {
-        let ringCenterSpan = Math.hypot(this.centerX, this.centerY)
-        let distances = this.items.map(item => {
-            if (item instanceof Ring)
-                return item.getSpan()
-            else if (item instanceof BallPrimitive)
-                return ringCenterSpan + item.distance + item.ballRadius
-            else if (item instanceof BarPrimitive)
-                return ringCenterSpan + item.distance + item.barRadius
-            else if (item instanceof Cannon)
-                return ringCenterSpan + item.distance + 20
-
-            return ringCenterSpan // This will probably not happen
-        })
-
-        return Math.max(...distances)
+        return Math.max(
+            ...this.items.map(i => i.getSpan())
+        )
     }
 }

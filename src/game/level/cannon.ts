@@ -89,4 +89,11 @@ export class Cannon implements IPrimitive {
             this
         )
     }
+
+    getSpan() {
+        return Math.hypot(
+            this.ring.centerX + this.distance + 20,
+            this.ring.centerY + this.distance + 20
+        )
+    }
 }
