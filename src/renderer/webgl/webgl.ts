@@ -53,8 +53,6 @@ export class WGLRenderer implements IVisualRenderer {
         this.scene = new Scene()
         this.scene.scale.y = -1
 
-        this.scene.background = new Color(0xFFFFFF)
-
         this.scene.add(
             this.rasterizedLevel.threeObject
         )
@@ -63,7 +61,7 @@ export class WGLRenderer implements IVisualRenderer {
     render(dTime: number) {
         this.level.mode.advance(this.level, dTime)
         this.rasterizedLevel.update(this.level.mode.isMaterialDynamic)
-
+        
         this.wglRenderer.render(
             this.scene, this.camera
         )

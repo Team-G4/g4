@@ -7,6 +7,7 @@ import { Canvas2DRenderer } from "./renderer/canvas2D/canvas2D";
 import { UI } from "./ui/web";
 import { InputMethod } from "./input/input";
 import { MouseInputMethod } from "./input/mouse";
+import { WGLRenderer } from "./renderer/webgl/webgl";
 
 /**
  * The main G4 class
@@ -58,7 +59,7 @@ export class WebG4 extends G4 {
     async preload() {
         await super.preload()
 
-        this.renderer = new Canvas2DRenderer()
+        this.renderer = new WGLRenderer()
         UI.prepareViewport(this.game, this.renderer)
 
         this.game.setRenderer(this.renderer)

@@ -5,7 +5,7 @@ import { Material, Object3D, Mesh, SphereGeometry, Group, TorusGeometry, MeshBas
 import { Ring } from "../../game/level/ring";
 import { Level } from "../../game/level/level";
 import { IMode, PrimitiveMaterial } from "../../game/mode/mode";
-import { Cannon } from "../../game/level/cannon";
+import { Cannon, Bullet } from "../../game/level/cannon";
 import { WGLRasterizedCannon } from "./cannon";
 
 export interface IWGLRasterizedPrimitive extends IRasterizedPrimitive {
@@ -134,15 +134,63 @@ export class WGLRasterizedRing implements IWGLRasterizedPrimitive {
     }
 }
 
+export class WGLRasterizedBullet implements IWGLRasterizedPrimitive {
+    public threeObject: Mesh = null
+
+    constructor(
+        public rasterizer: WGLRasterizer,
+        public bullet: Bullet,
+        public mode: IMode
+    ) {
+        this.createThreeObject(
+            rasterizer.getMaterialFromPrimMat(
+                mode.getBulletMaterial(bullet)
+            )
+        )
+    }
+
+    get threeGeometry() {
+        return new SphereGeometry(
+            this.bullet.radius, 24, 24
+        )
+    }
+
+    createThreeObject(mat: Material) {
+        this.threeObject = new Mesh(
+            this.threeGeometry, mat
+        )
+    }
+    
+    update(deepUpdate: boolean) {
+        let {x, y} = this.bullet
+
+        this.threeObject.position.x = x
+        this.threeObject.position.y = y
+
+        if (deepUpdate) {
+            (this.threeObject.material as Material).dispose()
+            this.threeObject.material = this.rasterizer.getMaterialFromPrimMat(
+                this.mode.getBulletMaterial(this.bullet)
+            )
+        }
+    }
+
+    dispose() {
+        (this.threeObject.material as Material).dispose()
+        this.threeObject.geometry.dispose()
+    }
+}
+
 export class WGLRasterizedLevel implements IWGLRasterizedPrimitive {
     public threeObject = new Group()
 
     public rings: WGLRasterizedRing[]
+    public bullets: WGLRasterizedBullet[] = []
 
     constructor(
-        rasterizer: WGLRasterizer,
+        public rasterizer: WGLRasterizer,
         public level: Level,
-        mode: IMode
+        public mode: IMode
     ) {
         this.rings = this.level.rings.map(ring => new WGLRasterizedRing(rasterizer, ring, mode))
 
@@ -151,8 +199,33 @@ export class WGLRasterizedLevel implements IWGLRasterizedPrimitive {
         )
     }
 
+    rebuildBulletList() {
+        this.bullets.forEach((bullet, i) => {
+            if (!this.level.bullets.includes(bullet.bullet)) {
+                this.threeObject.remove(bullet.threeObject)
+                bullet.dispose()
+
+                this.bullets.splice(i, 1)
+            }
+        })
+
+        this.level.bullets.forEach((bullet) => {
+            if (!this.bullets.find(b => b.bullet == bullet)) {
+                let rasterizedBullet = new WGLRasterizedBullet(
+                       this.rasterizer, bullet, this.mode
+                )
+                console.log(rasterizedBullet)
+                this.threeObject.add(rasterizedBullet.threeObject)
+                this.bullets.push(rasterizedBullet)
+            }
+        })
+    }
+
     update(deepUpdate: boolean) {
+        this.rebuildBulletList()
+
         this.rings.forEach(ring => ring.update(deepUpdate))
+        this.bullets.forEach(bullet => bullet.update(deepUpdate))
     }
 
     dispose() {
