@@ -41,11 +41,16 @@ export class Canvas2DRenderer implements IVisualRenderer {
     }
 
     updateSize(w: number, h: number) {
+        let scaleFactor = this.level ? this.level.getScaleFactor(
+            Math.min(w, h)
+        ) : 1
+
         this.canvas.width = w
         this.canvas.height = h
 
         this.ctx.resetTransform()
         this.ctx.translate(w / 2, h / 2)
+        this.ctx.scale(scaleFactor, scaleFactor)
     }
 
     initLevel(level: Level) {

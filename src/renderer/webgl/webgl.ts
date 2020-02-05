@@ -27,10 +27,19 @@ export class WGLRenderer implements IVisualRenderer {
     }
 
     updateSize(w: number, h: number) {
+        let scaleFactor = this.level ? this.level.getScaleFactor(
+            Math.min(w, h)
+        ) : 1
+
         this.camera = new OrthographicCamera(
             -w / 2, w / 2, h / 2, -h / 2, 0.01, 10000
         )
         this.camera.position.z = 500
+
+        if (this.scene)
+            this.scene.scale.set(
+                scaleFactor, scaleFactor, scaleFactor
+            )
 
         this.wglRenderer.setSize(w, h)
     }

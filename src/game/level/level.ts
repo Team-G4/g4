@@ -126,4 +126,13 @@ export class Level {
             ...this.rings.map(r => r.getSpan())
         )
     }
+
+    getScaleFactor(size: number): number {
+        let levelRadius = this.getSpan()
+
+        if (levelRadius + 16 < size / 2)
+            return 1
+        else
+            return (size / 2) / (levelRadius + 16)
+    }
 }
