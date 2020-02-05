@@ -112,6 +112,7 @@ main {
         background: var(--g4-dark1);
     
         border-radius: calc(100vmin - 32px);
+        box-shadow: 0px 0px 64px #00000008;
     
         transform: translate(-50%, -50%);
         overflow: hidden;
