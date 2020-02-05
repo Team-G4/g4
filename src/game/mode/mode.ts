@@ -1,4 +1,4 @@
-import { IPrimitive, BallPrimitive } from "../level/primitives";
+import { IPrimitive, BallPrimitive, BarPrimitive } from "../level/primitives";
 import { Level } from "../level/level";
 import { Ring } from "../level/ring";
 import { Cannon, Bullet } from "../level/cannon";
@@ -38,9 +38,10 @@ export class TestMode implements IMode {
         let count = prim.ring.items.length
         let index = prim.ring.items.indexOf(prim)
 
-        let color = "blue"
+        let color = "#CAEC12"
 
-        if (prim instanceof Cannon) color = "black"
+        if (prim instanceof Cannon) color = "#F0EFE0"
+        else if (prim instanceof BarPrimitive) color = "#52CF12"
 
         return {
             color
@@ -48,7 +49,7 @@ export class TestMode implements IMode {
     }
 
     getBulletMaterial(bullet: Bullet): PrimitiveMaterial {
-        let color = "red"
+        let color = "#F0EFE0"
 
         return {
             color
@@ -65,7 +66,11 @@ export class TestMode implements IMode {
         ring.add(
             ...generateLegacyRing(
                 ring, LegacyRingType.typeA, LegacyRingDifficulty.hard, 200
-            )
+            ).sort((prim1, prim2) => {
+                let v1 = prim1 instanceof BallPrimitive ? 1 : 0
+                let v2 = prim2 instanceof BallPrimitive ? 1 : 0
+                return v1 - v2
+            })
         )
 
         level.add(ring)

@@ -25,4 +25,15 @@ export namespace UI {
             size.width, size.height
         )
     }
+
+    export function attachStatEvents(game: Game) {
+        game.on("death", () => {
+            let deathCounter = document.querySelector("button.deathCount em")
+
+            deathCounter.textContent = (+deathCounter.textContent + 1).toString()
+        })
+        game.on("level", (index: number) => {
+            document.querySelector("button.levelIndex em").textContent = index.toString()
+        })
+    }
 }

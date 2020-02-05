@@ -62,6 +62,8 @@ export class WebG4 extends G4 {
         UI.prepareViewport(this.game, this.renderer)
 
         this.game.setRenderer(this.renderer)
+        
+        UI.attachStatEvents(this.game)
     }
 
     async start() {

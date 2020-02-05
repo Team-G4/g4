@@ -79,6 +79,8 @@ export class Game extends EventEmitter {
     async death() {
         await this.generateLevel(0)
 
+        this.emit("death")
+
         if (this.leaderboard)
             await this.leaderboard.recordDeath(
                 this.mode, this.level.index
