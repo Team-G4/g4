@@ -1,0 +1,14 @@
+// The game container
+div.gameContainer {
+    position: fixed;
+    left: 50%;
+    top: 50%;
+    width: calc(100vmin - 64px);
+    height: calc(100vmin - 64px);
+
+    background: #eee;
+
+    border-radius: calc(100vmin - 32px);
+
+    transform: translate(-50%, -50%);
+}

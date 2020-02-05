@@ -47,7 +47,7 @@ export class Game extends EventEmitter {
      * Set the current game renderer
      * @param renderer - the renderer
      */
-    setRasterizer(renderer: IRenderer) {
+    setRenderer(renderer: IRenderer) {
         this.renderer = renderer
 
         if (this.level)

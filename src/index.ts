@@ -1,44 +1,9 @@
-import { WGLRenderer } from "./renderer/webgl/webgl"
-import { Canvas2DRenderer } from "./renderer/canvas2D/canvas2D"
-import { TestMode } from "./game/mode/mode"
-import { MouseInputMethod } from "./input/mouse"
-import { Game } from "./game/game"
+import { WebG4 } from "./g4"
 
-let mode = new TestMode()
+import "./main.scss"
 
-let game = new Game()
+let g4 = new WebG4()
 
-game.mode = mode
-
-let c2dRenderer = new Canvas2DRenderer()
-
-game.setRasterizer(c2dRenderer)
-
-let input = new MouseInputMethod(c2dRenderer.domElement)
-game.addInput(input)
-
-c2dRenderer.updateSize(600, 600)
-
-c2dRenderer.domElement.style.position = "fixed"
-c2dRenderer.domElement.style.top = "0"
-c2dRenderer.domElement.style.left = "0"
-document.body.appendChild(
-    c2dRenderer.domElement
-)
-
-let levelIndicator = document.createElement("div")
-document.body.appendChild(levelIndicator)
-
-game.on("level", (index: number) => {
-    levelIndicator.textContent = `Level: ${index}`
-})
-
-let render = async (timestamp: DOMHighResTimeStamp) => {
-    await game.advanceAndRender(timestamp)
-
-    requestAnimationFrame(render)
-}
-
-game.generateLevel(0).then(() => {
-    requestAnimationFrame(render)
+g4.preload().then(() => {
+    g4.start()
 })
