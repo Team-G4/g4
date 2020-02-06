@@ -1,4 +1,4 @@
-import { EventEmitter } from "../util/events";
+import { EventEmitter } from "../util/events"
 
 /**
  * An action triggered by the input

@@ -59,12 +59,12 @@ export class BeatingHeart {
      * @returns the interval between timestamps represented as a fraction of the beat time
      */
     beat(timestamp: number): number {
-        let correctedLastTimestamp = this.lastTimestamp ?? (timestamp - this.defaultInterval)
-        let interval = timestamp - correctedLastTimestamp
+        const correctedLastTimestamp = this.lastTimestamp ?? (timestamp - this.defaultInterval)
+        const interval = timestamp - correctedLastTimestamp
 
         this.lastTimestamp = timestamp
 
-        let dTime = interval / (60 / this.bpm)
+        const dTime = interval / (60 / this.bpm)
         this.currentTime += dTime
 
         return dTime

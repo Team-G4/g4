@@ -1,8 +1,8 @@
-import { Ring } from "./ring";
-import { Group } from "three";
-import { SerializedPrimitive, IPrimitive } from "./primitives";
-import { IMode } from "../mode/mode";
-import { Bullet, Cannon } from "./cannon";
+import { Ring } from "./ring"
+import { Group } from "three"
+import { SerializedPrimitive, IPrimitive } from "./primitives"
+import { IMode } from "../mode/mode"
+import { Bullet, Cannon } from "./cannon"
 
 /**
  * The level structure
@@ -54,8 +54,8 @@ export class Level {
      * @param bulletRadius - the radius of the ball
      */
     hitTest(x: number, y: number, bulletRadius = 0): IPrimitive {
-        for (let ring of this.rings) {
-            let hit = ring.hitTest(x, y, bulletRadius)
+        for (const ring of this.rings) {
+            const hit = ring.hitTest(x, y, bulletRadius)
             if (hit) return hit
         }
 
@@ -66,8 +66,8 @@ export class Level {
      * Test for collision with all bullets present on the board
      */
     isBulletColliding(): IPrimitive {
-        for (let bullet of this.bullets) {
-            let collision = this.hitTest(
+        for (const bullet of this.bullets) {
+            const collision = this.hitTest(
                 bullet.x, bullet.y, bullet.radius
             )
             if (collision) return collision
@@ -82,9 +82,9 @@ export class Level {
     areBulletsOutside(): boolean {
         if (!this.bullets.length) return false
 
-        let levelSpan = this.getSpan()
+        const levelSpan = this.getSpan()
         return this.bullets.every(bullet => {
-            let distance = Math.hypot(bullet.x, bullet.y)
+            const distance = Math.hypot(bullet.x, bullet.y)
 
             return distance > (levelSpan + 10)
         })
@@ -114,7 +114,7 @@ export class Level {
     shoot() {
         if (this.bullets.length) return
 
-        let cannons = this.findPrimitives(Cannon) as Cannon[]
+        const cannons = this.findPrimitives(Cannon) as Cannon[]
 
         this.bullets.push(
             ...cannons.map(c => c.shoot())
@@ -128,7 +128,7 @@ export class Level {
     }
 
     getScaleFactor(size: number): number {
-        let levelRadius = this.getSpan()
+        const levelRadius = this.getSpan()
 
         if (levelRadius + 16 < size / 2)
             return 1

@@ -32,8 +32,8 @@ export class Ring {
     }
 
     advanceRingPosition(dTime: number) {
-        let parentX = this.parentRing?.centerX ?? 0
-        let parentY = this.parentRing?.centerY ?? 0
+        const parentX = this.parentRing?.centerX ?? 0
+        const parentY = this.parentRing?.centerY ?? 0
 
         this.rotation += dTime
 
@@ -49,8 +49,8 @@ export class Ring {
     }
 
     hitTest(x: number, y: number, bulletRadius = 0): IPrimitive {
-        for (let item of this.items) {
-            let hit = item.hitTest(x, y, bulletRadius)
+        for (const item of this.items) {
+            const hit = item.hitTest(x, y, bulletRadius)
             if (hit) {
                 if (hit instanceof Ring) return hit.hitTest(x, y, bulletRadius)
                 else if (isIPrimitive(item)) return item

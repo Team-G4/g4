@@ -1,4 +1,4 @@
-import { InputMethod, InputAction } from "./input";
+import { InputMethod, InputAction } from "./input"
 
 /**
  * Mouse input

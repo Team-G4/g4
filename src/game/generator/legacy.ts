@@ -1,6 +1,6 @@
-import { IPrimitive, BallPrimitive, BarPrimitive } from "../level/primitives";
-import { Polygon } from "./polygon";
-import { Ring } from "../level/ring";
+import { IPrimitive, BallPrimitive, BarPrimitive } from "../level/primitives"
+import { Polygon } from "./polygon"
+import { Ring } from "../level/ring"
 
 /**
  * The type of the generated legacy ring
@@ -90,11 +90,11 @@ export class LegacyPolygon extends Polygon {
         isSmall: boolean,
         isEasy: boolean
     ) {
-        let dAngle = 1 / n
+        const dAngle = 1 / n
 
-        let shiftAngle = dAngle / 3
-        let isShifted = isEasy ? (Math.random() >= 0.5) : false
-        let shiftSign = (Math.random() >= 0.5) ? 1 : -1
+        const shiftAngle = dAngle / 3
+        const isShifted = isEasy ? (Math.random() >= 0.5) : false
+        const shiftSign = (Math.random() >= 0.5) ? 1 : -1
 
         this.angles = this.angles.map((angle, i) => {
             if (isShifted && n == 4 && i % 2)
@@ -115,7 +115,7 @@ function generateInnerRing(
     distance: number
 ): IPrimitive[] {
     // don't even ask
-    let primitives: IPrimitive[] = []
+    const primitives: IPrimitive[] = []
 
     let n = 2
     if (difficulty === LegacyRingDifficulty.normal)
@@ -125,12 +125,12 @@ function generateInnerRing(
 
     n += Math.round(Math.random() * 2)
 
-    let angles = new LegacyPolygon(
+    const angles = new LegacyPolygon(
         n, true, difficulty < LegacyRingDifficulty.hard
     ).angles
 
     angles.forEach((angle, i) => {
-        let isBall = Math.random() >= 0.5
+        const isBall = Math.random() >= 0.5
 
         if (isBall || (!isBall && !i)) {
             primitives.push(
@@ -182,7 +182,7 @@ function generateMiddleRing(
     difficulty: LegacyRingDifficulty,
     distance: number
 ): IPrimitive[] {
-    let primitives: IPrimitive[] = []
+    const primitives: IPrimitive[] = []
 
     
 
@@ -203,10 +203,10 @@ export function generateLegacyRing(
     distance: number
 ): IPrimitive[] {
     switch (type) {
-        case LegacyRingType.innerRing:
-            return generateInnerRing(
-                ring, difficulty, distance
-            )
+    case LegacyRingType.innerRing:
+        return generateInnerRing(
+            ring, difficulty, distance
+        )
     }
     return []
 }

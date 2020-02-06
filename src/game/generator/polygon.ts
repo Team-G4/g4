@@ -38,7 +38,7 @@ export class Polygon {
      * @param angles - an array of angles
      */
     static fromAngles(angles: number[]) {
-        let p = new Polygon(angles.length)
+        const p = new Polygon(angles.length)
         p.angles = angles.sort((a1, a2) => a1 - a2)
 
         return p
@@ -67,10 +67,10 @@ export class Polygon {
      * @returns a new polygon with the applied symmetry
      */
     symmetry(type: PolygonSymmetryType, start = 0) {
-        let startAngles = this.shift(-start).angles
+        const startAngles = this.shift(-start).angles
         let angles: number[] = []
 
-        for (let angle of startAngles) {
+        for (const angle of startAngles) {
             if (type == PolygonSymmetryType.centerPointSymmetry) {
                 if (angle >= 0.5) break
                 angles = [...angles, angle, angle + 0.5]

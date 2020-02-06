@@ -1,6 +1,6 @@
 import { EventEmitter } from "../util/events"
 
-let apiEndpoint = "https://g4-leaderboard.herokuapp.com"
+const apiEndpoint = "https://g4-leaderboard.herokuapp.com"
 
 export class Account extends EventEmitter {
     private userUUID: string

@@ -1,7 +1,7 @@
-import { IPrimitive } from "../game/level/primitives";
-import { Ring } from "../game/level/ring";
-import { Level } from "../game/level/level";
-import { IMode } from "../game/mode/mode";
+import { IPrimitive } from "../game/level/primitives"
+import { Ring } from "../game/level/ring"
+import { Level } from "../game/level/level"
+import { IMode } from "../game/mode/mode"
 
 export type Rasterizable = IPrimitive | Ring | Level
 
@@ -12,7 +12,7 @@ export interface IRasterizedPrimitive {
     /**
      * Updates the rasterized primitive every frame.
      */
-    update: (deepUpdate: boolean) => void
+    update: (deepUpdate: boolean) => void;
 }
 
 /**
@@ -22,5 +22,5 @@ export interface IRasterizer {
     /**
      * Rasterizes an object
      */
-    rasterize: (mode: IMode, prim: Rasterizable) => IRasterizedPrimitive
+    rasterize: (mode: IMode, prim: Rasterizable) => IRasterizedPrimitive;
 }

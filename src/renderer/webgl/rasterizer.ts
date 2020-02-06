@@ -1,17 +1,17 @@
-import { IRasterizer, IRasterizedPrimitive, Rasterizable } from "../rasterizer";
-import { IPrimitive, BallPrimitive, BarPrimitive } from "../../game/level/primitives";
+import { IRasterizer, IRasterizedPrimitive, Rasterizable } from "../rasterizer"
+import { IPrimitive, BallPrimitive, BarPrimitive } from "../../game/level/primitives"
 
-import { Material, Object3D, Mesh, SphereGeometry, Group, TorusGeometry, MeshBasicMaterial, Path } from "three";
-import { Ring } from "../../game/level/ring";
-import { Level } from "../../game/level/level";
-import { IMode, PrimitiveMaterial } from "../../game/mode/mode";
-import { Cannon, Bullet } from "../../game/level/cannon";
-import { WGLRasterizedCannon } from "./cannon";
+import { Material, Object3D, Mesh, SphereGeometry, Group, TorusGeometry, MeshBasicMaterial, Path } from "three"
+import { Ring } from "../../game/level/ring"
+import { Level } from "../../game/level/level"
+import { IMode, PrimitiveMaterial } from "../../game/mode/mode"
+import { Cannon, Bullet } from "../../game/level/cannon"
+import { WGLRasterizedCannon } from "./cannon"
 
 export interface IWGLRasterizedPrimitive extends IRasterizedPrimitive {
-    threeObject: Object3D
+    threeObject: Object3D;
 
-    dispose: () => void
+    dispose: () => void;
 }
 
 export class WGLRasterizedBallPrimitive implements IWGLRasterizedPrimitive {
@@ -42,7 +42,7 @@ export class WGLRasterizedBallPrimitive implements IWGLRasterizedPrimitive {
     }
 
     update(deepUpdate: boolean) {
-        let {x, y} = this.ball.ballPosition
+        const {x, y} = this.ball.ballPosition
 
         this.threeObject.position.x = x
         this.threeObject.position.y = y
@@ -162,7 +162,7 @@ export class WGLRasterizedBullet implements IWGLRasterizedPrimitive {
     }
     
     update(deepUpdate: boolean) {
-        let {x, y} = this.bullet
+        const {x, y} = this.bullet
 
         this.threeObject.position.x = x
         this.threeObject.position.y = y
@@ -211,8 +211,8 @@ export class WGLRasterizedLevel implements IWGLRasterizedPrimitive {
 
         this.level.bullets.forEach((bullet) => {
             if (!this.bullets.find(b => b.bullet == bullet)) {
-                let rasterizedBullet = new WGLRasterizedBullet(
-                       this.rasterizer, bullet, this.mode
+                const rasterizedBullet = new WGLRasterizedBullet(
+                    this.rasterizer, bullet, this.mode
                 )
                 console.log(rasterizedBullet)
                 this.threeObject.add(rasterizedBullet.threeObject)

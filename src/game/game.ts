@@ -1,10 +1,10 @@
-import { InputMethod, InputAction } from "../input/input";
-import { IMode } from "./mode/mode";
-import { Level } from "./level/level";
-import { IRenderer } from "../renderer/renderer";
-import { ILeaderboardProvider } from "./leaderboard/leaderboard";
-import { EventEmitter } from "../util/events";
-import { BeatingHeart } from "../util/heart";
+import { InputMethod, InputAction } from "../input/input"
+import { IMode } from "./mode/mode"
+import { Level } from "./level/level"
+import { IRenderer } from "../renderer/renderer"
+import { ILeaderboardProvider } from "./leaderboard/leaderboard"
+import { EventEmitter } from "../util/events"
+import { BeatingHeart } from "../util/heart"
 
 /**
  * Represents a game
@@ -58,7 +58,7 @@ export class Game extends EventEmitter {
      * Generate a level
      * @param levelIndex - the level number
      */
-    async generateLevel(levelIndex: number) {
+    async generateLevel(levelIndex: number): Promise<void> {
         this.level = this.mode.generateLevel(levelIndex)
         this.level.advance(this.gameTime) // s m o o t h
 
@@ -76,7 +76,7 @@ export class Game extends EventEmitter {
     /**
      * Registers a "death" and resets game progress
      */
-    async death() {
+    async death(): Promise<void> {
         await this.generateLevel(0)
 
         this.emit("death")
@@ -90,7 +90,7 @@ export class Game extends EventEmitter {
     /**
      * Proceeds to the next level
      */
-    async nextLevel() {
+    async nextLevel(): Promise<void> {
         await this.generateLevel(this.level.index + 1)
 
         if (this.leaderboard)
@@ -103,10 +103,10 @@ export class Game extends EventEmitter {
      * Render the level and advance the physics
      * @param timestamp - the timestamp from requestAnimationFrame
      */
-    async advanceAndRender(timestamp: DOMHighResTimeStamp) {
+    async advanceAndRender(timestamp: DOMHighResTimeStamp): Promise<void> {
         if (!this.renderer || !this.level) return
 
-        let dTime = this.heart.beat(timestamp / 1000)
+        const dTime = this.heart.beat(timestamp / 1000)
         this.gameTime += dTime
 
         this.renderer.render(dTime)
@@ -122,7 +122,7 @@ export class Game extends EventEmitter {
      * Adds an input method to the game
      * @param input - the InputMethod object
      */
-    addInput(input: InputMethod) {
+    addInput(input: InputMethod): void {
         this.inputMethods.push(input)
 
         input.on("input", (action: InputAction) => {
@@ -134,12 +134,12 @@ export class Game extends EventEmitter {
      * Does logic to the input
      * @param action - the action triggered by the input method
      */
-    processInput(action: InputAction) {
+    processInput(action: InputAction): void {
         switch (action) {
-            case InputAction.cannonShoot:
-                this.level.shoot()
-                console.log(this.level.bullets)
-                break
+        case InputAction.cannonShoot:
+            this.level.shoot()
+            console.log(this.level.bullets)
+            break
         }
     }
 }

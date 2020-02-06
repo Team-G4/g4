@@ -1,17 +1,17 @@
-import { IRasterizer, IRasterizedPrimitive, Rasterizable } from "../rasterizer";
-import { BallPrimitive, BarPrimitive } from "../../game/level/primitives";
-import { Level } from "../../game/level/level";
-import { Ring } from "../../game/level/ring";
-import { IMode, PrimitiveMaterial } from "../../game/mode/mode";
-import { StyledPathGroup, StyledPath } from "./path";
-import { Cannon, Bullet } from "../../game/level/cannon";
-import { Canvas2DRenderer } from "./canvas2D";
+import { IRasterizer, IRasterizedPrimitive, Rasterizable } from "../rasterizer"
+import { BallPrimitive, BarPrimitive } from "../../game/level/primitives"
+import { Level } from "../../game/level/level"
+import { Ring } from "../../game/level/ring"
+import { IMode, PrimitiveMaterial } from "../../game/mode/mode"
+import { StyledPathGroup, StyledPath } from "./path"
+import { Cannon, Bullet } from "../../game/level/cannon"
+import { Canvas2DRenderer } from "./canvas2D"
 
 export interface ICanvas2DRasterizedPrimitive extends IRasterizedPrimitive {
     /**
      * The styled path created after rasterization
      */
-    path: StyledPathGroup | StyledPath
+    path: StyledPathGroup | StyledPath;
 }
 
 export class Canvas2DRasterizedBallPrimitive implements ICanvas2DRasterizedPrimitive {
@@ -35,9 +35,9 @@ export class Canvas2DRasterizedBallPrimitive implements ICanvas2DRasterizedPrimi
      * @param deepUpdate - doesn't affect the Canvas renderer
      */
     update(deepUpdate: boolean) {
-        let path = new Path2D()
+        const path = new Path2D()
 
-        let {x, y} = this.ball.ballPosition
+        const {x, y} = this.ball.ballPosition
 
         path.arc(
             x, y,
@@ -74,7 +74,7 @@ export class Canvas2DRasterizedBarPrimitive implements ICanvas2DRasterizedPrimit
      * @param deepUpdate - doesn't affect the Canvas renderer
      */
     update(deepUpdate: boolean) {
-        let path = new Path2D()
+        const path = new Path2D()
 
         path.arc(
             this.bar.ring.centerX, this.bar.ring.centerY,
@@ -126,7 +126,7 @@ export class Canvas2DRasterizedRing implements ICanvas2DRasterizedPrimitive {
      * @param deepUpdate - doesn't affect the Canvas renderer
      */
     update(deepUpdate: boolean) {
-        let path = new StyledPathGroup()
+        const path = new StyledPathGroup()
         
         this.items.forEach(item => {
             item.update(deepUpdate)
@@ -147,7 +147,7 @@ export class Canvas2DRasterizedBullet implements ICanvas2DRasterizedPrimitive {
     ) {}
 
     update(deepUpdate: boolean) {
-        let path = new Path2D()
+        const path = new Path2D()
         
         path.arc(
             this.bullet.x, this.bullet.y,
@@ -197,7 +197,7 @@ export class Canvas2DRasterizedLevel implements ICanvas2DRasterizedPrimitive {
      * @param deepUpdate - doesn't affect the Canvas renderer
      */
     update(deepUpdate: boolean) {
-        let path = new StyledPathGroup()
+        const path = new StyledPathGroup()
 
         this.rebuildBulletList()
         
@@ -236,10 +236,10 @@ export class Canvas2DRasterizedCannon implements ICanvas2DRasterizedPrimitive {
      * @param deepUpdate - doesn't affect the Canvas renderer
      */
     update(deepUpdate: boolean) {
-        let path = new Path2D()
+        const path = new Path2D()
 
-        let {x, y} = this.cannon.position
-        let angle = this.cannon.rotation * Math.PI * 2
+        const {x, y} = this.cannon.position
+        const angle = this.cannon.rotation * Math.PI * 2
 
         path.moveTo(
             x + Math.cos(angle) * 20,

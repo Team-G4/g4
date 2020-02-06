@@ -1,5 +1,5 @@
-import { Game } from "../game/game";
-import { IVisualRenderer } from "../renderer/renderer";
+import { Game } from "../game/game"
+import { IVisualRenderer } from "../renderer/renderer"
 
 export namespace UI {
     export function getGameContainer() {
@@ -7,7 +7,7 @@ export namespace UI {
     }
 
     export function prepareViewport(game: Game, renderer: IVisualRenderer) {
-        let container = getGameContainer()
+        const container = getGameContainer()
 
         container.appendChild(renderer.domElement)
 
@@ -19,7 +19,7 @@ export namespace UI {
     }
 
     export function updateViewportSize(renderer: IVisualRenderer) {
-        let size = getGameContainer().getBoundingClientRect()
+        const size = getGameContainer().getBoundingClientRect()
 
         renderer.updateSize(
             size.width, size.height
@@ -28,7 +28,7 @@ export namespace UI {
 
     export function attachStatEvents(game: Game) {
         game.on("death", () => {
-            let deathCounter = document.querySelector("button.deathCount em")
+            const deathCounter = document.querySelector("button.deathCount em")
 
             deathCounter.textContent = (+deathCounter.textContent + 1).toString()
         })

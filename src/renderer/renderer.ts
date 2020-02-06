@@ -1,21 +1,21 @@
-import { Level } from "../game/level/level";
+import { Level } from "../game/level/level"
 
 /**
  * Represents a renderer
  */
 export interface IRenderer {
-    updateSize: (w: number, h: number) => void
+    updateSize: (w: number, h: number) => void;
 
-    initLevel: (level: Level) => void
+    initLevel: (level: Level) => void;
 
-    render: (dTime: number) => void
+    render: (dTime: number) => void;
 }
 
 /**
  * Represents a textual renderer
  */
 export interface ITextualRenderer extends IRenderer {
-    render: (dTime: number) => string
+    render: (dTime: number) => string;
 }
 
 /**
@@ -25,5 +25,5 @@ export interface IVisualRenderer extends IRenderer {
     /**
      * The Canvas element containing the rendered game
      */
-    domElement: HTMLCanvasElement
+    domElement: HTMLCanvasElement;
 }

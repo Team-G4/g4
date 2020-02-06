@@ -1,8 +1,8 @@
-import { Level } from "../../game/level/level";
-import { IVisualRenderer } from "../renderer";
-import { Canvas2DRasterizer, ICanvas2DRasterizedPrimitive, Canvas2DRasterizedLevel } from "./rasterizer";
-import { IMode } from "../../game/mode/mode";
-import { BeatingHeart } from "../../util/heart";
+import { Level } from "../../game/level/level"
+import { IVisualRenderer } from "../renderer"
+import { Canvas2DRasterizer, ICanvas2DRasterizedPrimitive, Canvas2DRasterizedLevel } from "./rasterizer"
+import { IMode } from "../../game/mode/mode"
+import { BeatingHeart } from "../../util/heart"
 
 /**
  * Represents a Canvas 2D renderer
@@ -33,6 +33,7 @@ export class Canvas2DRenderer implements IVisualRenderer {
 
     // Spare the poor constructor
     // has it done anything to you
+    // eslint, shut up
     constructor() {
     }
 
@@ -41,7 +42,7 @@ export class Canvas2DRenderer implements IVisualRenderer {
     }
 
     updateSize(w: number, h: number) {
-        let scaleFactor = this.level ? this.level.getScaleFactor(
+        const scaleFactor = this.level ? this.level.getScaleFactor(
             Math.min(w, h)
         ) : 1
 

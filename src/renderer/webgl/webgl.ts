@@ -1,9 +1,9 @@
-import { WebGLRenderer } from "three/src/renderers/WebGLRenderer";
-import { Scene, OrthographicCamera, Color, MeshLambertMaterial } from "three";
-import { Level } from "../../game/level/level";
-import { IVisualRenderer } from "../renderer";
-import { WGLRasterizer, IWGLRasterizedPrimitive } from "./rasterizer";
-import { BeatingHeart } from "../../util/heart";
+import { WebGLRenderer } from "three/src/renderers/WebGLRenderer"
+import { Scene, OrthographicCamera, Color, MeshLambertMaterial } from "three"
+import { Level } from "../../game/level/level"
+import { IVisualRenderer } from "../renderer"
+import { WGLRasterizer, IWGLRasterizedPrimitive } from "./rasterizer"
+import { BeatingHeart } from "../../util/heart"
 
 export class WGLRenderer implements IVisualRenderer {
     public scene: Scene
@@ -27,7 +27,7 @@ export class WGLRenderer implements IVisualRenderer {
     }
 
     updateSize(w: number, h: number) {
-        let scaleFactor = this.level ? this.level.getScaleFactor(
+        const scaleFactor = this.level ? this.level.getScaleFactor(
             Math.min(w, h)
         ) : 1
 

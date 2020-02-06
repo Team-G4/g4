@@ -6,7 +6,7 @@ export class EventEmitter {
      * All event listeners attached to this object
      */
     private _eventListeners: {
-        [prop: string]: Function[]
+        [prop: string]: Function[];
     } = {}
 
     /**
@@ -40,7 +40,7 @@ export class EventEmitter {
     removeListener(eventType: string, listener: Function) {
         if (!(eventType in this._eventListeners)) return
 
-        let index = this._eventListeners[eventType].indexOf(listener)
+        const index = this._eventListeners[eventType].indexOf(listener)
         if (index >= 0) this._eventListeners[eventType].splice(index, 1)
     }
 }

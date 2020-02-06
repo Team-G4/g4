@@ -1,5 +1,5 @@
-import { InputMethod } from "./input";
-import { ISettingsManager } from "../settings/manager";
+import { InputMethod } from "./input"
+import { ISettingsManager } from "../settings/manager"
 
 /**
  * Keyboard input method <def not complete>

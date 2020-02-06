@@ -1,26 +1,25 @@
-import { Object3D, SphereGeometry, Geometry, TorusGeometry, Mesh, Material } from "three"
 import { Ring } from "./ring"
 
 type SerializedPrimitiveValue = number | boolean | string | SerializedPrimitiveObject | SerializedPrimitiveValue[]
 
 type SerializedPrimitiveObject = {
-    [prop: string]: SerializedPrimitiveValue
+    [prop: string]: SerializedPrimitiveValue;
 }
 
 export type SerializedPrimitive = {
-    type: string,
-    [prop: string]: SerializedPrimitiveValue
+    type: string;
+    [prop: string]: SerializedPrimitiveValue;
 }
 
 export interface IPrimitive {
-    ring: Ring
+    ring: Ring;
 
-    serialize: () => SerializedPrimitive
+    serialize: () => SerializedPrimitive;
 
-    advance: (dTime: number) => void
-    hitTest: (x: number, y: number, bulletRadius: number) => IPrimitive
+    advance: (dTime: number) => void;
+    hitTest: (x: number, y: number, bulletRadius: number) => IPrimitive;
 
-    getSpan: () => number
+    getSpan: () => number;
 }
 
 export function isIPrimitive(o: any): o is IPrimitive {
@@ -57,7 +56,7 @@ export class BallPrimitive implements IPrimitive {
     }
 
     hitTest(x: number, y: number, bulletRadius = 0): IPrimitive {
-        let ballPos = this.ballPosition
+        const ballPos = this.ballPosition
 
         if (
             Math.hypot(ballPos.x - x, ballPos.y - y) < (bulletRadius + this.ballRadius)
@@ -68,7 +67,7 @@ export class BallPrimitive implements IPrimitive {
     }
 
     getSpan() {
-        let {x, y} = this.ballPosition
+        const {x, y} = this.ballPosition
         return Math.hypot(
             x + this.ballRadius, y + this.ballRadius
         )

@@ -3,7 +3,7 @@ import { IWGLRasterizedPrimitive, WGLRasterizer } from "./rasterizer"
 import { IMode } from "../../game/mode/mode"
 import { Cannon } from "../../game/level/cannon"
 
-let cannonShape = new Shape()
+const cannonShape = new Shape()
 
 cannonShape.moveTo(
     20, 0
@@ -21,7 +21,7 @@ cannonShape.lineTo(
     Math.sin(Math.PI + 0.8) * 20
 )
 
-let cannonGeometry = new ShapeGeometry(cannonShape)
+const cannonGeometry = new ShapeGeometry(cannonShape)
 
 
 export class WGLRasterizedCannon implements IWGLRasterizedPrimitive {
@@ -46,7 +46,7 @@ export class WGLRasterizedCannon implements IWGLRasterizedPrimitive {
     }
 
     update(deepUpdate: boolean) {
-        let {x, y} = this.cannon.position
+        const {x, y} = this.cannon.position
 
         this.threeObject.position.x = x
         this.threeObject.position.y = y

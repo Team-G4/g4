@@ -1,6 +1,6 @@
-import { IPrimitive, SerializedPrimitive } from "./primitives";
-import { Ring } from "./ring";
-import { Level } from "./level";
+import { IPrimitive, SerializedPrimitive } from "./primitives"
+import { Ring } from "./ring"
+import { Level } from "./level"
 
 /**
  * A bullet
@@ -78,8 +78,8 @@ export class Cannon implements IPrimitive {
     }
 
     shoot(): Bullet {
-        let {x, y} = this.position
-        let angle = this.rotation * 2 * Math.PI
+        const {x, y} = this.position
+        const angle = this.rotation * 2 * Math.PI
         
         return new Bullet(
             x + 20 * Math.cos(angle),

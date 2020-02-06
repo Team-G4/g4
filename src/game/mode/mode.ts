@@ -1,14 +1,14 @@
-import { IPrimitive, BallPrimitive, BarPrimitive } from "../level/primitives";
-import { Level } from "../level/level";
-import { Ring } from "../level/ring";
-import { Cannon, Bullet } from "../level/cannon";
+import { IPrimitive, BallPrimitive, BarPrimitive } from "../level/primitives"
+import { Level } from "../level/level"
+import { Ring } from "../level/ring"
+import { Cannon, Bullet } from "../level/cannon"
 import { generateLegacyRing, LegacyRingType, LegacyRingDifficulty } from "../generator/legacy"
 
 /**
  * The material structure used by the rendering system.
  */
 export type PrimitiveMaterial = {
-    color: string
+    color: string;
     // More properties added when required
 }
 
@@ -16,15 +16,15 @@ export type PrimitiveMaterial = {
  * Represents a game mode
  */
 export interface IMode {
-    modeID: string
-    isMaterialDynamic: boolean
+    modeID: string;
+    isMaterialDynamic: boolean;
 
-    getMaterial: (prim: IPrimitive) => PrimitiveMaterial
-    getBulletMaterial: (bullet: Bullet) => PrimitiveMaterial
+    getMaterial: (prim: IPrimitive) => PrimitiveMaterial;
+    getBulletMaterial: (bullet: Bullet) => PrimitiveMaterial;
 
-    generateLevel: (index: number) => Level
+    generateLevel: (index: number) => Level;
 
-    advance: (level: Level, dTime: number) => void
+    advance: (level: Level, dTime: number) => void;
 }
 
 export class TestMode implements IMode {
@@ -35,8 +35,8 @@ export class TestMode implements IMode {
     public time = 0
 
     getMaterial(prim: IPrimitive): PrimitiveMaterial {
-        let count = prim.ring.items.length
-        let index = prim.ring.items.indexOf(prim)
+        const count = prim.ring.items.length
+        const index = prim.ring.items.indexOf(prim)
 
         let color = "#CAEC12"
 
@@ -49,7 +49,7 @@ export class TestMode implements IMode {
     }
 
     getBulletMaterial(bullet: Bullet): PrimitiveMaterial {
-        let color = "#F0EFE0"
+        const color = "#F0EFE0"
 
         return {
             color
@@ -57,9 +57,9 @@ export class TestMode implements IMode {
     }
 
     generateLevel(index: number): Level {
-        let level = new Level(this, index)
+        const level = new Level(this, index)
 
-        let ring = new Ring(
+        const ring = new Ring(
             level, 1, 0, 0, 0, null
         )
         
@@ -67,15 +67,15 @@ export class TestMode implements IMode {
             ...generateLegacyRing(
                 ring, LegacyRingType.typeA, LegacyRingDifficulty.hard, 200
             ).sort((prim1, prim2) => {
-                let v1 = prim1 instanceof BallPrimitive ? 1 : 0
-                let v2 = prim2 instanceof BallPrimitive ? 1 : 0
+                const v1 = prim1 instanceof BallPrimitive ? 1 : 0
+                const v2 = prim2 instanceof BallPrimitive ? 1 : 0
                 return v1 - v2
             })
         )
 
         level.add(ring)
 
-        let cannonRing = new Ring(
+        const cannonRing = new Ring(
             level, 0, 0, 0, 0, null
         )
 

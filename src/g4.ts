@@ -1,12 +1,12 @@
-import { Game } from "./game/game";
-import { IMode, TestMode } from "./game/mode/mode";
-import { IRenderer, IVisualRenderer } from "./renderer/renderer";
-import { ISettingsManager } from "./settings/manager";
-import { LocalStorageSettingsManager } from "./settings/localStorage";
-import { Canvas2DRenderer } from "./renderer/canvas2D/canvas2D";
-import { UI } from "./ui/web";
-import { InputMethod } from "./input/input";
-import { MouseInputMethod } from "./input/mouse";
+import { Game } from "./game/game"
+import { IMode, TestMode } from "./game/mode/mode"
+import { IVisualRenderer } from "./renderer/renderer"
+import { ISettingsManager } from "./settings/manager"
+import { LocalStorageSettingsManager } from "./settings/localStorage"
+import { Canvas2DRenderer } from "./renderer/canvas2D/canvas2D"
+import { UI } from "./ui/web"
+import { InputMethod } from "./input/input"
+import { MouseInputMethod } from "./input/mouse"
 
 /**
  * The main G4 class
@@ -33,12 +33,12 @@ export class G4 {
      */
     public inputs: InputMethod[]
 
-    async preload() {
+    async preload(): Promise<void> {
         this.game = new Game()
         this.inputs.forEach(i => this.game.addInput(i))
     }
 
-    async start() {
+    async start(): Promise<void> {
         this.game.mode = this.modes[0]
         await this.game.generateLevel(0)
     }
@@ -55,7 +55,7 @@ export class WebG4 extends G4 {
         )
     ]
 
-    async preload() {
+    async preload(): Promise<void> {
         await super.preload()
 
         this.renderer = new Canvas2DRenderer()
@@ -66,13 +66,13 @@ export class WebG4 extends G4 {
         UI.attachStatEvents(this.game)
     }
 
-    async start() {
+    async start(): Promise<void> {
         await super.start()
 
         requestAnimationFrame((timestamp) => this.render(timestamp))
     }
 
-    async render(timestamp: DOMHighResTimeStamp) {
+    async render(timestamp: DOMHighResTimeStamp): Promise<void> {
         await this.game.advanceAndRender(timestamp)
 
         requestAnimationFrame((timestamp) => this.render(timestamp))

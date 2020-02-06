@@ -1,4 +1,4 @@
-import { ISettingsManager } from "./manager";
+import { ISettingsManager } from "./manager"
 
 export class LocalStorageSettingsManager implements ISettingsManager {
     async get(setting: string, defaultValue: any): Promise<any> {
