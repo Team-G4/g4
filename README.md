@@ -11,3 +11,4 @@ The next version of G4 ("G4.8"?) built with TypeScript and stuff.
 ## Quotes
 
 * why does my house smell like fart
+* shut up
