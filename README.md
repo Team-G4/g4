@@ -2,6 +2,8 @@
 
 The next version of G4 ("G4.8"?) built with TypeScript and stuff.
 
+# sOmEoNe's fLaCCiD - davon
+
 ## Dirty Mind Hall Of Fame
 
 * instead of releasing the g4 soundtrack on youtube lets release it on pornhub
