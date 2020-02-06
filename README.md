@@ -2,6 +2,15 @@
 
 The next version of G4 ("G4.8"?) built with TypeScript and stuff.
 
+## Code style
+
+* no damn semicolons
+* interface names start with I
+* praise xenu
+* let that one empty constructor live for fuck's sake
+
+# This Part Of The Readme Is Not Serious And Therefore Shall Be Omitted If Necessary.
+
 # sOmEoNe's fLaCCiD - davon
 
 ## Dirty Mind Hall Of Fame
