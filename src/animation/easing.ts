@@ -25,6 +25,17 @@ export function compositeEasing(...easings: EasingFunction[]): EasingFunction {
     }
 }
 
+export function compoundEasing(...easings: EasingFunction[]): EasingFunction {
+    return (coeff: number): number => {
+        if (!easings.length) return coeff
+        let easingIndex = Math.floor(coeff * easings.length)
+        if (easingIndex == easings.length) easingIndex--
+        
+        coeff = coeff * easings.length - easingIndex
+        return easings[easingIndex](coeff)
+    }
+}
+
 export function remapDTime(
     dTime: number, levelTime: number,
     easingFunction: EasingFunction
