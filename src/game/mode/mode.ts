@@ -1,8 +1,11 @@
-import { IPrimitive, BallPrimitive, BarPrimitive } from "../level/primitives"
+import { IPrimitive } from "../level/primitives/primitives"
 import { Level } from "../level/level"
 import { Ring } from "../level/ring"
 import { Cannon, Bullet } from "../level/cannon"
 import { generateLegacyRing, LegacyRingType, LegacyRingDifficulty } from "../generator/legacy"
+import { BarPrimitive } from "../level/primitives/bar"
+import { BallPrimitive } from "../level/primitives/ball"
+import { exponentEasing, compositeEasing, inverseEasing } from "../../animation/easing"
 
 /**
  * The material structure used by the rendering system.
@@ -60,7 +63,8 @@ export class TestMode implements IMode {
         const level = new Level(this, index)
 
         const ring = new Ring(
-            level, 1, 0, 0, 0, null
+            level, 1, 0, 0, 0, null,
+            exponentEasing(2)
         )
         
         ring.add(
@@ -75,13 +79,30 @@ export class TestMode implements IMode {
 
         level.add(ring)
 
-        const cannonRing = new Ring(
-            level, 0, 0, 0, 0, null
+        const ring2 = new Ring(
+            level,0.5, 0, 0, 0, null,
+            compositeEasing(exponentEasing(5), inverseEasing)
+        )
+        
+        ring2.add(
+            ...generateLegacyRing(
+                ring2, LegacyRingType.typeA, LegacyRingDifficulty.hard, 350
+            ).sort((prim1, prim2) => {
+                const v1 = prim1 instanceof BallPrimitive ? 1 : 0
+                const v2 = prim2 instanceof BallPrimitive ? 1 : 0
+                return v1 - v2
+            })
         )
 
-        ring.add(
+        level.add(ring2)
+
+        const cannonRing = new Ring(
+            level, 1, 0, 0, 0, null
+        )
+
+        cannonRing.add(
             new Cannon(
-                ring, 0, 0, 0, -1.5
+                cannonRing, 0, 0, 0, -1.5
             )
         )
 

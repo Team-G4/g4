@@ -1,11 +1,11 @@
 import { IRasterizer, IRasterizedPrimitive, Rasterizable } from "../rasterizer"
-import { BallPrimitive, BarPrimitive } from "../../game/level/primitives"
 import { Level } from "../../game/level/level"
 import { Ring } from "../../game/level/ring"
 import { IMode, PrimitiveMaterial } from "../../game/mode/mode"
 import { StyledPathGroup, StyledPath } from "./path"
 import { Cannon, Bullet } from "../../game/level/cannon"
-import { Canvas2DRenderer } from "./canvas2D"
+import { BallPrimitive } from "../../game/level/primitives/ball"
+import { BarPrimitive } from "../../game/level/primitives/bar"
 
 export interface ICanvas2DRasterizedPrimitive extends IRasterizedPrimitive {
     /**

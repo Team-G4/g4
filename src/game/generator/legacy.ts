@@ -1,6 +1,8 @@
-import { IPrimitive, BallPrimitive, BarPrimitive } from "../level/primitives"
+import { IPrimitive } from "../level/primitives/primitives"
 import { Polygon } from "./polygon"
 import { Ring } from "../level/ring"
+import { BallPrimitive } from "../level/primitives/ball"
+import { BarPrimitive } from "../level/primitives/bar"
 
 /**
  * The type of the generated legacy ring

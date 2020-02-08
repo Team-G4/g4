@@ -1,4 +1,4 @@
-import { IPrimitive, SerializedPrimitive } from "./primitives"
+import { IPrimitive, SerializedPrimitive } from "./primitives/primitives"
 import { Ring } from "./ring"
 import { Level } from "./level"
 

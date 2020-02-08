@@ -1,6 +1,6 @@
 import { Ring } from "./ring"
 import { Group } from "three"
-import { SerializedPrimitive, IPrimitive } from "./primitives"
+import { SerializedPrimitive, IPrimitive } from "./primitives/primitives"
 import { IMode } from "../mode/mode"
 import { Bullet, Cannon } from "./cannon"
 
@@ -16,6 +16,11 @@ export class Level {
      * An array of bullets present on the board
      */
     public bullets: Bullet[] = []
+
+    /**
+     * The level time in beats
+     */
+    public time: number = 0
     
     constructor(
         public mode: IMode,
@@ -43,7 +48,9 @@ export class Level {
      * @param dTime - the time step
      */
     advance(dTime: number) {
-        this.rings.forEach(r => r.advance(dTime))
+        this.time += dTime
+        
+        this.rings.forEach(r => r.advance(dTime, this.time))
         this.bullets.forEach(b => b.advance(dTime))
     }
 

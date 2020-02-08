@@ -1,4 +1,4 @@
-import { IPrimitive } from "../game/level/primitives"
+import { IPrimitive } from "../game/level/primitives/primitives"
 import { Ring } from "../game/level/ring"
 import { Level } from "../game/level/level"
 import { IMode } from "../game/mode/mode"
