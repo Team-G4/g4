@@ -29,9 +29,9 @@ export function compoundEasing(...easings: EasingFunction[]): EasingFunction {
     return (coeff: number): number => {
         if (!easings.length) return coeff
         let easingIndex = Math.floor(coeff * easings.length)
-        if (easingIndex == easings.length) easingIndex--
+        if (easingIndex >= easings.length) easingIndex = easings.length - 1
         
-        coeff = coeff * easings.length - easingIndex
+        coeff = (coeff * easings.length - easingIndex) % 1
         return easings[easingIndex](coeff)
     }
 }
