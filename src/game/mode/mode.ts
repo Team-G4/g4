@@ -5,7 +5,7 @@ import { Cannon, Bullet } from "../level/cannon"
 import { generateLegacyRing, LegacyRingType, LegacyRingDifficulty } from "../generator/legacy"
 import { BarPrimitive } from "../level/primitives/bar"
 import { BallPrimitive } from "../level/primitives/ball"
-import { exponentEasing, compositeEasing, inverseEasing } from "../../animation/easing"
+import { exponentEasing, compositeEasing, inverseEasing, constantEasing } from "../../animation/easing"
 
 /**
  * The material structure used by the rendering system.
@@ -64,7 +64,7 @@ export class TestMode implements IMode {
 
         const ring = new Ring(
             level, 1, 0, 0, 0, null,
-            exponentEasing(2)
+            constantEasing(0.4)
         )
         
         ring.add(

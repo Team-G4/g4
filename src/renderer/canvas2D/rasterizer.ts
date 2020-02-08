@@ -79,14 +79,14 @@ export class Canvas2DRasterizedBarPrimitive implements ICanvas2DRasterizedPrimit
         path.arc(
             this.bar.ring.centerX, this.bar.ring.centerY,
             this.bar.distance + this.bar.barRadius,
-            2 * Math.PI * this.bar.angle - 0.01,
-            2 * Math.PI * (this.bar.angle + this.bar.length) + 0.01
+            2 * Math.PI * this.bar.angle,
+            2 * Math.PI * (this.bar.angle + this.bar.length)
         )
         path.arc(
             this.bar.ring.centerX, this.bar.ring.centerY,
             this.bar.distance - this.bar.barRadius,
-            2 * Math.PI * (this.bar.angle + this.bar.length) + 0.01,
-            2 * Math.PI * this.bar.angle - 0.01,
+            2 * Math.PI * (this.bar.angle + this.bar.length),
+            2 * Math.PI * this.bar.angle,
             true
         )
 

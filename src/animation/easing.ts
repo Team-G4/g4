@@ -8,6 +8,10 @@ export let linearEasing: EasingFunction = (coeff: number): number => {
     return coeff
 }
 
+export function constantEasing(constant: number): EasingFunction {
+    return (coeff: number) => constant
+}
+
 export function exponentEasing(exp: number): EasingFunction {
     return (coeff: number): number => {
         return coeff ** exp
