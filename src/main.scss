@@ -118,3 +118,53 @@ main {
         overflow: hidden;
     }
 }
+
+dialog {
+    position: fixed;
+
+    border: none;
+    border-radius: 20px;
+    box-shadow: 0px 16px 20px #0002;
+
+    button {
+        background: #eee;
+
+        box-shadow: none;
+
+        &:hover {
+            background: #e3e3e3;
+        }
+
+        &:active {
+            background: #c8c8c8;
+        }
+    }
+
+    &.modeSelect {
+        bottom: 16px;
+        max-height: calc(100vh - 64px);
+
+        overflow-y: auto;
+
+        section {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 8px;
+
+            &:not(:first-child) {
+                margin-top: 16px;
+            }
+
+            header {
+                text-align: center;
+
+                grid-column: span 4;
+            }
+
+            button.active {
+                background: var(--g4-light3);
+                color: var(--g4-dark2);
+            }
+        }
+    }
+}

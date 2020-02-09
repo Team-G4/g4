@@ -4,9 +4,9 @@ import { IVisualRenderer } from "./renderer/renderer"
 import { ISettingsManager } from "./settings/manager"
 import { LocalStorageSettingsManager } from "./settings/localStorage"
 import { Canvas2DRenderer } from "./renderer/canvas2D/canvas2D"
-import { UI } from "./ui/web"
 import { InputMethod } from "./input/input"
 import { MouseInputMethod } from "./input/mouse"
+import { getGameContainer, prepareViewport, attachStatEvents, updateUIColors } from "./ui/web"
 
 /**
  * The main G4 class
@@ -51,7 +51,7 @@ export class WebG4 extends G4 {
 
     public inputs = [
         new MouseInputMethod(
-            UI.getGameContainer()
+            getGameContainer()
         )
     ]
 
@@ -59,20 +59,24 @@ export class WebG4 extends G4 {
         await super.preload()
 
         this.renderer = new Canvas2DRenderer()
-        UI.prepareViewport(this.game, this.renderer)
+        prepareViewport(this.game, this.renderer)
 
         this.game.setRenderer(this.renderer)
         
-        UI.attachStatEvents(this.game)
+        attachStatEvents(this.game)
     }
 
     async start(): Promise<void> {
         await super.start()
+        updateUIColors(this.game)
 
         requestAnimationFrame((timestamp) => this.render(timestamp))
     }
 
     async render(timestamp: DOMHighResTimeStamp): Promise<void> {
+        if (this.game.mode.isThemeDynamic)
+            updateUIColors(this.game)
+
         await this.game.advanceAndRender(timestamp)
 
         requestAnimationFrame((timestamp) => this.render(timestamp))

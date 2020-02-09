@@ -18,6 +18,23 @@ export function exponentEasing(exp: number): EasingFunction {
     }
 }
 
+export function biExponentEasing(exp: number): EasingFunction {
+    return compoundEasing(
+        compositeEasing(
+            exponentEasing(exp)
+        ),
+        compositeEasing(
+            inverseEasing, exponentEasing(exp), inverseEasing
+        )
+    )
+}
+
+export function remapEasing(min: number, max: number): EasingFunction {
+    return (coeff: number): number => {
+        return min + coeff * (max - min)
+    }
+}
+
 export function compositeEasing(...easings: EasingFunction[]): EasingFunction {
     return (coeff: number): number => {
         easings.forEach(easing => coeff = easing(coeff))
@@ -34,8 +51,11 @@ export function compoundEasing(...easings: EasingFunction[]): EasingFunction {
         
         coeff = (coeff * easings.length - easingIndex) % 1
         if (coeff < 0) coeff += 1
+
+        let coeffLength = 1 / easings.length
+        let coeffStart = coeffLength * easingIndex
         
-        return easings[easingIndex](coeff)
+        return coeffStart + easings[easingIndex](coeff) * coeffLength
     }
 }
 

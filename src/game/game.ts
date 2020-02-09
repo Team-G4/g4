@@ -18,7 +18,7 @@ export class Game extends EventEmitter {
     /**
      * The current game mode
      */
-    public mode: IMode
+    private _mode: IMode
     /**
      * The current level
      */
@@ -53,13 +53,23 @@ export class Game extends EventEmitter {
         if (this.level)
             renderer.initLevel(this.level)
     }
+
+    set mode(m: IMode) {
+        this._mode = m
+
+        this.emit("mode", m)
+    }
     
+    get mode(): IMode {
+        return this._mode
+    }
+
     /**
      * Generate a level
      * @param levelIndex - the level number
      */
     async generateLevel(levelIndex: number): Promise<void> {
-        this.level = this.mode.generateLevel(levelIndex)
+        this.level = this._mode.generateLevel(levelIndex)
         this.level.advance(this.gameTime) // s m o o t h
 
         this.emit("level", levelIndex)
@@ -69,7 +79,7 @@ export class Game extends EventEmitter {
         
         if (this.leaderboard)
             await this.leaderboard.recordNewLevel(
-                this.mode, levelIndex
+                this._mode, levelIndex
             )
     }
 
@@ -83,7 +93,7 @@ export class Game extends EventEmitter {
 
         if (this.leaderboard)
             await this.leaderboard.recordDeath(
-                this.mode, this.level.index
+                this._mode, this.level.index
             )
     }
 
@@ -95,7 +105,7 @@ export class Game extends EventEmitter {
 
         if (this.leaderboard)
             await this.leaderboard.recordNewLevel(
-                this.mode, this.level.index
+                this._mode, this.level.index
             )
     }
 
