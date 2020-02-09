@@ -6,6 +6,7 @@ import { generateLegacyRing, LegacyRingType, LegacyRingDifficulty } from "../gen
 import { BarPrimitive } from "../level/primitives/bar"
 import { BallPrimitive } from "../level/primitives/ball"
 import { exponentEasing, compositeEasing, inverseEasing, constantEasing, compoundEasing, linearEasing, biExponentEasing, remapEasing } from "../../animation/easing"
+import { Color } from "../../util/color"
 
 /**
  * The material structure used by the rendering system.
@@ -51,10 +52,17 @@ export class TestMode implements IMode {
 
     public time = 0
 
+    public easing = compositeEasing(
+        compoundEasing(
+            biExponentEasing(5),
+            compositeEasing(biExponentEasing(5), inverseEasing, remapEasing(-1, 0))
+        ),
+        remapEasing(0, 2)
+    )
+
     getThemeColors(level: Level): ModeThemeColors {
-        let odd = Math.floor(level.time * 4) % 2
         return {
-            background: odd ? "#1A2320" : "#000",
+            background: "#1A2320",
             dim: "#151918",
             spotlight: "#202E22",
 
@@ -65,13 +73,12 @@ export class TestMode implements IMode {
     }
 
     getMaterial(prim: IPrimitive): PrimitiveMaterial {
-        const count = prim.ring.items.length
-        const index = prim.ring.items.indexOf(prim)
+        let colors = this.getThemeColors(prim.ring.level)
 
-        let color = "#CAEC12"
+        let color = colors.accent
 
-        if (prim instanceof Cannon) color = "#F0EFE0"
-        else if (prim instanceof BarPrimitive) color = "#52CF12"
+        if (prim instanceof Cannon) color = colors.foreground
+        else if (prim instanceof BarPrimitive) color = colors.secondaryAccent
 
         return {
             color
@@ -79,10 +86,12 @@ export class TestMode implements IMode {
     }
 
     getBulletMaterial(bullet: Bullet): PrimitiveMaterial {
-        const color = "#F0EFE0"
+        let colors = this.getThemeColors(
+            bullet.source.ring.level
+        )
 
         return {
-            color
+            color: colors.foreground
         }
     }
 
@@ -90,8 +99,7 @@ export class TestMode implements IMode {
         const level = new Level(this, index)
 
         const ring = new Ring(
-            level, 1, 0, 0, 0, null,
-            constantEasing(0)
+            level, 1, 0, 0, 0, null
         )
         
         ring.add(
@@ -105,35 +113,6 @@ export class TestMode implements IMode {
         )
 
         level.add(ring)
-
-        let shutterEasing = compoundEasing(
-            constantEasing(0),
-            constantEasing(-1),
-            constantEasing(-2),
-            compositeEasing(
-                exponentEasing(4), remapEasing(-3, 1)
-            )
-        )
-
-        const ring2 = new Ring(
-            level, 0.5, 0, 0, 0, null,
-            compoundEasing(
-                shutterEasing, shutterEasing, shutterEasing, shutterEasing,
-                shutterEasing, shutterEasing, shutterEasing, shutterEasing,
-            )
-        )
-        
-        ring2.add(
-            ...generateLegacyRing(
-                ring2, LegacyRingType.typeA, LegacyRingDifficulty.normal, 300
-            ).sort((prim1, prim2) => {
-                const v1 = prim1 instanceof BallPrimitive ? 1 : 0
-                const v2 = prim2 instanceof BallPrimitive ? 1 : 0
-                return v1 - v2
-            })
-        )
-
-        level.add(ring2)
 
         const cannonRing = new Ring(
             level, 1, 0, 0, 0, null

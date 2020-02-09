@@ -43,6 +43,21 @@ export function updateUIColors(game: Game) {
     )
 
     root.style.setProperty(
+        "--g4-dark3", colors.dim
+    )
+    root.style.setProperty(
         "--g4-dark2", colors.background
+    )
+    root.style.setProperty(
+        "--g4-dark1", colors.spotlight
+    )
+    root.style.setProperty(
+        "--g4-light1", colors.foreground
+    )
+    root.style.setProperty(
+        "--g4-light2", colors.accent
+    )
+    root.style.setProperty(
+        "--g4-light3", colors.secondaryAccent
     )
 }

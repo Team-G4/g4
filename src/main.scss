@@ -1,3 +1,5 @@
+@import url(https://fonts.googleapis.com/css?family=Poppins:100,100italic,200,200italic,300,300italic,regular,italic,500,500italic,600,600italic,700,700italic,800,800italic,900,900italic);
+
 :root {
     --g4-light1: #F0EFE0;
     --g4-light2: #CAEC12;
@@ -10,13 +12,13 @@
 body {
     background: var(--g4-dark2);
 
-    font-family: "Inter";
+    font-family: "Poppins";
 }
 
 button {
     height: 40px;
     
-    font-family: "Inter";
+    font-family: "Poppins";
     font-size: 18px;
 
     padding: 0px 24px;
@@ -98,6 +100,10 @@ main {
             em {
                 font-weight: 700;
                 font-style: normal;
+            }
+
+            &:hover {
+                background: var(--g4-light2);
             }
         }
     }
