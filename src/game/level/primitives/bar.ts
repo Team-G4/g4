@@ -59,8 +59,8 @@ export class BarPrimitive implements IPrimitive {
 
     getSpan() {
         return Math.hypot(
-            this.ring.centerX + this.distance + this.barRadius,
-            this.ring.centerX + this.distance + this.barRadius
-        )
+            this.ring.centerX,
+            this.ring.centerY
+        ) + this.distance + this.barRadius
     }
 }

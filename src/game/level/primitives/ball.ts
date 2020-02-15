@@ -44,7 +44,7 @@ export class BallPrimitive implements IPrimitive {
     getSpan() {
         const {x, y} = this.ballPosition
         return Math.hypot(
-            x + this.ballRadius, y + this.ballRadius
-        )
+            x, y
+        ) + this.ballRadius
     }
 }
