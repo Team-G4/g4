@@ -1,6 +1,5 @@
 import { IPrimitive, SerializedPrimitive } from "./primitives/primitives"
 import { Ring } from "./ring"
-import { Level } from "./level"
 
 /**
  * A bullet
@@ -23,7 +22,7 @@ export class Bullet {
         public source: Cannon
     ) {}
 
-    advance(dTime: number) {
+    advance(dTime: number): void {
         this.x += this.velocityX * dTime
         this.y += this.velocityY * dTime
     }
@@ -49,7 +48,7 @@ export class Cannon implements IPrimitive {
         public rotationFrequency = 1
     ) {}
 
-    get position() {
+    get position(): {x: number; y: number} {
         return {
             x: this.ring.centerX + Math.cos(this.angle * Math.PI * 2) * this.distance,
             y: this.ring.centerY + Math.sin(this.angle * Math.PI * 2) * this.distance
@@ -68,7 +67,7 @@ export class Cannon implements IPrimitive {
         }
     }
 
-    advance(dTime: number) {
+    advance(dTime: number): void {
         this.angle += dTime
         this.rotation += dTime * this.rotationFrequency
     }
@@ -90,7 +89,7 @@ export class Cannon implements IPrimitive {
         )
     }
 
-    getSpan() {
+    getSpan(): number {
         return Math.hypot(
             this.ring.centerX + this.distance + 20,
             this.ring.centerY + this.distance + 20

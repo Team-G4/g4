@@ -48,7 +48,7 @@ export class Ring {
         _dTime *= this.timeMultiplier
         _levelTime *= this.timeMultiplier
 
-        let {dTime, levelTime} = remapDTime(_dTime, _levelTime, this.timeRemapEasing)
+        const {dTime, levelTime} = remapDTime(_dTime, _levelTime, this.timeRemapEasing)
 
         this.advanceRingPosition(dTime)
         this.items.forEach(i => i.advance(

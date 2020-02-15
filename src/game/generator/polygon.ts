@@ -37,7 +37,7 @@ export class Polygon {
      * Generates a polygon from angles
      * @param angles - an array of angles
      */
-    static fromAngles(angles: number[]) {
+    static fromAngles(angles: number[]): Polygon {
         const p = new Polygon(angles.length)
         p.angles = angles.sort((a1, a2) => a1 - a2)
 
@@ -66,7 +66,7 @@ export class Polygon {
      * @param start - the origin angle
      * @returns a new polygon with the applied symmetry
      */
-    symmetry(type: PolygonSymmetryType, start = 0) {
+    symmetry(type: PolygonSymmetryType, start = 0): Polygon {
         const startAngles = this.shift(-start).angles
         let angles: number[] = []
 

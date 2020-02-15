@@ -47,7 +47,7 @@ export class Game extends EventEmitter {
      * Set the current game renderer
      * @param renderer - the renderer
      */
-    setRenderer(renderer: IRenderer) {
+    setRenderer(renderer: IRenderer): void {
         this.renderer = renderer
 
         if (this.level)

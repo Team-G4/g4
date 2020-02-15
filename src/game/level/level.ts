@@ -1,5 +1,4 @@
 import { Ring } from "./ring"
-import { Group } from "three"
 import { SerializedPrimitive, IPrimitive } from "./primitives/primitives"
 import { IMode } from "../mode/mode"
 import { Bullet, Cannon } from "./cannon"
@@ -20,7 +19,7 @@ export class Level {
     /**
      * The level time in beats
      */
-    public time: number = 0
+    public time = 0
     
     constructor(
         public mode: IMode,
@@ -31,7 +30,7 @@ export class Level {
      * Add ring(s) to the construct
      * @param ring - rings to be added
      */
-    add(...rings: Ring[]) {
+    add(...rings: Ring[]): void {
         this.rings.push(...rings)
     }
 
@@ -47,7 +46,7 @@ export class Level {
      * Advance the level structure in time
      * @param dTime - the time step
      */
-    advance(dTime: number) {
+    advance(dTime: number): void {
         this.time += dTime
         
         this.rings.forEach(r => r.advance(dTime, this.time))
@@ -118,7 +117,7 @@ export class Level {
     /**
      * Shoot bullets out of every cannon
      */
-    shoot() {
+    shoot(): void {
         if (this.bullets.length) return
 
         const cannons = this.findPrimitives(Cannon) as Cannon[]

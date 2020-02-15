@@ -2,7 +2,7 @@ import { IPrimitive } from "../level/primitives/primitives"
 import { Level } from "../level/level"
 import { Ring } from "../level/ring"
 import { Cannon, Bullet } from "../level/cannon"
-import { generateLegacyRing, LegacyRingType, LegacyRingDifficulty } from "../generator/legacy"
+import { generateLegacyRing, LegacyRingType, LegacyRingDifficulty, getLegacyDifficulties, generateBasicLegacyRings } from "../generator/legacy"
 import { BarPrimitive } from "../level/primitives/bar"
 import { BallPrimitive } from "../level/primitives/ball"
 import { exponentEasing, compositeEasing, inverseEasing, constantEasing, compoundEasing, linearEasing, biExponentEasing, remapEasing } from "../../animation/easing"
@@ -17,13 +17,13 @@ export type PrimitiveMaterial = {
 }
 
 export type ModeThemeColors = {
-    background: string,
-    dim: string,
-    spotlight: string,
+    background: string;
+    dim: string;
+    spotlight: string;
 
-    foreground: string,
-    accent: string,
-    secondaryAccent: string
+    foreground: string;
+    accent: string;
+    secondaryAccent: string;
 }
 
 /**
@@ -73,7 +73,7 @@ export class TestMode implements IMode {
     }
 
     getMaterial(prim: IPrimitive): PrimitiveMaterial {
-        let colors = this.getThemeColors(prim.ring.level)
+        const colors = this.getThemeColors(prim.ring.level)
 
         let color = colors.accent
 
@@ -86,7 +86,7 @@ export class TestMode implements IMode {
     }
 
     getBulletMaterial(bullet: Bullet): PrimitiveMaterial {
-        let colors = this.getThemeColors(
+        const colors = this.getThemeColors(
             bullet.source.ring.level
         )
 
@@ -98,21 +98,14 @@ export class TestMode implements IMode {
     generateLevel(index: number): Level {
         const level = new Level(this, index)
 
-        const ring = new Ring(
-            level, 1, 0, 0, 0, null
-        )
-        
-        ring.add(
-            ...generateLegacyRing(
-                ring, LegacyRingType.typeA, LegacyRingDifficulty.normal, 200
-            ).sort((prim1, prim2) => {
-                const v1 = prim1 instanceof BallPrimitive ? 1 : 0
-                const v2 = prim2 instanceof BallPrimitive ? 1 : 0
-                return v1 - v2
-            })
-        )
+        const difficulties = getLegacyDifficulties(index)
 
-        level.add(ring)
+        console.log(difficulties)
+        level.add(
+            ...generateBasicLegacyRings(
+                level, difficulties
+            )
+        )
 
         const cannonRing = new Ring(
             level, 1, 0, 0, 0, null
@@ -120,7 +113,7 @@ export class TestMode implements IMode {
 
         cannonRing.add(
             new Cannon(
-                cannonRing, 0, 0, 0, -1.5
+                cannonRing, 0, 0, 0, -1
             )
         )
 

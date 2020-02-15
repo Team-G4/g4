@@ -37,8 +37,8 @@ export function attachStatEvents(game: Game) {
 }
 
 export function updateUIColors(game: Game) {
-    let root = document.documentElement
-    let colors = game.mode.getThemeColors(
+    const root = document.documentElement
+    const colors = game.mode.getThemeColors(
         game.level
     )
 

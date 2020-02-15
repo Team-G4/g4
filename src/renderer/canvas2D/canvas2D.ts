@@ -64,12 +64,14 @@ export class Canvas2DRenderer implements IVisualRenderer {
         this.level.mode.advance(this.level, dTime)
         this.rasterizedLevel.update(this.level.mode.isMaterialDynamic)
 
+        this.ctx.save()
+        this.ctx.resetTransform()
         this.ctx.clearRect(
-            -this.canvas.width / 2,
-            -this.canvas.height / 2,
+            0, 0,
             this.canvas.width,
             this.canvas.height
         )
+        this.ctx.restore()
         
         this.rasterizedLevel.path.render(this.ctx)
     }

@@ -1,10 +1,10 @@
 export type EasingFunction = (coeff: number) => number
 
-export let inverseEasing: EasingFunction = (coeff: number): number => {
+export const inverseEasing: EasingFunction = (coeff: number): number => {
     return 1 - coeff
 }
 
-export let linearEasing: EasingFunction = (coeff: number): number => {
+export const linearEasing: EasingFunction = (coeff: number): number => {
     return coeff
 }
 
@@ -52,8 +52,8 @@ export function compoundEasing(...easings: EasingFunction[]): EasingFunction {
         coeff = (coeff * easings.length - easingIndex) % 1
         if (coeff < 0) coeff += 1
 
-        let coeffLength = 1 / easings.length
-        let coeffStart = coeffLength * easingIndex
+        const coeffLength = 1 / easings.length
+        const coeffStart = coeffLength * easingIndex
         
         return coeffStart + easings[easingIndex](coeff) * coeffLength
     }
@@ -63,9 +63,9 @@ export function remapDTime(
     dTime: number, levelTime: number,
     easingFunction: EasingFunction
 ): {
-    dTime: number, levelTime: number
+    dTime: number; levelTime: number;
 } {
-    let intPart = Math.floor(levelTime)
+    const intPart = Math.floor(levelTime)
     let presentFractLevelTime = levelTime - intPart
     let pastFractLevelTime = presentFractLevelTime - dTime
 

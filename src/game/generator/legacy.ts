@@ -3,6 +3,7 @@ import { Polygon } from "./polygon"
 import { Ring } from "../level/ring"
 import { BallPrimitive } from "../level/primitives/ball"
 import { BarPrimitive } from "../level/primitives/bar"
+import { Level } from "../level/level"
 
 /**
  * The type of the generated legacy ring
@@ -77,8 +78,8 @@ export class LegacyPolygon extends Polygon {
      */
     constructor(
         vertexCount: number,
-        isSmall: boolean,
-        isEasy: boolean
+        isSmall = false,
+        isEasy = false
     ) {
         super(vertexCount)
 
@@ -91,7 +92,7 @@ export class LegacyPolygon extends Polygon {
         n: number,
         isSmall: boolean,
         isEasy: boolean
-    ) {
+    ): void {
         const dAngle = 1 / n
 
         const shiftAngle = dAngle / 3
@@ -186,7 +187,85 @@ function generateMiddleRing(
 ): IPrimitive[] {
     const primitives: IPrimitive[] = []
 
+    if (difficulty === LegacyRingDifficulty.easy) return primitives
+    let n = (difficulty - 1) * 2
+    if (difficulty === LegacyRingDifficulty.hard && Math.random() >= 0.6)
+        n = 6
     
+    const angles = new LegacyPolygon(n).angles
+
+    for (let i = 0; i < n / 2; i++) {
+        const angleStart = angles[2 * i]
+        const angleLength = angles[2 * i + 1] - angleStart
+
+        if (difficulty === LegacyRingDifficulty.hard && Math.random() >= 0.5) {
+            // replace with marquee bar later
+            primitives.push(
+                new BarPrimitive(
+                    ring, angleStart, angleLength, distance, 10
+                )
+            )
+        } else {
+            primitives.push(
+                new BarPrimitive(
+                    ring, angleStart, angleLength, distance, 10
+                )
+            )
+        }
+    }
+
+    return primitives
+}
+
+function generateOuterRing(
+    ring: Ring,
+    difficulty: LegacyRingDifficulty,
+    distance: number
+): IPrimitive[] {
+    const primitives: IPrimitive[] = []
+
+    if (difficulty === LegacyRingDifficulty.easy && Math.random() >= 0.5)
+        return primitives
+    
+    const n = 3 + Math.round(1.2 * difficulty * Math.random())
+    const isPulsing = Math.random() >= 0.5 && difficulty > LegacyRingDifficulty.easy
+    const willGenerateBars = difficulty > LegacyRingDifficulty.normal
+
+    const angles = new LegacyPolygon(n).angles
+
+    angles.forEach((angle, i) => {
+        if (isPulsing && i % 2) {
+            // todo pulsing ball here
+            primitives.push(
+                new BallPrimitive(
+                    ring, angle, distance, 20
+                )
+            )
+        } else {
+            primitives.push(
+                new BallPrimitive(
+                    ring, angle, distance, 20
+                )
+            )
+        }
+    })
+
+    if (willGenerateBars) {
+        for (let i = 0; i < n / 2; i++) {
+            let angle1 = angles[i * 2]
+            let angle2 = angles[(i * 2 + 1) % angles.length]
+            if (angle2 < angle1) angle2 += 1
+
+            const length = (angle2 - angle1) * (Math.random() * 0.4 + 0.2)
+            const start = (angle1 + angle2) / 2 - length / 2
+            
+            primitives.push(
+                new BarPrimitive(
+                    ring, start, length, distance, 10
+                )
+            )
+        }
+    }
 
     return primitives
 }
@@ -205,10 +284,97 @@ export function generateLegacyRing(
     distance: number
 ): IPrimitive[] {
     switch (type) {
-    case LegacyRingType.innerRing:
-        return generateInnerRing(
-            ring, difficulty, distance
-        )
+        case LegacyRingType.innerRing:
+            return generateInnerRing(
+                ring, difficulty, distance
+            )
+        case LegacyRingType.middleRing:
+            return generateMiddleRing(
+                ring, difficulty, distance
+            )
+        case LegacyRingType.outerRing:
+                return generateOuterRing(
+                    ring, difficulty, distance
+                )
     }
     return []
+}
+
+export function generateBasicLegacyRings(
+    level: Level,
+    [inner, middle, outer]: LegacyRingDifficulty[]
+): Ring[] {
+    const rings: Ring[] = []
+
+    if (inner !== LegacyRingDifficulty.none) {
+        const innerRing = new Ring(level, 1)
+
+        innerRing.add(
+            ...generateInnerRing(innerRing, inner, 200)
+        )
+
+        rings.push(innerRing)
+    }
+    if (middle !== LegacyRingDifficulty.none) {
+        const middleRing = new Ring(level, 0.5)
+
+        middleRing.add(
+            ...generateMiddleRing(middleRing, middle, 300)
+        )
+
+        rings.push(middleRing)
+    }
+    if (outer !== LegacyRingDifficulty.none) {
+        const outerRing = new Ring(level, 0.25)
+
+        outerRing.add(
+            ...generateInnerRing(outerRing, outer, 500)
+        )
+
+        rings.push(outerRing)
+    }
+
+    return rings
+}
+
+const staticProgression = [
+    [1, 0, 0],
+    [1, 0, 0],
+    [2, 0, 0],
+    [2, 0, 0],
+    [2, 0, 0],
+    [3, 0, 0],
+    [3, 0, 1],
+    [2, 0, 2],
+    [2, 0, 2],
+    [2, 0, 2],
+    [2, 1, 2],
+    [2, 1, 2]
+]
+const loopedProgression = [
+    [3, 1, 2],
+    [2, 2, 2],
+    [2, 2, 2],
+    [2, 3, 2],
+    [2, 3, 1],
+    [2, 2, 2],
+    [2, 2, 2],
+    [3, 1, 2],
+    [2, 1, 2],
+    [3, 1, 2],
+    [2, 2, 2],
+    [2, 2, 2],
+    [2, 3, 2],
+    [3, 3, 3],
+    [2, 2, 2],
+    [2, 2, 2],
+    [3, 1, 2],
+    [2, 1, 2]
+]
+
+export function getLegacyDifficulties(levelIndex: number): LegacyRingDifficulty[] {
+    if (levelIndex < staticProgression.length) return staticProgression[levelIndex]
+    return loopedProgression[
+        (levelIndex - staticProgression.length) % loopedProgression.length
+    ]
 }
