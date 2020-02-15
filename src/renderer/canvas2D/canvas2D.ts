@@ -31,6 +31,8 @@ export class Canvas2DRenderer implements IVisualRenderer {
      */
     public rasterizedLevel: Canvas2DRasterizedLevel
 
+    public lastScaleFactor: number
+
     // Spare the poor constructor
     // has it done anything to you
     // eslint, shut up
@@ -42,16 +44,26 @@ export class Canvas2DRenderer implements IVisualRenderer {
     }
 
     updateSize(w: number, h: number) {
+        this.canvas.width = w
+        this.canvas.height = h
+
+        this.rescaleLevel()
+    }
+
+    rescaleLevel() {
+        const w = this.canvas.width, h = this.canvas.height
         const scaleFactor = this.level ? this.level.getScaleFactor(
             Math.min(w, h)
         ) : 1
 
-        this.canvas.width = w
-        this.canvas.height = h
+        if (!this.lastScaleFactor)
+            this.lastScaleFactor = scaleFactor
+        else
+            this.lastScaleFactor = 0.5 * scaleFactor + 0.5 * this.lastScaleFactor
 
         this.ctx.resetTransform()
         this.ctx.translate(w / 2, h / 2)
-        this.ctx.scale(scaleFactor, scaleFactor)
+        this.ctx.scale(this.lastScaleFactor, this.lastScaleFactor)
     }
 
     initLevel(level: Level) {
@@ -60,6 +72,7 @@ export class Canvas2DRenderer implements IVisualRenderer {
     }
 
     render(dTime: number) {
+        this.rescaleLevel()
 
         this.level.mode.advance(this.level, dTime)
         this.rasterizedLevel.update(this.level.mode.isMaterialDynamic)
