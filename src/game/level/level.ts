@@ -136,9 +136,9 @@ export class Level {
     getScaleFactor(size: number): number {
         const levelRadius = this.getSpan()
 
-        if (levelRadius + 16 < size / 2)
+        if (levelRadius + 48 < size / 2)
             return 1
         else
-            return (size / 2) / (levelRadius + 16)
+            return (size / 2) / (levelRadius + 48)
     }
 }

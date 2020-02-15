@@ -7,6 +7,7 @@ import { Canvas2DRenderer } from "./renderer/canvas2D/canvas2D"
 import { InputMethod } from "./input/input"
 import { MouseInputMethod } from "./input/mouse"
 import { getGameContainer, prepareViewport, attachStatEvents, updateUIColors } from "./ui/web"
+import { WGLRenderer } from "./renderer/webgl/webgl"
 
 /**
  * The main G4 class
@@ -58,7 +59,7 @@ export class WebG4 extends G4 {
     async preload(): Promise<void> {
         await super.preload()
 
-        this.renderer = new Canvas2DRenderer()
+        this.renderer = new WGLRenderer()
         prepareViewport(this.game, this.renderer)
 
         this.game.setRenderer(this.renderer)
