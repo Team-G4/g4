@@ -1,0 +1,1 @@
+import { IMode } from "./mode";

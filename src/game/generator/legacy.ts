@@ -112,6 +112,19 @@ export class LegacyPolygon extends Polygon {
     }
 }
 
+function sortPrimitives(
+    primitives: IPrimitive[]
+): IPrimitive[] {
+    return primitives.sort(
+        (p1, p2) => {
+            const v1 = p1 instanceof BallPrimitive ? 1 : 0
+            const v2 = p2 instanceof BallPrimitive ? 1 : 0
+
+            return v1 - v2
+        }
+    )
+}
+
 function generateInnerRing(
     ring: Ring,
     difficulty: LegacyRingDifficulty,
@@ -177,7 +190,7 @@ function generateInnerRing(
         }
     })
 
-    return primitives
+    return sortPrimitives(primitives)
 }
 
 function generateMiddleRing(
@@ -214,7 +227,7 @@ function generateMiddleRing(
         }
     }
 
-    return primitives
+    return sortPrimitives(primitives)
 }
 
 function generateOuterRing(
@@ -267,7 +280,7 @@ function generateOuterRing(
         }
     }
 
-    return primitives
+    return sortPrimitives(primitives)
 }
 
 /**
@@ -293,9 +306,9 @@ export function generateLegacyRing(
                 ring, difficulty, distance
             )
         case LegacyRingType.outerRing:
-                return generateOuterRing(
-                    ring, difficulty, distance
-                )
+            return generateOuterRing(
+                ring, difficulty, distance
+            )
     }
     return []
 }
@@ -328,7 +341,7 @@ export function generateBasicLegacyRings(
         const outerRing = new Ring(level, 0.25)
 
         outerRing.add(
-            ...generateInnerRing(outerRing, outer, 500)
+            ...generateOuterRing(outerRing, outer, 500)
         )
 
         rings.push(outerRing)

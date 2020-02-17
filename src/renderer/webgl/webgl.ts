@@ -3,11 +3,16 @@ import { Scene, OrthographicCamera, Color, MeshLambertMaterial } from "three"
 import { Level } from "../../game/level/level"
 import { IVisualRenderer } from "../renderer"
 import { WGLRasterizer, IWGLRasterizedPrimitive } from "./rasterizer"
-import { BeatingHeart } from "../../util/heart"
+
+import { EffectComposer } from "three/examples/jsm/postprocessing/EffectComposer"
+import { RenderPass } from "three/examples/jsm/postprocessing/RenderPass"
+import { FilmPass } from "three/examples/jsm/postprocessing/FilmPass"
 
 export class WGLRenderer implements IVisualRenderer {
     public scene: Scene
-    public camera: OrthographicCamera
+    public camera = new OrthographicCamera(
+        -1, 1, 1, -1, 0.01, 10000
+    )
 
     public mat = new MeshLambertMaterial({
         color: 0xA0A0A0
@@ -18,6 +23,7 @@ export class WGLRenderer implements IVisualRenderer {
     public wglRenderer = new WebGLRenderer({
         antialias: true
     })
+    public wglComposer: EffectComposer
 
     public level: Level
     public rasterizedLevel: IWGLRasterizedPrimitive
@@ -47,9 +53,12 @@ export class WGLRenderer implements IVisualRenderer {
     }
 
     updateSize(w: number, h: number) {
-        this.camera = new OrthographicCamera(
-            -w / 2, w / 2, h / 2, -h / 2, 0.01, 10000
-        )
+        this.camera.left = -w / 2
+        this.camera.right = w / 2
+        this.camera.top = h / 2
+        this.camera.bottom = -h / 2
+        this.camera.updateProjectionMatrix()
+
         this.camera.position.z = 500
 
         this.wglRenderer.setSize(w, h)
@@ -69,6 +78,18 @@ export class WGLRenderer implements IVisualRenderer {
         this.scene.add(
             this.rasterizedLevel.threeObject
         )
+
+        this.wglComposer = new EffectComposer(
+            this.wglRenderer
+        )
+
+        const renderPass = new RenderPass(
+            this.scene, this.camera
+        )
+        const fxPass = level.mode.getEffectPass()
+
+        this.wglComposer.addPass(renderPass)
+        this.wglComposer.addPass(fxPass)
     }
 
     render(dTime: number) {
@@ -77,8 +98,6 @@ export class WGLRenderer implements IVisualRenderer {
         this.level.mode.advance(this.level, dTime)
         this.rasterizedLevel.update(this.level.mode.isMaterialDynamic)
         
-        this.wglRenderer.render(
-            this.scene, this.camera
-        )
+        this.wglComposer.render()
     }
 }

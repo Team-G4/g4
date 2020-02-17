@@ -1,5 +1,5 @@
 import { Game } from "./game/game"
-import { IMode, TestMode } from "./game/mode/mode"
+import { IMode } from "./game/mode/mode"
 import { IVisualRenderer } from "./renderer/renderer"
 import { ISettingsManager } from "./settings/manager"
 import { LocalStorageSettingsManager } from "./settings/localStorage"
@@ -8,6 +8,9 @@ import { InputMethod } from "./input/input"
 import { MouseInputMethod } from "./input/mouse"
 import { getGameContainer, prepareViewport, attachStatEvents, updateUIColors } from "./ui/web"
 import { WGLRenderer } from "./renderer/webgl/webgl"
+import { G4EasyMode } from "./game/mode/legacy/easy"
+import { G4NormalMode } from "./game/mode/legacy/normal"
+import { G4HardMode } from "./game/mode/legacy/hard"
 
 /**
  * The main G4 class
@@ -17,7 +20,9 @@ export class G4 {
      * All modes registered in the game
      */
     public modes: IMode[] = [
-        new TestMode()
+        new G4EasyMode(),
+        new G4NormalMode(),
+        new G4HardMode()
     ]
     /**
      * The game object
@@ -40,7 +45,7 @@ export class G4 {
     }
 
     async start(): Promise<void> {
-        this.game.mode = this.modes[0]
+        this.game.mode = this.modes[2]
         await this.game.generateLevel(0)
     }
 }
