@@ -25,3 +25,16 @@ The next version of G4 ("G4.8"?) built with TypeScript and stuff.
 * shut up
 * something LONGER you said???!?!!#?@!$?@#!%?#@?%#$?@%?$#@^%
 * someone fucked the circle
+
+## Quotes volume 3
+
+* catching meat with our mouths yes get that dick
+
+devin did ~~not~~ saythat
+
+## DIANA QUOTE SECTION
+
+* leaderboard?
+* please, the leaderboard
+* this is a cursor
+* LEADERBORARD?!?!?!
