@@ -34,7 +34,7 @@ export class WGLRasterizedBallPrimitive implements IWGLRasterizedPrimitive {
 
     get threeGeometry() {
         return new SphereGeometry(
-            this.ball.ballRadius, 24, 24
+            this.ball.ballRadius, 4, 24
         )
     }
 
