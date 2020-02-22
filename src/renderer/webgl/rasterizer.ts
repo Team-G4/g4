@@ -9,6 +9,7 @@ import { WGLRasterizedCannon } from "./cannon"
 import { BallPrimitive } from "../../game/level/primitives/ball"
 import { BarPrimitive } from "../../game/level/primitives/bar"
 import { PulsingBallPrimitive } from "../../game/level/primitives/pulsingBall"
+import { MarqueeBarPrimitive } from "../../game/level/primitives/marqueeBar"
 
 export interface IWGLRasterizedPrimitive extends IRasterizedPrimitive {
     threeObject: Object3D;
@@ -143,6 +144,56 @@ export class WGLRasterizedBarPrimitive implements IWGLRasterizedPrimitive {
     }
 
     update(deepUpdate: boolean) {
+        this.threeObject.position.x = this.bar.ring.centerX
+        this.threeObject.position.y = this.bar.ring.centerY
+
+        this.threeObject.rotation.z = 2 * Math.PI * this.bar.angle
+
+        if (deepUpdate) {
+            (this.threeObject.material as Material).dispose()
+            this.threeObject.material = this.rasterizer.getMaterialFromPrimMat(
+                this.mode.getMaterial(this.bar)
+            )
+        }
+    }
+
+    dispose() {
+        (this.threeObject.material as Material).dispose()
+        this.threeObject.geometry.dispose()
+    }
+}
+
+export class WGLRasterizedMarqueeBarPrimitive implements IWGLRasterizedPrimitive {
+    public threeObject: Mesh = null
+    
+    constructor(
+        public rasterizer: WGLRasterizer,
+        public bar: MarqueeBarPrimitive,
+        public mode: IMode
+    ) {
+        this.createThreeObject(
+            rasterizer.getMaterialFromPrimMat(
+                mode.getMaterial(bar)
+            )
+        )
+    }
+
+    get threeGeometry() {
+        return new TorusGeometry(
+            this.bar.distance, this.bar.barRadius, 4, 64, Math.PI * 2 * this.bar.length
+        )
+    }
+
+    createThreeObject(mat: Material) {
+        this.threeObject = new Mesh(
+            this.threeGeometry, mat
+        )
+    }
+
+    update(deepUpdate: boolean) {
+        this.threeObject.geometry.dispose()
+        this.threeObject.geometry = this.threeGeometry
+
         this.threeObject.position.x = this.bar.ring.centerX
         this.threeObject.position.y = this.bar.ring.centerY
 
@@ -299,6 +350,8 @@ export class WGLRasterizer implements IRasterizer {
             return new WGLRasterizedPulsingBallPrimitive(this, prim, mode)
         } else if (prim instanceof BallPrimitive) {
             return new WGLRasterizedBallPrimitive(this, prim, mode)
+        } else if (prim instanceof MarqueeBarPrimitive) {
+            return new WGLRasterizedMarqueeBarPrimitive(this, prim, mode)
         } else if (prim instanceof BarPrimitive) {
             return new WGLRasterizedBarPrimitive(this, prim, mode)
         } else if (prim instanceof Ring) {

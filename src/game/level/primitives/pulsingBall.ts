@@ -31,7 +31,7 @@ export class PulsingBallPrimitive extends BallPrimitive {
         
         const pos = Math.cos(
             levelTime * 2 * Math.PI * this.pulseFrequency
-        ) * 0.5 + 0.5
+        ) / 2 + 0.5
 
         this.ballRadius = this.endBallRadius + pos * (
             this.startBallRadius - this.endBallRadius

@@ -5,6 +5,7 @@ import { BallPrimitive } from "../level/primitives/ball"
 import { BarPrimitive } from "../level/primitives/bar"
 import { Level } from "../level/level"
 import { LegacyPulsingBallPrimitive } from "../level/primitives/pulsingBall"
+import { ShrinkingMarqueeBarPrimitive } from "../level/primitives/marqueeBar"
 
 /**
  * The type of the generated legacy ring
@@ -213,10 +214,9 @@ function generateMiddleRing(
         const angleLength = angles[2 * i + 1] - angleStart
 
         if (difficulty === LegacyRingDifficulty.hard && Math.random() >= 0.5) {
-            // replace with marquee bar later
             primitives.push(
-                new BarPrimitive(
-                    ring, angleStart, angleLength, distance, 10
+                new ShrinkingMarqueeBarPrimitive(
+                    ring, angleStart, angleLength, distance, 10, 1
                 )
             )
         } else {
@@ -249,7 +249,6 @@ function generateOuterRing(
 
     angles.forEach((angle, i) => {
         if (isPulsing && i % 2) {
-            // todo pulsing ball here
             primitives.push(
                 new LegacyPulsingBallPrimitive(
                     ring, angle, distance, 20, 2
