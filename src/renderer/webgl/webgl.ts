@@ -6,7 +6,6 @@ import { WGLRasterizer, IWGLRasterizedPrimitive } from "./rasterizer"
 
 import { EffectComposer } from "three/examples/jsm/postprocessing/EffectComposer"
 import { RenderPass } from "three/examples/jsm/postprocessing/RenderPass"
-import { FilmPass } from "three/examples/jsm/postprocessing/FilmPass"
 
 export class WGLRenderer implements IVisualRenderer {
     public scene: Scene

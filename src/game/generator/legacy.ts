@@ -4,6 +4,7 @@ import { Ring } from "../level/ring"
 import { BallPrimitive } from "../level/primitives/ball"
 import { BarPrimitive } from "../level/primitives/bar"
 import { Level } from "../level/level"
+import { LegacyPulsingBallPrimitive } from "../level/primitives/pulsingBall"
 
 /**
  * The type of the generated legacy ring
@@ -250,8 +251,8 @@ function generateOuterRing(
         if (isPulsing && i % 2) {
             // todo pulsing ball here
             primitives.push(
-                new BallPrimitive(
-                    ring, angle, distance, 20
+                new LegacyPulsingBallPrimitive(
+                    ring, angle, distance, 20, 2
                 )
             )
         } else {

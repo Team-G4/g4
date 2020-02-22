@@ -8,6 +8,7 @@ import { Cannon, Bullet } from "../../game/level/cannon"
 import { WGLRasterizedCannon } from "./cannon"
 import { BallPrimitive } from "../../game/level/primitives/ball"
 import { BarPrimitive } from "../../game/level/primitives/bar"
+import { PulsingBallPrimitive } from "../../game/level/primitives/pulsingBall"
 
 export interface IWGLRasterizedPrimitive extends IRasterizedPrimitive {
     threeObject: Object3D;
@@ -47,6 +48,58 @@ export class WGLRasterizedBallPrimitive implements IWGLRasterizedPrimitive {
 
         this.threeObject.position.x = x
         this.threeObject.position.y = y
+
+        if (deepUpdate) {
+            (this.threeObject.material as Material).dispose()
+            this.threeObject.material = this.rasterizer.getMaterialFromPrimMat(
+                this.mode.getMaterial(this.ball)
+            )
+        }
+    }
+
+    dispose() {
+        (this.threeObject.material as Material).dispose()
+        this.threeObject.geometry.dispose()
+    }
+}
+
+export class WGLRasterizedPulsingBallPrimitive implements IWGLRasterizedPrimitive {
+    public threeObject: Mesh = null
+    
+    constructor(
+        public rasterizer: WGLRasterizer,
+        public ball: PulsingBallPrimitive,
+        public mode: IMode
+    ) {
+        this.createThreeObject(
+            rasterizer.getMaterialFromPrimMat(
+                mode.getMaterial(ball)
+            )
+        )
+    }
+
+    get threeGeometry() {
+        return new SphereGeometry(
+            this.ball.startBallRadius, 24, 24
+        )
+    }
+
+    createThreeObject(mat: Material) {
+        this.threeObject = new Mesh(
+            this.threeGeometry, mat
+        )
+    }
+
+    update(deepUpdate: boolean) {
+        const {x, y} = this.ball.ballPosition
+
+        const scale = this.ball.ballRadius / this.ball.startBallRadius
+
+        this.threeObject.position.x = x
+        this.threeObject.position.y = y
+        this.threeObject.scale.set(
+            scale, scale, scale
+        )
 
         if (deepUpdate) {
             (this.threeObject.material as Material).dispose()
@@ -242,7 +295,9 @@ export class WGLRasterizer implements IRasterizer {
     }
 
     rasterize(mode: IMode, prim: Rasterizable): IWGLRasterizedPrimitive {
-        if (prim instanceof BallPrimitive) {
+        if (prim instanceof PulsingBallPrimitive) {
+            return new WGLRasterizedPulsingBallPrimitive(this, prim, mode)
+        } else if (prim instanceof BallPrimitive) {
             return new WGLRasterizedBallPrimitive(this, prim, mode)
         } else if (prim instanceof BarPrimitive) {
             return new WGLRasterizedBarPrimitive(this, prim, mode)
