@@ -308,7 +308,7 @@ function generateDeniseRing(
         const angleLength = angles[2 * i + 1] - angleStart
 
         if (
-            difficulty >== LegacyRingDifficulty.hard &&
+            difficulty >= LegacyRingDifficulty.hard &&
             Math.random() >= 0.5
         ) {
             primitives.push(
