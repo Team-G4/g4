@@ -29,8 +29,17 @@ button {
 }
 
 main {
+    position: fixed;
+    left: 50%;
+    top: 50%;
+    width: 100%;
+    max-width: max(120vh, 2500px);
+    height: 100%;
+
+    transform: translate(-50%, -50%);
+
     header {
-        position: fixed;
+        position: absolute;
         left: 16px;
         right: 16px;
         top: 16px;
@@ -48,6 +57,14 @@ main {
             background: var(--g4-light2);
 
             padding: 0px;
+
+            &.accountSettings:not(.login) {
+                background: var(--g4-dark3);
+                
+                svg {
+                    fill: var(--g4-light2);
+                }
+            }
 
             svg {
                 width: 40px;
@@ -83,7 +100,7 @@ main {
     }
 
     footer {
-        position: fixed;
+        position: absolute;
         left: 16px;
         right: 16px;
         bottom: 16px;
@@ -109,7 +126,7 @@ main {
     }
 
     div.gameContainer {
-        position: fixed;
+        position: absolute;
         left: 50%;
         top: 50%;
         width: calc(100vmin - 64px);
@@ -126,7 +143,7 @@ main {
 }
 
 dialog {
-    position: fixed;
+    position: absolute;
 
     border: none;
     border-radius: 20px;
