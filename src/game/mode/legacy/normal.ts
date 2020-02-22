@@ -41,7 +41,7 @@ export class G4NormalMode extends G4LegacyMode {
         cannonRing.add(
             new Cannon(
                 cannonRing,
-                0, 0, 0, -1
+                0, 0, 0, -1.5
             )
         )
 

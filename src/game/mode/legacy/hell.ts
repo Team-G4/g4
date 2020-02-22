@@ -76,7 +76,7 @@ export class G4HellMode extends G4LegacyMode {
         cannonRing.add(
             new Cannon(
                 cannonRing,
-                0, 40, 0, -1
+                0, 40, 0, -1.5
             )
         )
 

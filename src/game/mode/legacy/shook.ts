@@ -1,23 +1,41 @@
-import { IMode, ModeThemeColors } from "../mode";
+import { IMode, ModeThemeColors, PrimitiveMaterial } from "../mode";
 import { G4LegacyMode } from "./legacy";
 import { Level } from "../../level/level";
 import { getLegacyDifficulties, generateBasicLegacyRings, generateLegacyRing, LegacyRingType } from "../../generator/legacy";
 import { Ring } from "../../level/ring";
 import { Cannon } from "../../level/cannon";
-
+import { IPrimitive } from "../../level/primitives/primitives";
+import { BarPrimitive } from "../../level/primitives/bar";
+//F59327
+//724399
 export class G4ShookMode extends G4LegacyMode {
     public modeID = "g4_shook"
     public name = "Shook"
 
     getThemeColors(level: Level): ModeThemeColors {
         return {
-            background: "#1A2320",
-            dim: "#151918",
-            spotlight: "#202E22",
+            background: "#12121A",
+            dim: "#070710",
+            spotlight: "#181822",
 
-            foreground: "#F0EFE0",
-            accent: "#CAEC12",
-            secondaryAccent: "#52CF12"
+            foreground: "#F1FBFF",
+            accent: "#F5652B",
+            secondaryAccent: "#473B99"
+        }
+    }
+
+    getMaterial(prim: IPrimitive): PrimitiveMaterial {
+        const colors = this.getThemeColors(prim.ring.level)
+        const ringParity = prim.ring.level.rings.indexOf(prim.ring) % 2
+
+        let color = ringParity ? "#F59327" : "#724399"
+
+        if (prim instanceof Cannon) color = colors.foreground
+        else if (prim instanceof BarPrimitive)
+            color = ringParity ? colors.accent : colors.secondaryAccent
+
+        return {
+            color
         }
     }
 
@@ -56,7 +74,7 @@ export class G4ShookMode extends G4LegacyMode {
         cannonRing.add(
             new Cannon(
                 cannonRing,
-                0, 0, 0, -1
+                0, 0, 0, -1.5
             )
         )
 
