@@ -6,7 +6,7 @@ import { LocalStorageSettingsManager } from "./settings/localStorage"
 import { Canvas2DRenderer } from "./renderer/canvas2D/canvas2D"
 import { InputMethod } from "./input/input"
 import { MouseInputMethod } from "./input/mouse"
-import { getGameContainer, prepareViewport, attachStatEvents, updateUIColors } from "./ui/web"
+import { getGameContainer, prepareViewport, attachStatEvents, updateUIColors, setupEvents, prepModeList } from "./ui/web"
 import { WGLRenderer } from "./renderer/webgl/webgl"
 import { G4EasyMode } from "./game/mode/legacy/easy"
 import { G4NormalMode } from "./game/mode/legacy/normal"
@@ -45,7 +45,7 @@ export class G4 {
     }
 
     async start(): Promise<void> {
-        this.game.mode = this.modes[2]
+        this.game.mode = this.modes[0]
         await this.game.generateLevel(0)
     }
 }
@@ -64,17 +64,25 @@ export class WebG4 extends G4 {
     async preload(): Promise<void> {
         await super.preload()
 
-        this.renderer = new WGLRenderer()
+        this.renderer = new Canvas2DRenderer()
         prepareViewport(this.game, this.renderer)
 
         this.game.setRenderer(this.renderer)
+
+        this.game.on("mode", () => {
+            updateUIColors(this.game)
+            this.game.generateLevel(0)
+        })
         
         attachStatEvents(this.game)
+
+        setupEvents()
     }
 
     async start(): Promise<void> {
         await super.start()
         updateUIColors(this.game)
+        prepModeList(this)
 
         requestAnimationFrame((timestamp) => this.render(timestamp))
     }
