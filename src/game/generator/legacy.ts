@@ -283,6 +283,70 @@ function generateOuterRing(
     return sortPrimitives(primitives)
 }
 
+function generateDeniseRing(
+    ring: Ring,
+    difficulty: LegacyRingDifficulty,
+    distance: number
+): IPrimitive[] {
+    const primitives: IPrimitive[] = []
+
+    if (difficulty === LegacyRingDifficulty.easy) return primitives
+    
+    let n = (difficulty - 1) * 2
+    if (
+        difficulty === LegacyRingDifficulty.hard &&
+        Math.random() >= 0.6
+    )
+        n = 6
+    if (difficulty === LegacyRingDifficulty.extreme)
+        n = Math.floor(Math.random() * 2) * 4 + 4
+
+    const angles = new LegacyPolygon(n).angles
+
+    for (let i = 0; i < n / 2; i++) {
+        const angleStart = angles[2 * i]
+        const angleLength = angles[2 * i + 1] - angleStart
+
+        if (
+            difficulty === LegacyRingDifficulty.hard &&
+            Math.random() >= 0.5
+        ) {
+            primitives.push(
+                new ShrinkingMarqueeBarPrimitive(
+                    ring, angleStart, angleLength,
+                    distance, 2, 1
+                )
+            )
+        } else {
+            primitives.push(
+                new BarPrimitive(
+                    ring, angleStart, angleLength,
+                    distance, 2
+                )
+            )
+        }
+    }
+
+    for (let i = 1; i < n; i += 2) {
+        const angleStart = angles[i]
+        const angleLength = angles[(i + 1) % n] - angleStart
+
+        const numOfBalls = Math.round(Math.random() * 2 + 1)
+
+        for (let j = 1; j < (numOfBalls + 1); j++) {
+            primitives.push(
+                new BallPrimitive(
+                    ring,
+                    angleStart + (j/(numOfBalls+2)) * angleLength,
+                    distance, 4
+                )
+            )
+        }
+    }
+
+    return primitives
+}
+
 /**
  * Generates a legacy ring.
  * @param ring - the target ring
@@ -307,6 +371,10 @@ export function generateLegacyRing(
             )
         case LegacyRingType.outerRing:
             return generateOuterRing(
+                ring, difficulty, distance
+            )
+        case LegacyRingType.deniseRing:
+            return generateDeniseRing(
                 ring, difficulty, distance
             )
     }
