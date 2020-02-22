@@ -12,6 +12,7 @@ import { G4EasyMode } from "./game/mode/legacy/easy"
 import { G4NormalMode } from "./game/mode/legacy/normal"
 import { G4HardMode } from "./game/mode/legacy/hard"
 import { G4ShookMode } from "./game/mode/legacy/shook"
+import { G4HellMode } from "./game/mode/legacy/hell"
 
 /**
  * The main G4 class
@@ -24,6 +25,7 @@ export class G4 {
         new G4EasyMode(),
         new G4NormalMode(),
         new G4HardMode(),
+        new G4HellMode(),
         new G4ShookMode()
     ]
     /**
