@@ -33,7 +33,6 @@ main {
     left: 50%;
     top: 50%;
     width: 100%;
-    max-width: max(200vh, 2500px);
     height: 100%;
 
     transform: translate(-50%, -50%);
@@ -143,7 +142,7 @@ main {
 }
 
 dialog {
-    position: absolute;
+    position: fixed;
 
     border: none;
     border-radius: 20px;
