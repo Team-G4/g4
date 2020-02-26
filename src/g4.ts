@@ -14,6 +14,7 @@ import { G4HardMode } from "./game/mode/legacy/hard"
 import { G4ShookMode } from "./game/mode/legacy/shook"
 import { G4HellMode } from "./game/mode/legacy/hell"
 import { G4ChaosMode } from "./game/mode/legacy/chaos"
+import { MIDIInputMethod } from "./input/midi"
 
 /**
  * The main G4 class
@@ -64,7 +65,8 @@ export class WebG4 extends G4 {
     public inputs = [
         new MouseInputMethod(
             getGameContainer()
-        )
+        ),
+        new MIDIInputMethod()
     ]
 
     async preload(): Promise<void> {
