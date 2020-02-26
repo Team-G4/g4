@@ -37,6 +37,7 @@
     "webpack-dev-server": "^3.10.1"
   },
   "dependencies": {
-    "three": "^0.111.0"
+    "three": "^0.111.0",
+    "webmidi": "^2.5.1"
   }
 }
