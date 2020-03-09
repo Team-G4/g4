@@ -11,11 +11,15 @@ export class LocalStorageSettingsManager implements ISettingsManager {
     }
 
     async exists(setting: string): Promise<boolean> {
-        return "setting" in localStorage
+        return setting in localStorage
+    }
+
+    async remove(setting: string): Promise<void> {
+        localStorage.removeItem(setting)
     }
 
     async set(setting: string, value: any): Promise<void> {
-        return localStorage.setItem(
+        localStorage.setItem(
             setting, JSON.stringify(value)
         )
     }

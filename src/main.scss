@@ -56,6 +56,10 @@ main {
             background: var(--g4-light2);
 
             padding: 0px;
+            
+            &:hover {
+                background: var(--g4-light1);
+            }
 
             &.accountSettings:not(.login) {
                 background: var(--g4-dark3);

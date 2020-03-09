@@ -148,7 +148,6 @@ export class Game extends EventEmitter {
         switch (action) {
         case InputAction.cannonShoot:
             this.level.shoot()
-            console.log(this.level.bullets)
             break
         }
     }

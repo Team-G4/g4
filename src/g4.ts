@@ -15,6 +15,7 @@ import { G4ShookMode } from "./game/mode/legacy/shook"
 import { G4HellMode } from "./game/mode/legacy/hell"
 import { G4ChaosMode } from "./game/mode/legacy/chaos"
 import { MIDIInputMethod } from "./input/midi"
+import { KeyboardInputMethod } from "./input/keyboard"
 
 /**
  * The main G4 class
@@ -63,10 +64,14 @@ export class WebG4 extends G4 {
     public renderer: IVisualRenderer
 
     public inputs = [
+        new KeyboardInputMethod(
+            getGameContainer(),
+            this.settings
+        ),
         new MouseInputMethod(
             getGameContainer()
         ),
-        new MIDIInputMethod()
+        new MIDIInputMethod(null)
     ]
 
     async preload(): Promise<void> {

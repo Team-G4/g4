@@ -20,7 +20,8 @@ export class WGLRenderer implements IVisualRenderer {
     public rasterizer = new WGLRasterizer()
 
     public wglRenderer = new WebGLRenderer({
-        antialias: true
+        antialias: true,
+        alpha: true
     })
     public wglComposer: EffectComposer
 

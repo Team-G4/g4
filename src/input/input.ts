@@ -11,11 +11,12 @@ export enum InputAction {
     /**
      * The "enable slow mode" action
      */
-    slowModeEnable,
-    /**
-     * The "disable slow mode" action
-     */
-    slowModeDisable
+    slowModeEnable
+}
+
+export type InputBinds = {
+    cannonShoot: string,
+    slowModeEnable: string
 }
 
 /**
