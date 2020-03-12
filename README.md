@@ -31,6 +31,7 @@ The next version of G4 ("G4.8"?) built with TypeScript and stuff.
 * catching meat with our mouths yes get that dick
 
 devin did ~~not~~ saythat
+Sci hAs ThE diRtY miNd
 
 ## DIANA QUOTE SECTION
 
