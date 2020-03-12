@@ -5,6 +5,7 @@ import { IRenderer } from "../renderer/renderer"
 import { ILeaderboardProvider } from "./leaderboard/leaderboard"
 import { EventEmitter } from "../util/events"
 import { BeatingHeart } from "../util/heart"
+import { Settings } from "../settings/settings"
 
 /**
  * Represents a game
@@ -42,6 +43,12 @@ export class Game extends EventEmitter {
      * A heart beating at nice 999999 BPM
      */
     public heart = new BeatingHeart()
+
+    constructor(
+        public settings: Settings
+    ) {
+        super()
+    }
 
     /**
      * Set the current game renderer

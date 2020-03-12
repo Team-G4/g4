@@ -1,6 +1,7 @@
 import { InputMethod, InputAction } from "./input"
 import WebMidi, { InputEventNoteon } from "webmidi"
 import { ISettingsManager } from "../settings/manager"
+import { Settings } from "../settings/settings"
 
 /**
  * MIDI input
@@ -10,7 +11,7 @@ export class MIDIInputMethod extends InputMethod {
      * Creates a MIDI input handler
      */
     constructor(
-        settings: ISettingsManager
+        settings: Settings
     ) {
         super()
 

@@ -1,5 +1,5 @@
 import { InputMethod, InputAction, InputBinds } from "./input"
-import { ISettingsManager } from "../settings/manager"
+import { Settings } from "../settings/settings"
 
 const defaultKeybinds: InputBinds = {
     cannonShoot: "Space",
@@ -10,14 +10,17 @@ const defaultKeybinds: InputBinds = {
  * Keyboard input method <def not complete>
  */
 export class KeyboardInputMethod extends InputMethod {
-    public keybinds: InputBinds
+    public keybinds: InputBinds = {
+        cannonShoot: "Space",
+        slowModeEnable: "KeyS"
+    }
     public evtCallback = (e: KeyboardEvent) => {
         this.handleEvent(e)
     }
     
     constructor(
         domTarget: HTMLElement,
-        settings: ISettingsManager
+        settings: Settings
     ) {
         super()
 
@@ -38,12 +41,7 @@ export class KeyboardInputMethod extends InputMethod {
         window.addEventListener("keydown", this.evtCallback)
     }
 
-    async loadKeybinds(settings: ISettingsManager) {
-        if (await settings.exists("keybinds")) {
-            this.keybinds = await settings.get("keybinds", defaultKeybinds)
-        } else {
-            this.keybinds = defaultKeybinds
-            await settings.set("keybinds", this.keybinds)
-        }
+    async loadKeybinds(settings: Settings) {
+        //todo
     }
 }

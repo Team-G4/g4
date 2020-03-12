@@ -8,5 +8,10 @@ import { LocalStorageSettingsManager } from "./settings/localStorage"
 const g4 = new WebG4()
 
 g4.preload().then(() => {
-    g4.start()
+    g4.start();
+    
+    // Just for playing around
+    (window as any).setThemeColor = (color: string, value: string) => {
+        g4.settings.setThemeColor(color, value)
+    }
 });

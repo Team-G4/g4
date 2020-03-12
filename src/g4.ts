@@ -16,6 +16,7 @@ import { G4HellMode } from "./game/mode/legacy/hell"
 import { G4ChaosMode } from "./game/mode/legacy/chaos"
 import { MIDIInputMethod } from "./input/midi"
 import { KeyboardInputMethod } from "./input/keyboard"
+import { Settings } from "./settings/settings"
 
 /**
  * The main G4 class
@@ -40,7 +41,7 @@ export class G4 {
     /**
      * The settings manager
      */
-    public settings: ISettingsManager
+    public settings: Settings
 
     /**
      * The input methods
@@ -48,8 +49,10 @@ export class G4 {
     public inputs: InputMethod[]
 
     async preload(): Promise<void> {
-        this.game = new Game()
+        this.game = new Game(this.settings)
         this.inputs.forEach(i => this.game.addInput(i))
+
+        this.modes.forEach(mode => mode.settings = this.settings)
     }
 
     async start(): Promise<void> {
@@ -59,7 +62,9 @@ export class G4 {
 }
 
 export class WebG4 extends G4 {
-    public settings = new LocalStorageSettingsManager()
+    public settings = new Settings(
+        new LocalStorageSettingsManager()
+    )
 
     public renderer: IVisualRenderer
 
@@ -76,6 +81,7 @@ export class WebG4 extends G4 {
 
     async preload(): Promise<void> {
         await super.preload()
+        await this.settings.init()
 
         this.renderer = new Canvas2DRenderer()
         prepareViewport(this.game, this.renderer)

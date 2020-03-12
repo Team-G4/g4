@@ -9,18 +9,6 @@ export class G4EasyMode extends G4LegacyMode {
     public modeID = "g4_easy"
     public name = "Easy"
 
-    getThemeColors(level: Level): ModeThemeColors {
-        return {
-            background: "#1A2320",
-            dim: "#151918",
-            spotlight: "#202E22",
-
-            foreground: "#F0EFE0",
-            accent: "#CAEC12",
-            secondaryAccent: "#52CF12"
-        }
-    }
-
     generateLevel(index: number): Level {
         const level = new Level(
             this, index
