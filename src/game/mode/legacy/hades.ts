@@ -7,13 +7,12 @@ import { Cannon } from "../../level/cannon";
 import { BarPrimitive } from "../../level/primitives/bar";
 import { IPrimitive } from "../../level/primitives/primitives";
 
-export class G4ChaosMode extends G4LegacyMode {
-    public modeID = "g4_chaos"
-    public name = "Chaos"
+export class G4HadesMode extends G4LegacyMode {
+    public modeID = "g4_hades"
+    public name = "Hades"
 
     getMaterial(prim: IPrimitive): PrimitiveMaterial {
         const colors = this.getThemeColors(prim.ring.level)
-        const ringParity = prim.ring.level.rings.indexOf(prim.ring) % 2
 
         const accentAlt = this.settings.getThemeColor(
             `g4.mode.${this.modeID}.accentAlt`
@@ -22,11 +21,11 @@ export class G4ChaosMode extends G4LegacyMode {
             `g4.mode.${this.modeID}.secondaryAccentAlt`
         )
 
-        let color = ringParity ? accentAlt : accentAlt2
+        let color = prim.ring.isCollidable ? accentAlt : accentAlt2
 
         if (prim instanceof Cannon) color = colors.foreground
         else if (prim instanceof BarPrimitive)
-            color = ringParity ? colors.accent : colors.secondaryAccent
+            color = prim.ring.isCollidable ? colors.accent : colors.secondaryAccent
 
         return {
             color
@@ -38,13 +37,44 @@ export class G4ChaosMode extends G4LegacyMode {
             this, index
         )
 
-        level.add(
+        level.add(            
+            (() => {
+                const ring = new Ring(level, 1, 0, 0, 0, null, false)
+                ring.add(
+                    ...generateLegacyRing(
+                        ring, LegacyRingType.middleRing,
+                        LegacyRingDifficulty.hard, 300
+                    )
+                )
+                return ring
+            })(),
+            (() => {
+                const ring = new Ring(level, 0.5, 0, 0, 0, null, false)
+                ring.add(
+                    ...generateLegacyRing(
+                        ring, LegacyRingType.outerRing,
+                        LegacyRingDifficulty.hard, 400
+                    )
+                )
+                return ring
+            })(),
+            (() => {
+                const ring = new Ring(level, 0.75, 0, 0, 0, null, false)
+                ring.add(
+                    ...generateLegacyRing(
+                        ring, LegacyRingType.innerRing,
+                        LegacyRingDifficulty.normal, 150
+                    )
+                )
+                return ring
+            })(),
+
             (() => {
                 const ring = new Ring(level, 1)
                 ring.add(
                     ...generateLegacyRing(
-                        ring, LegacyRingType.deniseRing,
-                        LegacyRingDifficulty.extreme, 200
+                        ring, LegacyRingType.innerRing,
+                        LegacyRingDifficulty.easy, 100
                     )
                 )
                 return ring
@@ -53,8 +83,8 @@ export class G4ChaosMode extends G4LegacyMode {
                 const ring = new Ring(level, 0.5)
                 ring.add(
                     ...generateLegacyRing(
-                        ring, LegacyRingType.deniseRing,
-                        LegacyRingDifficulty.extreme, 266
+                        ring, LegacyRingType.innerRing,
+                        LegacyRingDifficulty.hard, 300
                     )
                 )
                 return ring
@@ -63,8 +93,8 @@ export class G4ChaosMode extends G4LegacyMode {
                 const ring = new Ring(level, 0.25)
                 ring.add(
                     ...generateLegacyRing(
-                        ring, LegacyRingType.deniseRing,
-                        LegacyRingDifficulty.extreme, 333
+                        ring, LegacyRingType.outerRing,
+                        LegacyRingDifficulty.hard, 400
                     )
                 )
                 return ring
@@ -73,8 +103,8 @@ export class G4ChaosMode extends G4LegacyMode {
                 const ring = new Ring(level, 0.125)
                 ring.add(
                     ...generateLegacyRing(
-                        ring, LegacyRingType.deniseRing,
-                        LegacyRingDifficulty.extreme, 400
+                        ring, LegacyRingType.outerRing,
+                        LegacyRingDifficulty.hard, 400
                     )
                 )
                 return ring
@@ -88,7 +118,7 @@ export class G4ChaosMode extends G4LegacyMode {
         cannonRing.add(
             new Cannon(
                 cannonRing,
-                0, 0, 0, -1
+                0, 200, 0, -1.5
             )
         )
 

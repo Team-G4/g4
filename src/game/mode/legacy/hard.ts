@@ -9,18 +9,6 @@ export class G4HardMode extends G4LegacyMode {
     public modeID = "g4_hard"
     public name = "Hard"
 
-    getThemeColors(level: Level): ModeThemeColors {
-        return {
-            background: "#171925",
-            dim: "#131316",
-            spotlight: "#1E262D",
-
-            foreground: "#F7F4F0",
-            accent: "#4DDED7",
-            secondaryAccent: "#3671C7"
-        }
-    }
-
     generateLevel(index: number): Level {
         const level = new Level(
             this, index

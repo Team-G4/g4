@@ -9,18 +9,6 @@ export class G4NormalMode extends G4LegacyMode {
     public modeID = "g4_normal"
     public name = "Normal"
 
-    getThemeColors(level: Level): ModeThemeColors {
-        return {
-            background: "#21201B",
-            dim: "#191515",
-            spotlight: "#2A2621",
-
-            foreground: "#F7F4F0",
-            accent: "#CFC04E",
-            secondaryAccent: "#CCB240"
-        }
-    }
-
     generateLevel(index: number): Level {
         const level = new Level(
             this, index

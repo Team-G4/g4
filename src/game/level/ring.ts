@@ -18,6 +18,7 @@ export class Ring {
         public revolutionFrequency = 0,
         public revolutionPhase = 0,
         public parentRing: Ring = null,
+        public isCollidable = true,
 
         public timeRemapEasing: EasingFunction = linearEasing
     ) {}
@@ -57,6 +58,8 @@ export class Ring {
     }
 
     hitTest(x: number, y: number, bulletRadius = 0): IPrimitive {
+        if (!this.isCollidable) return null
+        
         for (const item of this.items) {
             const hit = item.hitTest(x, y, bulletRadius)
             if (hit) {

@@ -17,6 +17,9 @@ import { G4ChaosMode } from "./game/mode/legacy/chaos"
 import { MIDIInputMethod } from "./input/midi"
 import { KeyboardInputMethod } from "./input/keyboard"
 import { Settings } from "./settings/settings"
+import { G4HadesMode } from "./game/mode/legacy/hades"
+import { G4ReverseMode } from "./game/mode/legacy/reverse"
+import { G4NoxMode } from "./game/mode/legacy/nox"
 
 /**
  * The main G4 class
@@ -30,7 +33,10 @@ export class G4 {
         new G4NormalMode(),
         new G4HardMode(),
         new G4HellMode(),
+        new G4HadesMode(),
         new G4ChaosMode(),
+        new G4ReverseMode(),
+        new G4NoxMode(),
         new G4ShookMode()
     ]
     /**

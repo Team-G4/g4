@@ -1,16 +1,15 @@
 import { IMode, ModeThemeColors, PrimitiveMaterial } from "../mode";
 import { G4LegacyMode } from "./legacy";
 import { Level } from "../../level/level";
-import { getLegacyDifficulties, generateBasicLegacyRings, generateLegacyRing, LegacyRingType } from "../../generator/legacy";
+import { getLegacyDifficulties, generateBasicLegacyRings, generateLegacyRing, LegacyRingType, LegacyRingDifficulty } from "../../generator/legacy";
 import { Ring } from "../../level/ring";
 import { Cannon } from "../../level/cannon";
 import { IPrimitive } from "../../level/primitives/primitives";
 import { BarPrimitive } from "../../level/primitives/bar";
-//F59327
-//724399
-export class G4ShookMode extends G4LegacyMode {
-    public modeID = "g4_shook"
-    public name = "Shook"
+
+export class G4NoxMode extends G4LegacyMode {
+    public modeID = "g4_nox"
+    public name = "Nox"
 
     getMaterial(prim: IPrimitive): PrimitiveMaterial {
         const colors = this.getThemeColors(prim.ring.level)
@@ -39,25 +38,53 @@ export class G4ShookMode extends G4LegacyMode {
             this, index
         )
 
-        const n = Math.min(
-            2 + Math.floor(index / 5),
-            4
-        )
-        const rings: Ring[] = []
+        const rings: Ring[] = [];
+
+        (() => {
+            const ring = new Ring(level, 0.5)
+            ring.add(
+                ...generateLegacyRing(
+                    ring, LegacyRingType.outerRing,
+                    LegacyRingDifficulty.normal, 500
+                )
+            )
+            rings.push(ring)
+        })()
+
+        if (index > 12) {
+            (() => {
+                const ring = new Ring(level, 0.5)
+                ring.add(
+                    ...generateLegacyRing(
+                        ring, LegacyRingType.middleRing,
+                        LegacyRingDifficulty.hard, 250
+                    )
+                )
+                rings.push(ring)
+            })()
+        }
+
+        const diffOffset = (index > 9) ? 2 : 1
+        const nOffset = (index > 4) ? 2 : 3
+        const n = Math.round(Math.random() * 2) + nOffset
 
         for (let i = 0; i < n; i++) {
+            const phase = i / n
+            const ringRadius = 400
+            const ringDistance = 100
+
+            const ringDifficulty = diffOffset + Math.round(Math.random())
+
             const ring = new Ring(
-                level, ((i % 2) ? -1 : 1) * 0.5**i
+                level, 1, ringDistance, 0.5, phase
             )
             ring.add(
                 ...generateLegacyRing(
                     ring, LegacyRingType.innerRing,
-                    Math.round(Math.random() + 1), 200 + i * 100
+                    ringDifficulty, ringRadius
                 )
             )
-            rings.push(
-                ring
-            )
+            rings.push(ring)
         }
 
         level.add(...rings)

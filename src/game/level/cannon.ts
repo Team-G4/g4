@@ -91,8 +91,8 @@ export class Cannon implements IPrimitive {
 
     getSpan(): number {
         return Math.hypot(
-            this.ring.centerX + this.distance + 20,
-            this.ring.centerY + this.distance + 20
-        )
+            this.ring.centerX,
+            this.ring.centerY
+        ) + this.distance + 20
     }
 }
