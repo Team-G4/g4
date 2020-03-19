@@ -65,8 +65,8 @@ export default {
         "g4.mode.g4_reverse.secondaryAccent": "#C41166",
 
         // G4 Legacy Nox
-        "g4.mode.g4_nox.background": "#300037",
-        "g4.mode.g4_nox.dim": "#140023",
+        "g4.mode.g4_nox.background": "#140023",
+        "g4.mode.g4_nox.dim": "#300037",
         "g4.mode.g4_nox.spotlight": "#000000",
         "g4.mode.g4_nox.foreground": "#F1FBFF",
         "g4.mode.g4_nox.accent": "#0BEDA4",
