@@ -126,7 +126,9 @@ export class Canvas2DRasterizedRing implements ICanvas2DRasterizedPrimitive {
      * @param deepUpdate - doesn't affect the Canvas renderer
      */
     update(deepUpdate: boolean) {
-        const path = new StyledPathGroup()
+        const path = new StyledPathGroup(
+            this.ring.isCollidable ? "source-over" : "destination-over"
+        )
         
         this.items.forEach(item => {
             item.update(deepUpdate)

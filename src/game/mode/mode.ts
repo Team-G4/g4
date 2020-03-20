@@ -19,15 +19,17 @@ export type PrimitiveMaterial = {
     // More properties added when required
 }
 
-export type ModeThemeColors = {
-    background: string;
-    dim: string;
-    spotlight: string;
+export type ModeThemeColorsGen<T> = {
+    background: T;
+    dim: T;
+    spotlight: T;
 
-    foreground: string;
-    accent: string;
-    secondaryAccent: string;
+    foreground: T;
+    accent: T;
+    secondaryAccent: T;
 }
+
+export type ModeThemeColors = ModeThemeColorsGen<string>
 
 /**
  * Represents a game mode

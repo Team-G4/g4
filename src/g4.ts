@@ -20,6 +20,7 @@ import { Settings } from "./settings/settings"
 import { G4HadesMode } from "./game/mode/legacy/hades"
 import { G4ReverseMode } from "./game/mode/legacy/reverse"
 import { G4NoxMode } from "./game/mode/legacy/nox"
+import { EclipseMode } from "./game/mode/g4.8/eclipse"
 
 /**
  * The main G4 class
@@ -37,7 +38,9 @@ export class G4 {
         new G4ChaosMode(),
         new G4ReverseMode(),
         new G4NoxMode(),
-        new G4ShookMode()
+        new G4ShookMode(),
+
+        new EclipseMode()
     ]
     /**
      * The game object

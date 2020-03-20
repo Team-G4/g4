@@ -49,6 +49,7 @@ export class WGLRasterizedBallPrimitive implements IWGLRasterizedPrimitive {
 
         this.threeObject.position.x = x
         this.threeObject.position.y = y
+        this.threeObject.position.z = this.ball.ring.isCollidable ? 0 : -100
 
         if (deepUpdate) {
             (this.threeObject.material as Material).dispose()
@@ -98,6 +99,7 @@ export class WGLRasterizedPulsingBallPrimitive implements IWGLRasterizedPrimitiv
 
         this.threeObject.position.x = x
         this.threeObject.position.y = y
+        this.threeObject.position.z = this.ball.ring.isCollidable ? 0 : -100
         this.threeObject.scale.set(
             scale, scale, scale
         )
@@ -146,6 +148,7 @@ export class WGLRasterizedBarPrimitive implements IWGLRasterizedPrimitive {
     update(deepUpdate: boolean) {
         this.threeObject.position.x = this.bar.ring.centerX
         this.threeObject.position.y = this.bar.ring.centerY
+        this.threeObject.position.z = this.bar.ring.isCollidable ? 0 : -100
 
         this.threeObject.rotation.z = 2 * Math.PI * this.bar.angle
 
@@ -196,6 +199,7 @@ export class WGLRasterizedMarqueeBarPrimitive implements IWGLRasterizedPrimitive
 
         this.threeObject.position.x = this.bar.ring.centerX
         this.threeObject.position.y = this.bar.ring.centerY
+        this.threeObject.position.z = this.bar.ring.isCollidable ? 0 : -100
 
         this.threeObject.rotation.z = 2 * Math.PI * this.bar.angle
 
