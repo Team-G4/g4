@@ -65,14 +65,14 @@ export default {
         "g4.mode.g4_reverse.secondaryAccent": "#C41166",
 
         // G4 Legacy Nox
-        "g4.mode.g4_nox.background": "#140023",
-        "g4.mode.g4_nox.dim": "#300037",
+        "g4.mode.g4_nox.background": "#1C002B",
+        "g4.mode.g4_nox.dim": "#10001D",
         "g4.mode.g4_nox.spotlight": "#000000",
         "g4.mode.g4_nox.foreground": "#F1FBFF",
-        "g4.mode.g4_nox.accent": "#0BEDA4",
-        "g4.mode.g4_nox.secondaryAccent": "#3105A8",
-        "g4.mode.g4_nox.accentAlt": "#52FFC7",
-        "g4.mode.g4_nox.secondaryAccentAlt": "#4200F5",
+        "g4.mode.g4_nox.accent": "#85ED0B",
+        "g4.mode.g4_nox.secondaryAccent": "#071DE0",
+        "g4.mode.g4_nox.accentAlt": "#DFFF52",
+        "g4.mode.g4_nox.secondaryAccentAlt": "#006CF5",
 
         // G4 Legacy Shook
         "g4.mode.g4_shook.background": "#12121A",
@@ -84,20 +84,12 @@ export default {
         "g4.mode.g4_shook.accentAlt": "#F59327",
         "g4.mode.g4_shook.secondaryAccentAlt": "#724399",
 
-        // G4 Eclipse (Dark)
-        "g4.mode.eclipse.dark.background": "#1A1E23",
-        "g4.mode.eclipse.dark.dim": "#1F1369",
-        "g4.mode.eclipse.dark.spotlight": "#000000",
-        "g4.mode.eclipse.dark.foreground": "#FFFFFF",
-        "g4.mode.eclipse.dark.accent": "#FFFFFF",
-        "g4.mode.eclipse.dark.secondaryAccent": "#1285CF",
-
-        // G4 Eclipse (Light)
-        "g4.mode.eclipse.light.background": "#BBE1C6",
-        "g4.mode.eclipse.light.dim": "#30DCBC",
-        "g4.mode.eclipse.light.spotlight": "#FFFFFF",
-        "g4.mode.eclipse.light.foreground": "#000000",
-        "g4.mode.eclipse.light.accent": "#000000",
-        "g4.mode.eclipse.light.secondaryAccent": "#8219F6",
+        // G4 Eclipse
+        "g4.mode.eclipse.background": "#101910",
+        "g4.mode.eclipse.dim": "#000000",
+        "g4.mode.eclipse.spotlight": "#3F0F21",
+        "g4.mode.eclipse.foreground": "#FFFFFF",
+        "g4.mode.eclipse.accent": "#D5D21D",
+        "g4.mode.eclipse.secondaryAccent": "#CF300F",
     }
 } as SettingsTheme

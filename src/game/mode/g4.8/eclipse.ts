@@ -14,21 +14,21 @@ export class EclipseMode extends BaseMode {
     public isThemeDynamic = true
     public isMaterialDynamic = true
     
-    getSchemeColors(scheme: string): ModeThemeColorsGen<Color> {
-        const keys = [
-            "background", "dim", "spotlight",
-            "foreground", "accent", "secondaryAccent"
-        ]
-        const colors: any = {}
+    // getSchemeColors(scheme: string): ModeThemeColorsGen<Color> {
+    //     const keys = [
+    //         "background", "dim", "spotlight",
+    //         "foreground", "accent", "secondaryAccent"
+    //     ]
+    //     const colors: any = {}
 
-        keys.forEach(
-            k => colors[k] = new Color(this.settings.getThemeColor(
-                `g4.mode.${this.modeID}.${scheme}.${k}`
-            ))
-        )
+    //     keys.forEach(
+    //         k => colors[k] = new Color(this.settings.getThemeColor(
+    //             `g4.mode.${this.modeID}.${scheme}.${k}`
+    //         ))
+    //     )
 
-        return colors as ModeThemeColorsGen<Color>
-    }
+    //     return colors as ModeThemeColorsGen<Color>
+    // }
     
     getThemeColors(level: Level): ModeThemeColors {
         let time = (level.time % 2) / 2
@@ -42,31 +42,38 @@ export class EclipseMode extends BaseMode {
             )
         }
 
-        const colors: any = {}
-        const dark = this.getSchemeColors("dark") as {
-            [prop: string]: Color
-        }
-        const light = this.getSchemeColors("light") as {
-            [prop: string]: Color
-        }
+        const colors = super.getThemeColors(level)
 
-        Object.keys(dark).forEach(key => {
-            const c = dark[key].multiplyScalar(1 - darkLightFade).add(
-                light[key].multiplyScalar(darkLightFade)
-            )
-            colors[key] = "#" + c.getHexString()
-        })
+        colors.spotlight = "#" + new Color(colors.spotlight).multiplyScalar(1 - darkLightFade).add(
+            new Color(colors.accent).multiplyScalar(darkLightFade)
+        ).getHexString()
 
         return colors as ModeThemeColors
     }
 
     getMaterial(prim: IPrimitive): PrimitiveMaterial {
         const colors = this.getThemeColors(prim.ring.level)
-        let color = colors.accent
+        const colorsRaw = super.getThemeColors(prim.ring.level)
+        let time = (prim.ring.level.time % 2) / 2
+        let darkLightFade = Math.min(
+            1, Math.max(0, time * 20 - 9)
+        )
+        if (time > 0.5) {
+            time = time * 2 - 1
+            darkLightFade = 1 - Math.min(
+                1, Math.max(0, time * 10 - 9)
+            )
+        }
+
+        let color = "#" + new Color(colorsRaw.accent).multiplyScalar(1 - darkLightFade).add(
+            new Color(colorsRaw.spotlight).multiplyScalar(darkLightFade)
+        ).getHexString()
 
         if (!prim.ring.isCollidable) color = colors.spotlight
 
-        if (prim instanceof Cannon) color = colors.foreground
+        if (prim instanceof Cannon) color = "#" + new Color(colorsRaw.foreground).multiplyScalar(1 - darkLightFade).add(
+            new Color(colorsRaw.background).multiplyScalar(darkLightFade)
+        ).getHexString()
 
         return {
             color
