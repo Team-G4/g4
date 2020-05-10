@@ -85,11 +85,11 @@ export default {
         "g4.mode.g4_shook.secondaryAccentAlt": "#724399",
 
         // G4 Eclipse
-        "g4.mode.eclipse.background": "#101910",
-        "g4.mode.eclipse.dim": "#000000",
-        "g4.mode.eclipse.spotlight": "#3F0F21",
+        "g4.mode.eclipse.background": "#101821",
+        "g4.mode.eclipse.dim": "#06080B",
+        "g4.mode.eclipse.spotlight": "#0F3F36",
         "g4.mode.eclipse.foreground": "#FFFFFF",
-        "g4.mode.eclipse.accent": "#D5D21D",
-        "g4.mode.eclipse.secondaryAccent": "#CF300F",
+        "g4.mode.eclipse.accent": "#50D3A0",
+        "g4.mode.eclipse.secondaryAccent": "#0F23CF",
     }
 } as SettingsTheme
