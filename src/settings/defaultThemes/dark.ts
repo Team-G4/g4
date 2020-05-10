@@ -87,9 +87,9 @@ export default {
         // G4 Eclipse
         "g4.mode.eclipse.background": "#101821",
         "g4.mode.eclipse.dim": "#06080B",
-        "g4.mode.eclipse.spotlight": "#0F3F36",
+        "g4.mode.eclipse.spotlight": "#0F313F",
         "g4.mode.eclipse.foreground": "#FFFFFF",
         "g4.mode.eclipse.accent": "#50D3A0",
-        "g4.mode.eclipse.secondaryAccent": "#0F23CF",
+        "g4.mode.eclipse.secondaryAccent": "#F02B96",
     }
 } as SettingsTheme
