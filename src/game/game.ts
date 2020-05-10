@@ -83,11 +83,6 @@ export class Game extends EventEmitter {
 
         if (this.renderer)
             this.renderer.initLevel(this.level)
-        
-        if (this.leaderboard)
-            await this.leaderboard.recordNewLevel(
-                this._mode, levelIndex
-            )
     }
 
     /**

@@ -6,7 +6,7 @@ import { LocalStorageSettingsManager } from "./settings/localStorage"
 import { Canvas2DRenderer } from "./renderer/canvas2D/canvas2D"
 import { InputMethod } from "./input/input"
 import { MouseInputMethod } from "./input/mouse"
-import { getGameContainer, prepareViewport, attachStatEvents, updateUIColors, setupEvents, prepModeList } from "./ui/web"
+import { getGameContainer, prepareViewport, attachStatEvents, updateUIColors, setupEvents, prepModeList, updateLeaderboardStats } from "./ui/web"
 import { WGLRenderer } from "./renderer/webgl/webgl"
 import { G4EasyMode } from "./game/mode/legacy/easy"
 import { G4NormalMode } from "./game/mode/legacy/normal"
@@ -21,6 +21,7 @@ import { G4HadesMode } from "./game/mode/legacy/hades"
 import { G4ReverseMode } from "./game/mode/legacy/reverse"
 import { G4NoxMode } from "./game/mode/legacy/nox"
 import { EclipseMode } from "./game/mode/g4.8/eclipse"
+import { LocalLeaderboardProvider } from "./game/leaderboard/local"
 
 /**
  * The main G4 class
@@ -92,6 +93,10 @@ export class WebG4 extends G4 {
         await super.preload()
         await this.settings.init()
 
+        this.game.leaderboard = new LocalLeaderboardProvider(
+            this.settings.manager
+        )
+
         this.renderer = new Canvas2DRenderer()
         prepareViewport(this.game, this.renderer)
 
@@ -100,6 +105,8 @@ export class WebG4 extends G4 {
         this.game.on("mode", () => {
             updateUIColors(this.game)
             this.game.generateLevel(0)
+            
+            updateLeaderboardStats(this.game)
         })
         
         attachStatEvents(this.game)
@@ -109,6 +116,7 @@ export class WebG4 extends G4 {
 
     async start(): Promise<void> {
         await super.start()
+        await updateLeaderboardStats(this.game)
         updateUIColors(this.game)
         prepModeList(this)
 

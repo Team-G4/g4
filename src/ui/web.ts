@@ -89,14 +89,34 @@ export function updateViewportSize(renderer: IVisualRenderer) {
     )
 }
 
+export async function updateLeaderboardStats(game: Game) {
+    const record = await game.leaderboard.getRecord(game.mode)
+
+    let hiScore = 0
+    let deathCount = 0
+    if (record) {
+        hiScore = record.levelIndex
+        deathCount = record.deathCount
+    }
+
+    const deathCounter = document.querySelector("button.deathCount em")
+    const hiScoreCounter = document.querySelector("button.recordStat em")
+
+    deathCounter.textContent = deathCount.toString()
+    hiScoreCounter.textContent = hiScore.toString()
+}
+
 export function attachStatEvents(game: Game) {
     game.on("death", () => {
         const deathCounter = document.querySelector("button.deathCount em")
 
         deathCounter.textContent = (+deathCounter.textContent + 1).toString()
+
+        updateLeaderboardStats(game)
     })
     game.on("level", (index: number) => {
         document.querySelector("button.levelIndex em").textContent = index.toString()
+        updateLeaderboardStats(game)
     })
 }
 
